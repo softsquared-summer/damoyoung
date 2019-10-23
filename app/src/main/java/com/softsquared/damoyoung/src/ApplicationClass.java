@@ -1,10 +1,10 @@
-package com.softsquared.template.src;
+package com.softsquared.damoyoung.src;
 
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.softsquared.template.config.XAccessTokenInterceptor;
+import com.softsquared.damoyoung.config.XAccessTokenInterceptor;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;

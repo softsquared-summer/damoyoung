@@ -1,4 +1,4 @@
-package com.softsquared.template.src.main.interfaces;
+package com.softsquared.damoyoung.src.main.interfaces;
 
 public interface MainActivityView {
 
