@@ -1,6 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android" >
+    android:background="@color/colorDamoyoungWhite"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            app:srcCompat="@drawable/ic_main_menu" />
+        <EditText
+            android:id="@+id/et_main_search"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:inputType="text"
+            android:background="@drawable/bg_edittext"
+            />
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            app:srcCompat="@drawable/ic_main_bookmark" />
+    </LinearLayout>
+
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/vp_main"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tl_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorDamoyoungWhite"
+        app:tabIndicatorColor="@color/colorDamoyoungBlue"
+        android:theme="@style/TabTheme"
+        app:tabMode="scrollable" />
+
 </LinearLayout>

@@ -10,5 +10,9 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
 
     </style>
-
+    <style name="TabTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:textColorPrimary">#4a4a4a</item>       <!-- 탭바 선택된 텍스트 -->
+        <item name="android:textColorSecondary">#9b9b9b</item>     <!-- 탭바 텍스트 -->
+        <item name="colorAccent">#ff7876</item>                    <!-- 하단 움직이는 바 색-->
+    </style>
 </resources>

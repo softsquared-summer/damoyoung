@@ -17,7 +17,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="n">
-        <activity android:name="com.softsquared.damoyoung.src.main.MainActivity"
+        <activity android:name=".src.Main.MainActivity"
             tools:ignore="ExtraText">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

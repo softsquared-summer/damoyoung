@@ -1,32 +1,54 @@
-package com.softsquared.damoyoung.src.main;
+package com.softsquared.damoyoung.src.Main;
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.tabs.TabLayout;
 import com.softsquared.damoyoung.R;
 import com.softsquared.damoyoung.src.BaseActivity;
-import com.softsquared.damoyoung.src.main.interfaces.MainActivityView;
+import com.softsquared.damoyoung.src.Main.WebViewFirst.LongmanWebViewFragment;
+import com.softsquared.damoyoung.src.Main.WebViewNaver.NaverWebViewFragment;
+import com.softsquared.damoyoung.src.Main.interfaces.MainActivityView;
 
 import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 
 public class MainActivity extends BaseActivity implements MainActivityView {
 
-    private WebView mWebView;
-    private WebSettings mWebSettings;
+
     ClipboardManager clipBoard;
     boolean mPrimaryClipFlag = true;
 
+    private ViewPager mMainViewPager;
+    private TabLayout mMainTabLayout;
+    private MainViewPagerAdapter mMainVpAdapter;
+    private EditText mEtSearch;
+    private String keyword="welcome";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_layout);
+        setContentView(R.layout.activity_main);
+
+        mMainTabLayout = findViewById(R.id.tl_main);
+        mMainViewPager = findViewById(R.id.vp_main);
+        mEtSearch = findViewById(R.id.et_main_search);
+        mMainVpAdapter = new MainViewPagerAdapter(getSupportFragmentManager());
+
         clipBoard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
 
         //콜백메소드를 통해 클립보드가 변경되었을때 클립보드를 가져올 수 있게 하였다.
@@ -42,23 +64,29 @@ public class MainActivity extends BaseActivity implements MainActivityView {
 
             }
         });
-        // 웹뷰 시작
-        mWebView = (WebView) findViewById(R.id.webView);
 
-        mWebView.setWebViewClient(new WebViewClient()); // 클릭시 새창 안뜨게
-        mWebSettings = mWebView.getSettings(); //세부 세팅 등록
-        mWebSettings.setJavaScriptEnabled(true); // 웹페이지 자바스클비트 허용 여부
-        mWebSettings.setSupportMultipleWindows(false); // 새창 띄우기 허용 여부
-        mWebSettings.setJavaScriptCanOpenWindowsAutomatically(false); // 자바스크립트 새창 띄우기(멀티뷰) 허용 여부
-        mWebSettings.setLoadWithOverviewMode(true); // 메타태그 허용 여부
-        mWebSettings.setUseWideViewPort(true); // 화면 사이즈 맞추기 허용 여부
-        mWebSettings.setSupportZoom(false); // 화면 줌 허용 여부
-        mWebSettings.setBuiltInZoomControls(false); // 화면 확대 축소 허용 여부
-        mWebSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN); // 컨텐츠 사이즈 맞추기
-        mWebSettings.setCacheMode(WebSettings.LOAD_NO_CACHE); // 브라우저 캐시 허용 여부
-        mWebSettings.setDomStorageEnabled(true); // 로컬저장소 허용 여부
+        mMainTabLayout.setupWithViewPager(mMainViewPager); //Viewpager와 TabLayout을 연결해주는 코드!
+        mMainViewPager.setAdapter(mMainVpAdapter); //Viewpager에 선택된 fragment를 띄워준다.
 
-        mWebView.loadUrl("https://www.oxfordlearnersdictionaries.com/"); // 웹뷰에 표시할 웹사이트 주소, 웹뷰 시작
+        mEtSearch.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                //Enter key Action
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    //Enter키눌렀을떄 처리
+                    String keyword = mEtSearch.getText().toString();
+
+                    ((NaverWebViewFragment) mMainVpAdapter.getItem(0)).updateData(keyword);
+                    ((LongmanWebViewFragment) mMainVpAdapter.getItem(1)).updateData(keyword);
+                    refresh();
+                    hideKeyboard();
+                    Toast.makeText(MainActivity.this, "검색완료", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                return false;
+            }
+        });
+
 
     }
 
@@ -113,5 +141,15 @@ public class MainActivity extends BaseActivity implements MainActivityView {
     @Override
     public void validateFailure(String message) {
 
+    }
+
+    public  void hideKeyboard(){
+        mEtSearch.clearFocus();
+        InputMethodManager immhide = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        immhide.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+    }
+
+    public void refresh(){
+        mMainVpAdapter.notifyDataSetChanged();
     }
 }

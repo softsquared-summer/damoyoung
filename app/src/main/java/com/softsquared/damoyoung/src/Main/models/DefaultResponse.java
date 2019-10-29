@@ -1,4 +1,4 @@
-package com.softsquared.damoyoung.src.main.models;
+package com.softsquared.damoyoung.src.Main.models;
 
 import com.google.gson.annotations.SerializedName;
 

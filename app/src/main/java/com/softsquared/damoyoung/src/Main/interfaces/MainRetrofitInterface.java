@@ -1,6 +1,6 @@
-package com.softsquared.damoyoung.src.main.interfaces;
+package com.softsquared.damoyoung.src.Main.interfaces;
 
-import com.softsquared.damoyoung.src.main.models.DefaultResponse;
+import com.softsquared.damoyoung.src.Main.models.DefaultResponse;
 
 import okhttp3.RequestBody;
 import retrofit2.Call;
