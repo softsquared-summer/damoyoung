@@ -6,6 +6,8 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.telephony.TelephonyManager;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +28,7 @@ import com.softsquared.damoyoung.src.BaseActivity;
 import com.softsquared.damoyoung.src.Main.WebViewFirst.LongmanWebViewFragment;
 import com.softsquared.damoyoung.src.Main.WebViewNaver.NaverWebViewFragment;
 import com.softsquared.damoyoung.src.Main.interfaces.MainActivityView;
+import com.softsquared.damoyoung.src.Setting.SettingActivity;
 
 import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 
@@ -34,19 +38,27 @@ public class MainActivity extends BaseActivity implements MainActivityView {
     ClipboardManager clipBoard;
     boolean mPrimaryClipFlag = true;
 
+
+
     private ViewPager mMainViewPager;
     private TabLayout mMainTabLayout;
     private MainViewPagerAdapter mMainVpAdapter;
     private EditText mEtSearch;
     private String keyword="welcome";
+    private ImageView mIvSetting,mIvFavority,mIvBookmark;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //디바이스값 아이디
+//        String deviceId = Settings.Secure.getString(this.getContentResolver(),
+//                Settings.Secure.ANDROID_ID);
+//       System.out.println(deviceId);
         mMainTabLayout = findViewById(R.id.tl_main);
         mMainViewPager = findViewById(R.id.vp_main);
         mEtSearch = findViewById(R.id.et_main_search);
+
         mMainVpAdapter = new MainViewPagerAdapter(getSupportFragmentManager());
 
         clipBoard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
@@ -86,7 +98,32 @@ public class MainActivity extends BaseActivity implements MainActivityView {
                 return false;
             }
         });
+        mEtSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
 
+               if(actionId==EditorInfo.IME_ACTION_SEARCH){
+                   String keyword = mEtSearch.getText().toString();
+
+                   ((NaverWebViewFragment) mMainVpAdapter.getItem(0)).updateData(keyword);
+                   ((LongmanWebViewFragment) mMainVpAdapter.getItem(1)).updateData(keyword);
+                   refresh();
+                   hideKeyboard();
+                   return true;
+               }
+                return false;
+            }
+        });
+
+
+    }
+
+    public void onClick(View v){
+        switch (v.getId()){
+            case R.id.iv_main_setting :
+                startActivity(new Intent(this, SettingActivity.class));
+                break;
+        }
 
     }
 

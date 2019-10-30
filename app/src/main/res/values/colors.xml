@@ -5,5 +5,15 @@
     <color name="colorAccent">#D81B60</color>
     <color name="colorDamoyoungBlue">#339df7</color>
     <color name="colorDamoyoungWhite">#ffffff</color>
+    <color name="colorStatusBar">#eaeff2</color>
+    <color name="colorCursor">#262626</color>
+    <color name="colorUnselected">#b3000000</color>
+    <color name="colorSelected">#35a2fe</color>
+    <color name="colorLine">#adb5bd</color>
+    <color name="colorBlack">#000000</color>
     <color name="colorDamoyoungBlueLight">#3335a2fe</color>
+    <color name="spinnerThumbOffColor">#ffffff</color>
+    <color name="spinnerThumbOnColor">#ffffff</color>
+    <color name="spinnerTrackOffColor">#eeeeee</color>
+    <color name="spinnerTrackOnColor">#35a2fe</color>
 </resources>
