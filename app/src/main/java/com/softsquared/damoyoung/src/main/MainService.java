@@ -1,8 +1,8 @@
-package com.softsquared.damoyoung.src.Main;
+package com.softsquared.damoyoung.src.main;
 
-import com.softsquared.damoyoung.src.Main.interfaces.MainRetrofitInterface;
-import com.softsquared.damoyoung.src.Main.models.DefaultResponse;
-import com.softsquared.damoyoung.src.Main.interfaces.MainActivityView;
+import com.softsquared.damoyoung.src.main.interfaces.MainRetrofitInterface;
+import com.softsquared.damoyoung.src.main.models.DefaultResponse;
+import com.softsquared.damoyoung.src.main.interfaces.MainActivityView;
 
 import retrofit2.Call;
 import retrofit2.Callback;

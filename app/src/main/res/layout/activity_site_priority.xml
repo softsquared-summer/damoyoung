@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/colorDamoyoungWhite"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:background="@color/colorDamoyoungWhite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/iv_site_priority_arrow_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:onClick="onClick"
+            app:srcCompat="@drawable/ic_arrow_back"/>
+
+        <TextView
+            android:background="@color/colorDamoyoungWhite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+            android:text="@string/site_priority"
+            android:textColor="@color/colorBlack"
+            android:layout_marginBottom="14dp"
+            android:textSize="18sp" />
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:background="@color/colorDamoyoungWhite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        >
+
+
+        <Button
+
+            android:id="@+id/btn_eng_to_eng"
+            android:layout_width="60dp"
+            android:layout_height="32dp"
+            android:text="@string/eng_eng"
+            android:background="@drawable/custom_button_on"
+            android:textColor="@color/colorDamoyoungWhite"
+            android:onClick="onClick"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="12dp"
+            android:layout_height="0dp"
+            />
+        <Button
+            android:id="@+id/btn_kor_to_eng"
+            android:layout_width="60dp"
+            android:layout_height="32dp"
+            android:background="@drawable/custom_button_off"
+            android:textColor="@color/colorBlack"
+            android:text="@string/kor_eng"
+            android:onClick="onClick"
+            android:textSize="14sp" />
+
+
+    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:background="@color/colorDamoyoungWhite"
+        android:id="@+id/rv_site_priority"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        />
+
+</LinearLayout>

@@ -16,4 +16,7 @@
     <color name="spinnerThumbOnColor">#ffffff</color>
     <color name="spinnerTrackOffColor">#eeeeee</color>
     <color name="spinnerTrackOnColor">#35a2fe</color>
+    <color name="colorRecentListWord">#99000000</color>
+    <color name="colorButtonOff">#e9ecef</color>
+    <color name="colorButtonOn">#339df7</color>
 </resources>

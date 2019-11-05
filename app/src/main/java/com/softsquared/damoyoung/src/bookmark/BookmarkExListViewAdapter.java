@@ -1,4 +1,4 @@
-package com.softsquared.damoyoung.src.Bookmark;
+package com.softsquared.damoyoung.src.bookmark;
 
 import android.view.View;
 import android.view.ViewGroup;

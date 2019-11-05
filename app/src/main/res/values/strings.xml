@@ -2,5 +2,8 @@
     <string name="app_name">다모영</string>
     <string name="loading">로딩중입니다.</string>
     <string name="network_error">네트워크 연결이 원활하지 않습니다.</string>
+    <string name="eng_eng">영:영/한</string>
+    <string name="kor_eng">한:영/한</string>
     <string name="site_priority">사이트 우선순위</string>
+    <string name="title_activity_priority">PriorityActivity</string>
 </resources>

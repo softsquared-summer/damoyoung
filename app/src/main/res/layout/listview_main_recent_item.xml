@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="40dp">
+
+    <TextView
+        android:id="@+id/tv_recent_search_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="임시내용"
+        android:layout_marginTop="11dp"
+        android:layout_marginBottom="10dp"
+        android:textSize="16sp"
+        android:textColor="@color/colorRecentListWord"
+        android:layout_marginStart="24dp"
+        android:layout_weight="1"/>
+
+
+</LinearLayout>
