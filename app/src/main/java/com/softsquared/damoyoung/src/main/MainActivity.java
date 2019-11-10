@@ -6,7 +6,10 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,8 +32,11 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.softsquared.damoyoung.R;
 import com.softsquared.damoyoung.src.BaseActivity;
+import com.softsquared.damoyoung.src.bookmark.BookmarkActivity;
 import com.softsquared.damoyoung.src.main.webView.WebViewFragment;
 import com.softsquared.damoyoung.src.main.interfaces.MainActivityView;
+import com.softsquared.damoyoung.src.quickBookmark.PopupBookmarkActivity;
+import com.softsquared.damoyoung.src.quickBookmark.PopupBookmarkListViewAdapter;
 import com.softsquared.damoyoung.src.setting.SettingActivity;
 
 import java.lang.reflect.Type;
@@ -63,6 +69,15 @@ public class MainActivity extends BaseActivity implements MainActivityView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        final int version = Build.VERSION.SDK_INT;
+        if (version >= 23) {
+            getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            // edited here
+            getWindow().setStatusBarColor(getColor(R.color.colorStatusBar));
+        } else {
+            getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            getWindow().setStatusBarColor(getResources().getColor(R.color.colorStatusBar));
+        }
         //dummy data
         mEnglishUrlList.add("https://www.google.com/search?q=");
         mEnglishUrlList.add("https://www.google.com.ua/search?safe=on&site=imghp&tbm=isch&q=");
@@ -158,7 +173,7 @@ public class MainActivity extends BaseActivity implements MainActivityView {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String keyword = mRecentItemList.get(i).getKeyword();
-                mKeyword=keyword;
+                mKeyword = keyword;
                 mEtSearch.setText(mKeyword);
                 addKeyword(mKeyword);// 최근 검색어 키워드 등록
                 replaceFragment(new WebViewFragment(mEnglishUrlList.get(0), mKeyword));
@@ -195,7 +210,13 @@ public class MainActivity extends BaseActivity implements MainActivityView {
                         isFirstSearch = false;
                     }
                     addKeyword(keyword);// 최근 검색어 키워드 등록
-                    replaceFragment(new WebViewFragment(mEnglishUrlList.get(0), keyword));
+                    new Handler().postDelayed(
+                            new Runnable() {
+                                @Override public void run() {
+                                    mMainTabLayout.getTabAt(0).select();
+                                }
+                            }, 100);
+//                    replaceFragment(new WebViewFragment(mEnglishUrlList.get(0), keyword));
                     refresh();
                     hideKeyboard();
                     return true;
@@ -224,6 +245,14 @@ public class MainActivity extends BaseActivity implements MainActivityView {
             case R.id.iv_main_setting:
                 //설정으로 이동
                 startActivity(new Intent(this, SettingActivity.class));
+                break;
+            case R.id.iv_main_favority:
+                //팝업 액티비티 실행
+                startActivity(new Intent(this, PopupBookmarkActivity.class));
+                break;
+            case R.id.iv_main_bookmark:
+                //팝업 액티비티 실행
+                startActivity(new Intent(this, BookmarkActivity.class));
                 break;
         }
     }
@@ -262,7 +291,7 @@ public class MainActivity extends BaseActivity implements MainActivityView {
         final int copy1 = 34276370;
         final int copy2 = 16908321;
 
-        if(menu.getItem(0).getItemId()==copy1){
+        if (menu.getItem(0).getItemId() == copy1) {
             menu.add("예문저장")
                     .setEnabled(true)
                     .setVisible(true)
@@ -270,12 +299,11 @@ public class MainActivity extends BaseActivity implements MainActivityView {
                         @Override
                         public boolean onMenuItemClick(MenuItem menuItem) {
                             mPrimaryClipFlag = true;// 클립보드 제어 플래그 초기화
-                                menu.performIdentifierAction(copy1, 0);// 복사 메뉴를 강제적으로 실행하게 했다.
+                            menu.performIdentifierAction(copy1, 0);// 복사 메뉴를 강제적으로 실행하게 했다.
                             return false;
                         }
                     });
-        }
-        else if(menu.getItem(1).getItemId()==copy2){
+        } else if (menu.getItem(1).getItemId() == copy2) {
             menu.add("예문저장")
                     .setEnabled(true)
                     .setVisible(true)
@@ -283,12 +311,11 @@ public class MainActivity extends BaseActivity implements MainActivityView {
                         @Override
                         public boolean onMenuItemClick(MenuItem menuItem) {
                             mPrimaryClipFlag = true;// 클립보드 제어 플래그 초기화
-                                menu.performIdentifierAction(copy2, 0);// 복사 메뉴를 강제적으로 실행하게 했다.
+                            menu.performIdentifierAction(copy2, 0);// 복사 메뉴를 강제적으로 실행하게 했다.
                             return false;
                         }
                     });
-        }
-        else{
+        } else {
 
         }
 
@@ -307,18 +334,18 @@ public class MainActivity extends BaseActivity implements MainActivityView {
 
         // 클립보드에 데이터가 없거나 텍스트 타입이 아닌 경우
         if (!(clipboard.hasPrimaryClip())) {
-            System.out.println(pasteData+"클립보드에 데이터 X");
+            System.out.println(pasteData + "클립보드에 데이터 X");
 //
 //        } else if (!(clipboard.getPrimaryClipDescription().hasMimeType(MIMETYPE_TEXT_PLAIN))) {
 //            System.out.println(pasteData+"클립보드에 텍스트 타입X");
 ////
-        } else{
+        } else {
             ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
             pasteData = item.getText().toString();
 
         }
 
-        System.out.println(pasteData+"저장된 예문");
+        System.out.println(pasteData + "저장된 예문");
 //        Toast.makeText(this, pasteData+"예문이 저장되었습니다.", Toast.LENGTH_SHORT).show();
         return false;
     }

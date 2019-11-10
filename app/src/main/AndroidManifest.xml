@@ -30,6 +30,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".src.setting.SettingActivity" />
+        <activity android:name=".src.quickBookmark.PopupBookmarkActivity"
+            android:theme="@style/CustomDialogTheme"
+            />
+        <activity android:name=".src.bookmark.BookmarkActivity"/>
+        <activity android:name=".src.wordbook.WordbookActivity"/>
     </application>
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 

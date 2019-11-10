@@ -6,4 +6,8 @@
     <string name="kor_eng">한:영/한</string>
     <string name="site_priority">사이트 우선순위</string>
     <string name="title_activity_priority">PriorityActivity</string>
+    <string name="newFolder">새 폴더</string>
+    <string name="edit">편집</string>
+    <string name="memorized">암기</string>
+    <string name="unmemorized">미암기</string>
 </resources>

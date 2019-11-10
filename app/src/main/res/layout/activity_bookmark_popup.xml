@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@drawable/custom_activity_popup_background"
+    android:windowSoftInputMode="adjustPan"
+    android:layout_width="288dp"
+    android:layout_height="272dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="12dp"
+        android:layout_height="wrap_content"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/colorBlack"
+            android:layout_centerHorizontal="true"
+            android:text="북마크"
+
+            />
+        <TextView
+            android:id="@+id/tv_popup_new_folder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/colorDamoyoungText"
+            android:layout_alignParentEnd="true"
+            android:onClick="onClick"
+            android:text="새 폴더"
+            />
+    </RelativeLayout>
+
+
+    <View
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/colorLine"/>
+    
+    <ListView
+        android:id="@+id/lv_popup_bookmark"
+        android:layout_width="match_parent"
+        android:layout_marginTop="8dp"
+        android:paddingLeft="16dp"
+        android:layout_height="0dp"
+        android:divider="@null"
+        android:layout_weight="1"/>
+    <View
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/colorLine"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_popup_ok"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="13dp"
+            android:layout_marginBottom="13dp"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/colorDamoyoungText"
+            android:text="확인"
+            android:onClick="onClick"
+            />
+    </RelativeLayout>
+
+</LinearLayout>
