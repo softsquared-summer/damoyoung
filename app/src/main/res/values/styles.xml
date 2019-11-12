@@ -12,6 +12,11 @@
 
     </style>
 
+    <style name="EditThemeBlue" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorAccent">@color/colorCursorBlue</item>
+        <item name="colorControlNormal">@color/colorCursorBlue</item>
+    </style>
+
     <style name="CustomDialogTheme" parent="Theme.AppCompat.Light.Dialog">
             <item name="android:windowBackground">@android:color/transparent</item>
             <item name="android:windowFrame">@null</item>

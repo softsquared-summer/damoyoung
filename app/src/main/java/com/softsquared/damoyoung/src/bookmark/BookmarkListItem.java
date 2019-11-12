@@ -6,10 +6,12 @@ public class BookmarkListItem {
 
     private String title;
     private Boolean isFirst;
+    private Boolean isEditMode;
 
     public BookmarkListItem(String title) {
         this.title = title;
         isFirst=false;
+        isEditMode=false;
     }
 
     public String getTitle() {
@@ -26,5 +28,13 @@ public class BookmarkListItem {
 
     public void setFirst(Boolean first) {
         isFirst = first;
+    }
+
+    public void setEditMode(Boolean editMode) {
+        isEditMode = editMode;
+    }
+
+    public Boolean getEditMode() {
+        return isEditMode;
     }
 }

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="288dp"
+    android:paddingTop="20dp"
+    android:background="@drawable/custom_activity_popup_background"
+    android:layout_height="144dp">
+
+    <TextView
+        android:layout_marginStart="24dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="새 폴더"
+        android:textColor="@color/colorBlack"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        />
+
+    <EditText
+        android:id="@+id/et_bookmark_dialog_new_folder_name"
+        android:layout_marginStart="20dp"
+        android:layout_width="212dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="텍스트입력"
+        android:textSize="16sp"
+        android:textColorHint="@color/colorTextHint"
+        android:textCursorDrawable="@drawable/custom_edittext_cursor_blue"
+        android:theme="@style/EditThemeBlue"
+        />
+
+    <TextView
+        android:id="@+id/tv_bookmark_dialog_new_folder_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="24dp"
+        android:text="추가"
+        android:textColor="@color/colorDamoyoungBlue"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+</LinearLayout>

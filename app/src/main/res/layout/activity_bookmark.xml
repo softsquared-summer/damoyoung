@@ -46,7 +46,7 @@
         android:layout_weight="1"/>
     <View
         android:layout_width="match_parent"
-        android:layout_height="3dp"
+        android:layout_height="5dp"
         android:background="@drawable/up_shadow" />
     <LinearLayout
         android:layout_width="match_parent"
@@ -54,28 +54,47 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/tv_bookmark_add_folder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="@string/newFolder"
             android:layout_marginStart="12dp"
             android:padding="6dp"
+            android:onClick="onClick"
             android:textColor="@color/colorDamoyoungText"
             android:textSize="16sp" />
         <View
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            />
 
         <TextView
+        android:id="@+id/tv_bookmark_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="12dp"
+        android:padding="8dp"
+        android:text="@string/edit"
+        android:onClick="onClick"
+        android:textColor="@color/colorDamoyoungText"
+        android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_bookmark_confirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="12dp"
             android:padding="8dp"
-            android:text="@string/edit"
+            android:text="@string/confirm"
+            android:onClick="onClick"
             android:textColor="@color/colorDamoyoungText"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:visibility="gone"
+            />
 
     </LinearLayout>
 

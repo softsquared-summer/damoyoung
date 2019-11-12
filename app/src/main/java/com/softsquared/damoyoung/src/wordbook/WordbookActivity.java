@@ -10,6 +10,7 @@ import android.widget.ExpandableListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.android.material.behavior.SwipeDismissBehavior;
 import com.softsquared.damoyoung.R;
 import com.softsquared.damoyoung.src.BaseActivity;
 

@@ -1,5 +1,6 @@
 package com.softsquared.damoyoung.src.bookmark;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.softsquared.damoyoung.R;
+import com.softsquared.damoyoung.src.bookmark.dialog.CustomDeleteDialog;
 
 import java.util.ArrayList;
 
@@ -16,11 +18,13 @@ public class BookmarkListViewAdapater extends BaseAdapter {
 
     private ArrayList<BookmarkListItem> mBookmarkListItems;
     private LayoutInflater mInflater;
+    private Activity mActivity;
 
     // ListViewAdapter의 생성자
-    public BookmarkListViewAdapater(ArrayList<BookmarkListItem> items, Context context) {
+    public BookmarkListViewAdapater(ArrayList<BookmarkListItem> items, Context context,Activity activity) {
         mBookmarkListItems = items;
         mInflater = LayoutInflater.from(context);
+        this.mActivity =activity;
     }
 
     //뷰홀더
@@ -42,13 +46,12 @@ public class BookmarkListViewAdapater extends BaseAdapter {
         final Context context = parent.getContext();
         final BookmarkListViewAdapater.ViewHolder holder;
 
-        //역순으로 보여주는 리스트뷰 출력만 역순으로 해준다
         BookmarkListItem bookmarkListitem = mBookmarkListItems.get(position);
         if (convertView == null) {
             holder = new BookmarkListViewAdapater.ViewHolder();
             convertView = mInflater.inflate(R.layout.listview_bookmark_item, parent, false);
             holder.tvFolderName = convertView.findViewById(R.id.tv_bookmark_folder_name);
-            holder.tvFolderEdit = convertView.findViewById(R.id.tv_bookmark_folder_edit);
+            holder.tvFolderEdit = convertView.findViewById(R.id.tv_bookmark_folder_delete);
             holder.ivFolderIcon = convertView.findViewById(R.id.iv_bookmark_folder_icon);
             convertView.setTag(holder);
         } else {
@@ -62,6 +65,27 @@ public class BookmarkListViewAdapater extends BaseAdapter {
             holder.ivFolderIcon.setImageResource(R.drawable.ic_folder_black);
         }else{
             holder.ivFolderIcon.setImageResource(R.drawable.ic_folder_white);
+            if (bookmarkListitem.getEditMode()){
+                holder.tvFolderEdit.setVisibility(View.VISIBLE);
+                holder.tvFolderEdit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        CustomDeleteDialog mCustomDeleteDialog = new CustomDeleteDialog(mActivity,pos);
+                        mCustomDeleteDialog.setDialogListener(new CustomDeleteDialog.CustomDeleteDialogListener(){
+                            @Override
+                            public void onPositiveClicked(int pos) {
+                                    mBookmarkListItems.remove(pos);
+                                    notifyDataSetChanged();
+                            }
+
+                        });
+
+                        mCustomDeleteDialog.show();
+                    }
+                });
+            }else{
+                holder.tvFolderEdit.setVisibility(View.GONE);
+            }
         }
 
 

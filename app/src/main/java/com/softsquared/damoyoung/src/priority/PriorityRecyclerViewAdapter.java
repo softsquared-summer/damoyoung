@@ -1,6 +1,9 @@
 package com.softsquared.damoyoung.src.priority;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -11,14 +14,16 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.softsquared.damoyoung.R;
+import com.softsquared.damoyoung.src.sitePriority.SitePriority;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class PriorityRecyclerViewAdapter extends RecyclerView.Adapter<PriorityRecyclerViewAdapter.MyViewHolder> implements ItemMoveCallback.ItemTouchHelperContract {
 
-    private ArrayList<String> data;
+    private ArrayList<SitePriority> mData;
     private StartDragListener mStartDragListener;
+    private Context mContext;
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView mTvTitle;
@@ -34,12 +39,13 @@ public class PriorityRecyclerViewAdapter extends RecyclerView.Adapter<PriorityRe
         }
     }
 
-    public PriorityRecyclerViewAdapter(ArrayList<String> data,StartDragListener startDragListener) {
+    public PriorityRecyclerViewAdapter(ArrayList<SitePriority> data,StartDragListener startDragListener,Context context) {
         mStartDragListener = startDragListener;
-        this.data = data;
+        this.mData = data;
+        this.mContext = context;
     }
-    public void changeData(ArrayList<String> data){
-        this.data = data;
+    public void changeData(ArrayList<SitePriority> data){
+        this.mData = data;
     }
 
     @Override
@@ -48,9 +54,10 @@ public class PriorityRecyclerViewAdapter extends RecyclerView.Adapter<PriorityRe
         return new MyViewHolder(itemView);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-        holder.mTvTitle.setText(data.get(position));
+        holder.mTvTitle.setText(mData.get(position).getTitle());
         holder.mIvDrawerMenu.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -66,7 +73,7 @@ public class PriorityRecyclerViewAdapter extends RecyclerView.Adapter<PriorityRe
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return mData.size();
     }
 
 
@@ -74,11 +81,11 @@ public class PriorityRecyclerViewAdapter extends RecyclerView.Adapter<PriorityRe
     public void onRowMoved(int fromPosition, int toPosition) {
         if (fromPosition < toPosition) {
             for (int i = fromPosition; i < toPosition; i++) {
-                Collections.swap(data, i, i + 1);
+                Collections.swap(mData, i, i + 1);
             }
         } else {
             for (int i = fromPosition; i > toPosition; i--) {
-                Collections.swap(data, i, i - 1);
+                Collections.swap(mData, i, i - 1);
             }
         }
         notifyItemMoved(fromPosition, toPosition);
@@ -86,8 +93,11 @@ public class PriorityRecyclerViewAdapter extends RecyclerView.Adapter<PriorityRe
 
     @Override
     public void onRowSelected(MyViewHolder myViewHolder) {
-        myViewHolder.rowView.setBackgroundColor(Color.GRAY);
-
+        if (Build.VERSION.SDK_INT >= 23) {
+            myViewHolder.rowView.setBackgroundColor(mContext.getColor(R.color.colorDamoyoungBlueLight));
+        } else {
+            myViewHolder.rowView.setBackgroundColor(mContext.getResources().getColor(R.color.colorDamoyoungBlueLight));
+        }
     }
 
     @Override

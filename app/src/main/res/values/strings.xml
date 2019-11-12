@@ -8,6 +8,7 @@
     <string name="title_activity_priority">PriorityActivity</string>
     <string name="newFolder">새 폴더</string>
     <string name="edit">편집</string>
+    <string name="confirm">완료</string>
     <string name="memorized">암기</string>
     <string name="unmemorized">미암기</string>
 </resources>

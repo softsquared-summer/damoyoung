@@ -6,7 +6,6 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,11 +20,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
@@ -34,84 +31,54 @@ import com.softsquared.damoyoung.R;
 import com.softsquared.damoyoung.src.BaseActivity;
 import com.softsquared.damoyoung.src.bookmark.BookmarkActivity;
 import com.softsquared.damoyoung.src.main.webView.WebViewFragment;
-import com.softsquared.damoyoung.src.main.interfaces.MainActivityView;
 import com.softsquared.damoyoung.src.quickBookmark.PopupBookmarkActivity;
-import com.softsquared.damoyoung.src.quickBookmark.PopupBookmarkListViewAdapter;
 import com.softsquared.damoyoung.src.setting.SettingActivity;
+import com.softsquared.damoyoung.src.sitePriority.SitePriority;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 import static com.softsquared.damoyoung.src.ApplicationClass.sSharedPreferences;
 
-public class MainActivity extends BaseActivity implements MainActivityView {
+public class MainActivity extends BaseActivity {
 
 
     private ClipboardManager clipBoard;
     private boolean mPrimaryClipFlag, isFirstSearch;
+
     private ArrayList<MainListViewItem> mRecentItemList = new ArrayList<>();
     private MainListViewAdapter mRecentLvAdapter;
     private ListView mLvRecentHistory;
     private Gson gson;
-    //    private ViewPager mMainViewPager;
     private TabLayout mMainTabLayout;
-    //    private MainViewPagerAdapter mMainVpAdapter;
     private EditText mEtSearch;
     private String mKeyword = "";
+    private String mSentence ="";
     private ImageView mIvSetting, mIvFavority, mIvBookmark;
-    private ArrayList<String> mEnglishUrlList = new ArrayList<>();
-    private ArrayList<String> mFragmentTitles = new ArrayList<>();
-    WebViewFragment mWebViewFragment;
+    private boolean mStringTypeIsKorean;
+    ArrayList<SitePriority> mEngSitePriorityList = new ArrayList<>();
+    ArrayList<SitePriority> mKorSitePriorityList = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final int version = Build.VERSION.SDK_INT;
-        if (version >= 23) {
-            getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-            // edited here
-            getWindow().setStatusBarColor(getColor(R.color.colorStatusBar));
-        } else {
-            getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-            getWindow().setStatusBarColor(getResources().getColor(R.color.colorStatusBar));
-        }
-        //dummy data
-        mEnglishUrlList.add("https://www.google.com/search?q=");
-        mEnglishUrlList.add("https://www.google.com.ua/search?safe=on&site=imghp&tbm=isch&q=");
-        mEnglishUrlList.add("https://dict.naver.com/enendict/#/search?query=");
-        mEnglishUrlList.add("https://alldic.daum.net/search.do?dic=ee&q=");
-        mEnglishUrlList.add("https://www.ldoceonline.com/dictionary/");
-        mEnglishUrlList.add("https://www.lexico.com/en/definition/");
-        mEnglishUrlList.add("https://www.urbandictionary.com/define.php?term=");
-        mEnglishUrlList.add("https://www.merriam-webster.com/dictionary/");
-        mEnglishUrlList.add("https://en.wikipedia.org/wiki/");
-        mEnglishUrlList.add("https://dictionary.cambridge.org/dictionary/english/ok?q=");
-        mEnglishUrlList.add("https://en.wiktionary.org/wiki/");
-        mEnglishUrlList.add("https://www.macmillandictionary.com/dictionary/british/");
-        mEnglishUrlList.add("https://www.dictionary.com/browse/");
-        mEnglishUrlList.add("https://www.thefreedictionary.com/");
-
-        mFragmentTitles.add("Google");
-        mFragmentTitles.add("Google Images");
-        mFragmentTitles.add("Naver");
-        mFragmentTitles.add("Daum");
-        mFragmentTitles.add("Longman");
-        mFragmentTitles.add("Oxford");
-        mFragmentTitles.add("Urban");
-        mFragmentTitles.add("Webster");
-        mFragmentTitles.add("Wikipedia");
-        mFragmentTitles.add("Cambridge");
-        mFragmentTitles.add("Wiktionary");
-        mFragmentTitles.add("Macmillan Dictionary");
-        mFragmentTitles.add("Dictionary");
-        mFragmentTitles.add("The Free Dictionary");
-
 
         mPrimaryClipFlag = true;
         isFirstSearch = true;
+        mStringTypeIsKorean = false;
+
+//        final int version = Build.VERSION.SDK_INT;
+//        if (version >= 23) {
+//            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//            // edited here
+//            getWindow().setStatusBarColor(getColor(R.color.colorStatusBar));
+//        } else {
+//            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//            getWindow().setStatusBarColor(getResources().getColor(R.color.colorStatusBar));
+//        }
 
         //최근 목록 불러오기
         gson = new Gson();
@@ -121,7 +88,6 @@ public class MainActivity extends BaseActivity implements MainActivityView {
         if (gson.fromJson(json, type) != null) {
             mRecentItemList = gson.fromJson(json, type);
         } else {
-            //mRecentItemList 값 초기화
         }
 
         //디바이스값 아이디
@@ -130,30 +96,31 @@ public class MainActivity extends BaseActivity implements MainActivityView {
 //       System.out.println(deviceId);
 
         mMainTabLayout = findViewById(R.id.tl_main);
-//        mMainViewPager = findViewById(R.id.vp_main);
         mEtSearch = findViewById(R.id.et_main_search);
         mLvRecentHistory = findViewById(R.id.lv_recent_history);
-
+        mIvFavority =findViewById(R.id.iv_main_favority);
 
         mRecentLvAdapter = new MainListViewAdapter(mRecentItemList, getApplicationContext());
-//        mMainVpAdapter = new MainViewPagerAdapter(getSupportFragmentManager());
         mLvRecentHistory.setAdapter(mRecentLvAdapter); //리스트뷰의 어댑터
 
 
-        //더미데이터 생성
-        for (int i = 0; i < mFragmentTitles.size(); i++) {
-            mMainTabLayout.addTab(mMainTabLayout.newTab().setText(mFragmentTitles.get(i)));
-        }
-//        replaceFragment(new WebViewFragment(mEnglishUrlList.get(0),mKeyword));
-
-        //default
-        replaceFragment(new WebViewFragment(mEnglishUrlList.get(0), "welcome"));
+//        //더미데이터 생성
+//        for (int i = 0; i < mEngSitePriorityList.size(); i++) {
+//            mMainTabLayout.addTab(mMainTabLayout.newTab().setText(mEngSitePriorityList.get(i).getTitle()));
+//        }
+//        //default
+//        replaceFragment(new WebViewFragment(mEngSitePriorityList.get(0).getUrl(), "welcome"));
 
         mMainTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int pos = tab.getPosition();
-                replaceFragment(new WebViewFragment(mEnglishUrlList.get(pos), mKeyword));
+                if(!mStringTypeIsKorean){
+                    replaceFragment(new WebViewFragment(mEngSitePriorityList.get(pos).getUrl(), mKeyword));
+                }
+                else{
+                    replaceFragment(new WebViewFragment(mKorSitePriorityList.get(pos).getUrl(), mKeyword));
+                }
             }
 
             @Override
@@ -176,7 +143,17 @@ public class MainActivity extends BaseActivity implements MainActivityView {
                 mKeyword = keyword;
                 mEtSearch.setText(mKeyword);
                 addKeyword(mKeyword);// 최근 검색어 키워드 등록
-                replaceFragment(new WebViewFragment(mEnglishUrlList.get(0), mKeyword));
+                if(stringType(mKeyword)){
+                    clearTab();
+                    addTab(mKorSitePriorityList);
+                    replaceFragment(new WebViewFragment(mKorSitePriorityList.get(0).getUrl(), mKeyword));
+                }
+                else{
+                    clearTab();
+                    addTab(mEngSitePriorityList);
+                    replaceFragment(new WebViewFragment(mEngSitePriorityList.get(0).getUrl(), mKeyword));
+
+                }
                 hideHistory();
                 refresh();
 
@@ -207,16 +184,26 @@ public class MainActivity extends BaseActivity implements MainActivityView {
                     mKeyword = keyword;
                     if (isFirstSearch) {
                         hideHistory();
-                        isFirstSearch = false;
+
                     }
-                    addKeyword(keyword);// 최근 검색어 키워드 등록
+                    addKeyword(mKeyword);// 최근 검색어 키워드 등록
+                    //검색어가 영어 일경우와 한국어일 경우 보여주는 사이트가 다름
+                    //탭 레이아웃을 재 갱신해주는 부분
+                    if(stringType(mKeyword)){
+                        clearTab();
+                        addTab(mKorSitePriorityList);
+                    }
+                    else{
+                        clearTab();
+                        addTab(mEngSitePriorityList);
+                    }
                     new Handler().postDelayed(
                             new Runnable() {
-                                @Override public void run() {
+                                @Override
+                                public void run() {
                                     mMainTabLayout.getTabAt(0).select();
                                 }
                             }, 100);
-//                    replaceFragment(new WebViewFragment(mEnglishUrlList.get(0), keyword));
                     refresh();
                     hideKeyboard();
                     return true;
@@ -228,6 +215,58 @@ public class MainActivity extends BaseActivity implements MainActivityView {
 
         showHistory();
         refresh();//어댑터 갱신
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        String engJson = sSharedPreferences.getString("siteEngList", "");
+        String korJson = sSharedPreferences.getString("siteKorList", "");
+        Type siteType = new TypeToken<ArrayList<SitePriority>>() {
+        }.getType();
+        if (gson.fromJson(engJson, siteType) != null) {
+            mEngSitePriorityList = gson.fromJson(engJson, siteType);
+        } else {
+            mEngSitePriorityList.add(new SitePriority("Google", "https://www.google.com/search?q="));
+            mEngSitePriorityList.add(new SitePriority("Naver", "https://dict.naver.com/enendict/#/search?query="));
+            mEngSitePriorityList.add(new SitePriority("Daum", "https://alldic.daum.net/search.do?dic=ee&q="));
+            mEngSitePriorityList.add(new SitePriority("Longman", "https://www.ldoceonline.com/dictionary/"));
+            mEngSitePriorityList.add(new SitePriority("Oxford", "https://www.lexico.com/en/definition/"));
+            mEngSitePriorityList.add(new SitePriority("Urban", "https://www.urbandictionary.com/define.php?term="));
+            mEngSitePriorityList.add(new SitePriority("Webster", "https://www.merriam-webster.com/dictionary/"));
+            mEngSitePriorityList.add(new SitePriority("Wikipedia", "https://en.wikipedia.org/wiki/"));
+            mEngSitePriorityList.add(new SitePriority("Cambridge", "https://dictionary.cambridge.org/dictionary/english/ok?q="));
+            mEngSitePriorityList.add(new SitePriority("Wiktionary", "https://en.wiktionary.org/wiki/"));
+            mEngSitePriorityList.add(new SitePriority("Macmillan Dictionary", "https://www.macmillandictionary.com/dictionary/british/"));
+            mEngSitePriorityList.add(new SitePriority("NetLingo", "https://www.dictionary.com/browse/"));
+            mEngSitePriorityList.add(new SitePriority("The Free Dictionary", "https://www.thefreedictionary.com/"));
+
+        }
+        if (gson.fromJson(korJson, siteType) != null) {
+            mKorSitePriorityList = gson.fromJson(korJson, siteType);
+        } else {
+            mKorSitePriorityList.add(new SitePriority("네이버", "https://endic.naver.com/search.nhn?sLn=kr&searchOption=all&query="));
+            mKorSitePriorityList.add(new SitePriority("다음", "https://dic.daum.net/search.do?dic=eng&q="));
+            mKorSitePriorityList.add(new SitePriority("구글", "https://www.google.com/search?q="));
+        }
+
+        if(mStringTypeIsKorean){
+            clearTab();
+            addTab(mKorSitePriorityList);
+        }
+        else{
+            clearTab();
+            addTab(mEngSitePriorityList);
+        }
+        new Handler().postDelayed(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        mMainTabLayout.getTabAt(0).select();
+                    }
+                }, 100);
+
     }
 
     private void replaceFragment(WebViewFragment fragment) {
@@ -248,7 +287,11 @@ public class MainActivity extends BaseActivity implements MainActivityView {
                 break;
             case R.id.iv_main_favority:
                 //팝업 액티비티 실행
-                startActivity(new Intent(this, PopupBookmarkActivity.class));
+                if (isFirstSearch){
+
+                }else{
+                    startActivity(new Intent(this, PopupBookmarkActivity.class));
+                }
                 break;
             case R.id.iv_main_bookmark:
                 //팝업 액티비티 실행
@@ -256,6 +299,7 @@ public class MainActivity extends BaseActivity implements MainActivityView {
                 break;
         }
     }
+
 
 
     //이전에 검색한 적 있으면 지우고 최상단으로 올림
@@ -284,6 +328,7 @@ public class MainActivity extends BaseActivity implements MainActivityView {
         editor.putString("recentList", json);
         editor.commit();
     }
+
 
     @Override
     public void onActionModeStarted(final android.view.ActionMode mode) {
@@ -350,14 +395,29 @@ public class MainActivity extends BaseActivity implements MainActivityView {
         return false;
     }
 
-    @Override
-    public void validateSuccess(String text) {
-
+    public void clearTab(){
+        mMainTabLayout.removeAllTabs();
     }
 
-    @Override
-    public void validateFailure(String message) {
+    public void addTab(ArrayList<SitePriority> data){
+        for (int i = 0; i < data.size(); i++) {
+            mMainTabLayout.addTab(mMainTabLayout.newTab().setText(data.get(i).getTitle()));
+        }
+    }
+    public boolean stringType(String str) {
 
+        int index = str.charAt(0);
+        boolean isKoreaLanguage;
+        if (index >= 48 && index <= 57) {
+            isKoreaLanguage = false;
+        } else if (index >= 65 && index <= 122) {
+            isKoreaLanguage = false;
+        } else {
+            isKoreaLanguage = true;
+        }
+
+        mStringTypeIsKorean =isKoreaLanguage;
+        return mStringTypeIsKorean;
     }
 
     public void hideKeyboard() {
@@ -372,6 +432,7 @@ public class MainActivity extends BaseActivity implements MainActivityView {
 
     public void hideHistory() {
         mLvRecentHistory.setVisibility(View.GONE);
+        isFirstSearch = false;
     }
 
     public void showHistory() {

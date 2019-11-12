@@ -6,11 +6,13 @@
     <color name="colorDamoyoungBlue">#339df7</color>
     <color name="colorDamoyoungWhite">#ffffff</color>
     <color name="colorStatusBar">#eaeff2</color>
-    <color name="colorCursor">#262626</color>
+    <color name="colorCursorDark">#262626</color>
+    <color name="colorCursorBlue">#35a2fe</color>
     <color name="colorUnselected">#b3000000</color>
     <color name="colorSelected">#35a2fe</color>
     <color name="colorDamoyoungText">#35a2fe</color>
     <color name="colorUnableFolder">#7f7f7f</color>
+    <color name="colorTextHint">#7f7f7f</color>
     <color name="colorLine">#adb5bd</color>
     <color name="colorBlack">#000000</color>
     <color name="colorHint">#99000000</color>
