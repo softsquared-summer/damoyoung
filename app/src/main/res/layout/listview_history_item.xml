@@ -1,28 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="44dp"
+    android:orientation="horizontal"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
     android:background="@color/colorDamoyoungWhite">
 
     <TextView
-        android:id="@+id/tv_wordbook_child_sentence"
+        android:id="@+id/tv_history_word"
         android:layout_width="0dp"
         android:layout_weight="1"
-        android:layout_height="wrap_content"
-       android:textSize="12sp"
+        android:layout_height="24dp"
+       android:textSize="16sp"
+        android:textStyle="bold"
         android:textColor="@color/colorBlack"
-        android:text="hi i am ~~~~~~~~~aasdasdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa~"
-        android:paddingStart="36dp"
-        android:layout_marginTop="5dp"
+        android:text="hi"
+        android:paddingStart="24dp"
         />
     <CheckBox
-        android:id="@+id/cb_wordbook_child"
+        android:id="@+id/cb_history"
         android:layout_gravity="center_vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:background="@drawable/custom_small_check_box"
         android:button="@null"
-        android:visibility="invisible"
         />
 </LinearLayout>

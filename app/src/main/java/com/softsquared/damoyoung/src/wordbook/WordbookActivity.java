@@ -26,6 +26,7 @@ public class WordbookActivity extends BaseActivity {
     private ArrayList<String> mSentenceList1 = new ArrayList<>(); // ExpandableListView의 Child 항목이 될 List를 각각 선언
     private ArrayList<String> mSentenceList2 = new ArrayList<>(); // ExpandableListView의 Child 항목이 될 List를 각각 선언
     private ArrayList<String> mSentenceList3 = new ArrayList<>(); // ExpandableListView의 Child 항목이 될 List를 각각 선언
+    private ArrayList<String> mSentenceList4 = new ArrayList<>(); // ExpandableListView의 Child 항목이 될 List를 각각 선언
     private HashMap<String, ArrayList<String>> mChildList = new HashMap<>(); // 위 ParentList와 ChildList를 연결할 HashMap 변수 선언
 
     private TextView mTvwordbookTitle;
@@ -67,6 +68,8 @@ public class WordbookActivity extends BaseActivity {
             mWordList.add("Hello");
             mWordList.add("Indicator");
             mWordList.add("School");
+            mWordList.add("Chal");
+            mWordList.add("asdasd");
             mSentenceList1.add("Hello this is brand new SanE hoooooooooooowwwwwwwww");
         mSentenceList1.add("Hello this is brand new SanE hoooooooooooowwwwwwwww");
         mSentenceList2.add("Hello this is brand new SanE hoooooooooooowwwwwwwww");
@@ -117,6 +120,8 @@ public class WordbookActivity extends BaseActivity {
         mChildList.put(mWordList.get(0), mSentenceList1);//0번째 인자에 항상 새로운 값이 들어오기 때문이다.
         mChildList.put(mWordList.get(1), mSentenceList2);//0번째 인자에 항상 새로운 값이 들어오기 때문이다.
         mChildList.put(mWordList.get(2), mSentenceList3);//0번째 인자에 항상 새로운 값이 들어오기 때문이다.
+        mChildList.put(mWordList.get(3), mSentenceList4);//0번째 인자에 항상 새로운 값이 들어오기 때문이다.
+        mChildList.put(mWordList.get(4), mSentenceList4);//0번째 인자에 항상 새로운 값이 들어오기 때문이다.
 
 
         mWordbookExListViewAdapter = new WordbookExListViewAdapter(this, mWordList, mChildList);

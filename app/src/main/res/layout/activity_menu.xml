@@ -28,6 +28,7 @@
             android:layout_marginTop="8dp"
             android:background="@color/colorDamoyoungWhite"
             android:text="메뉴"
+            android:textStyle="bold"
             android:textColor="@color/colorBlack"
             android:textSize="18sp" />
 

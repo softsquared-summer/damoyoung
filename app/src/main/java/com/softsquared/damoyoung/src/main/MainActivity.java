@@ -6,7 +6,6 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
@@ -46,7 +45,7 @@ public class MainActivity extends BaseActivity {
     private ClipboardManager clipBoard;
     private boolean mPrimaryClipFlag, isFirstSearch;
 
-    private ArrayList<MainListViewItem> mRecentItemList = new ArrayList<>();
+    private ArrayList<HistoryListViewItem> mRecentItemList = new ArrayList<>();
     private MainListViewAdapter mRecentLvAdapter;
     private ListView mLvRecentHistory;
     private Gson gson;
@@ -83,7 +82,7 @@ public class MainActivity extends BaseActivity {
         //최근 목록 불러오기
         gson = new Gson();
         String json = sSharedPreferences.getString("recentList", "");
-        Type type = new TypeToken<ArrayList<MainListViewItem>>() {
+        Type type = new TypeToken<ArrayList<HistoryListViewItem>>() {
         }.getType();
         if (gson.fromJson(json, type) != null) {
             mRecentItemList = gson.fromJson(json, type);
@@ -305,7 +304,7 @@ public class MainActivity extends BaseActivity {
     //이전에 검색한 적 있으면 지우고 최상단으로 올림
     public void addKeyword(String keyword) {
         removeKeyword(keyword);
-        mRecentItemList.add(0, new MainListViewItem(keyword));
+        mRecentItemList.add(0, new HistoryListViewItem(keyword));
         mRecentLvAdapter.notifyDataSetChanged();
     }
 

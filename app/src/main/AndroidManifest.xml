@@ -35,6 +35,8 @@
             />
         <activity android:name=".src.bookmark.BookmarkActivity"/>
         <activity android:name=".src.wordbook.WordbookActivity"/>
+        <activity android:name=".src.splash.SplashActivity"/>
+        <activity android:name=".src.history.HistoryActivity"/>
     </application>
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 

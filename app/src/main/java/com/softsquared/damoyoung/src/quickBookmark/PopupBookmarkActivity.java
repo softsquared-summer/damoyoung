@@ -4,18 +4,13 @@ import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.widget.ListView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
 import com.softsquared.damoyoung.R;
-import com.softsquared.damoyoung.src.BaseActivity;
-import com.softsquared.damoyoung.src.main.MainListViewAdapter;
-import com.softsquared.damoyoung.src.main.MainListViewItem;
 
 import java.util.ArrayList;
 

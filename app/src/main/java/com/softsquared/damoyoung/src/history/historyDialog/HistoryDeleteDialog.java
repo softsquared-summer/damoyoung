@@ -1,4 +1,4 @@
-package com.softsquared.damoyoung.src.bookmark.dialog;
+package com.softsquared.damoyoung.src.history.historyDialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -11,11 +11,11 @@ import androidx.annotation.NonNull;
 
 import com.softsquared.damoyoung.R;
 
-public class CustomDeleteDialog extends Dialog {
+public class HistoryDeleteDialog extends Dialog {
 
-    private TextView mTvDelete,mTvCancel;
+    private TextView mTvDelete,mTvCancel,mTvContent;
     private Context mContext;
-    private CustomDeleteDialogListener mCustomDeleteDialogListener;
+    private DeleteDialogListener mDeleteDialogListener;
     private int position;
 
 
@@ -29,44 +29,46 @@ public class CustomDeleteDialog extends Dialog {
         layoutParams.dimAmount = 0.8f;
         getWindow().setAttributes(layoutParams);
 
-        setContentView(R.layout.custom_dialog_bookmark_delete);
+        setContentView(R.layout.custom_dialog_history_delete);
 
+        //todo history 다이얼로그 셋팅하기
         //셋팅
-        mTvDelete = findViewById(R.id.tv_bookmark_dialog_delete);
-        mTvCancel = findViewById(R.id.tv_bookmark_dialog_delete_cancel);
+        mTvContent = findViewById(R.id.tv_history_dialog_delete_content);
+        mTvDelete = findViewById(R.id.tv_history_dialog_delete);
+        mTvCancel = findViewById(R.id.tv_history_dialog_delete_cancel);
         //클릭 리스너 셋팅 (클릭버튼이 동작하도록 만들어줌.)
 
         mTvDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    mCustomDeleteDialogListener.onPositiveClicked(position);
-                    dismiss();
-
+                mDeleteDialogListener.onPositiveClicked();
+                dismiss();
             }
         });
         mTvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mDeleteDialogListener.onNegativeClicked();
                 dismiss();
             }
         });
     }
 
     //생성자 생성
-    public CustomDeleteDialog(@NonNull Context context,int pos){
+    public HistoryDeleteDialog(@NonNull Context context){
     super(context);
         mContext=context;
-        position= pos;
     }
 
 
     //dialog listener
-    public void setDialogListener(CustomDeleteDialogListener customDeleteDialogListener) {
-        this.mCustomDeleteDialogListener = customDeleteDialogListener;
+    public void setDialogListener(DeleteDialogListener deleteDialogListener) {
+        this.mDeleteDialogListener = deleteDialogListener;
     }
 
-    public interface CustomDeleteDialogListener {
-        void onPositiveClicked(int pos);
+    public interface DeleteDialogListener {
+        void onPositiveClicked();
+        void onNegativeClicked();
     }
 
 

@@ -11,8 +11,8 @@ import androidx.annotation.Nullable;
 
 import com.softsquared.damoyoung.R;
 import com.softsquared.damoyoung.src.BaseActivity;
-import com.softsquared.damoyoung.src.bookmark.dialog.CustomNewfolderDialog;
-import com.softsquared.damoyoung.src.main.MainListViewAdapter;
+import com.softsquared.damoyoung.src.bookmark.bookmarkDialog.BookmarkNewfolderDialog;
+import com.softsquared.damoyoung.src.history.HistoryActivity;
 import com.softsquared.damoyoung.src.wordbook.WordbookActivity;
 
 import java.util.ArrayList;
@@ -21,7 +21,6 @@ public class BookmarkActivity extends BaseActivity {
     private ArrayList<BookmarkListItem> mBookmarkListItems = new ArrayList<>();
     private BookmarkListViewAdapater mBookmarkListViewAdapater;
     private ListView mLvBookmark;
-    private CustomNewfolderDialog mCustomNewFolderDialog;
     private TextView mTvEdit,mTvConfirm;
 
     @Override
@@ -46,7 +45,12 @@ public class BookmarkActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                startActivity(new Intent(BookmarkActivity.this, WordbookActivity.class));
+                if (i==0){
+                    startActivity(new Intent(BookmarkActivity.this, HistoryActivity.class));
+                }else{
+                    startActivity(new Intent(BookmarkActivity.this, WordbookActivity.class));
+
+                }
             }
         });
     }
@@ -59,8 +63,8 @@ public class BookmarkActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_bookmark_add_folder:
-                CustomNewfolderDialog mCustomNewFolderDialog = new CustomNewfolderDialog(this);
-                mCustomNewFolderDialog.setDialogListener(new CustomNewfolderDialog.CustomNewFolderDialogListener() {
+                BookmarkNewfolderDialog mBookmarkNewFolderDialog = new BookmarkNewfolderDialog(this);
+                mBookmarkNewFolderDialog.setDialogListener(new BookmarkNewfolderDialog.BookmarkNewFolderDialogListener() {
                     @Override
                     public void onPositiveClicked(String name) {
 
@@ -71,7 +75,7 @@ public class BookmarkActivity extends BaseActivity {
                     }
                 });
 
-                mCustomNewFolderDialog.show();
+                mBookmarkNewFolderDialog.show();
                 break;
             case R.id.tv_bookmark_edit :
                 for(int i=0;i<mBookmarkListItems.size();i++){

@@ -29,6 +29,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="8dp"
             android:text="나의 리스트"
+            android:textStyle="bold"
             android:textColor="@color/colorBlack"
             android:layout_marginBottom="14dp"
             android:textSize="18sp" />

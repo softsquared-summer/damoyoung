@@ -1,4 +1,4 @@
-package com.softsquared.damoyoung.src.bookmark.dialog;
+package com.softsquared.damoyoung.src.bookmark.bookmarkDialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -13,12 +13,12 @@ import androidx.annotation.NonNull;
 
 import com.softsquared.damoyoung.R;
 
-public class CustomNewfolderDialog extends Dialog {
+public class BookmarkNewfolderDialog extends Dialog {
 
     private TextView mTvNewFolderAdd;
     private EditText mEtNewFolderName;
     private Context mContext;
-    private CustomNewFolderDialogListener mCustomNewFolderDialogListener;
+    private BookmarkNewFolderDialogListener mBookmarkNewFolderDialogListener;
 
 
     @Override
@@ -43,7 +43,7 @@ public class CustomNewfolderDialog extends Dialog {
             public void onClick(View view) {
                 String name = mEtNewFolderName.getText().toString();
                 if(name.length()!=0){
-                    mCustomNewFolderDialogListener.onPositiveClicked(name);
+                    mBookmarkNewFolderDialogListener.onPositiveClicked(name);
                     dismiss();
                 }
                 else{
@@ -54,18 +54,18 @@ public class CustomNewfolderDialog extends Dialog {
     }
 
     //생성자 생성
-    public CustomNewfolderDialog(@NonNull Context context){
+    public BookmarkNewfolderDialog(@NonNull Context context){
     super(context);
         mContext=context;
     }
 
 
     //dialog listener
-    public void setDialogListener(CustomNewFolderDialogListener customNewFolderDialogListener) {
-        this.mCustomNewFolderDialogListener = customNewFolderDialogListener;
+    public void setDialogListener(BookmarkNewFolderDialogListener bookmarkNewFolderDialogListener) {
+        this.mBookmarkNewFolderDialogListener = bookmarkNewFolderDialogListener;
     }
 
-    public interface CustomNewFolderDialogListener {
+    public interface BookmarkNewFolderDialogListener {
         void onPositiveClicked(String name);
     }
 

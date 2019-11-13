@@ -11,4 +11,9 @@
     <string name="confirm">완료</string>
     <string name="memorized">암기</string>
     <string name="unmemorized">미암기</string>
+    <string name="history">기록</string>
+    <string name="delete">삭제</string>
+    <string name="allSelect">전체선택</string>
+    <string name="folderDelete">폴더 삭제</string>
+    <string name="wordDelete">단어 삭제</string>
 </resources>

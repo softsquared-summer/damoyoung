@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.softsquared.damoyoung.R;
-import com.softsquared.damoyoung.src.bookmark.dialog.CustomDeleteDialog;
+import com.softsquared.damoyoung.src.bookmark.bookmarkDialog.BookmarkDeleteDialog;
 
 import java.util.ArrayList;
 
@@ -70,8 +70,8 @@ public class BookmarkListViewAdapater extends BaseAdapter {
                 holder.tvFolderEdit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        CustomDeleteDialog mCustomDeleteDialog = new CustomDeleteDialog(mActivity,pos);
-                        mCustomDeleteDialog.setDialogListener(new CustomDeleteDialog.CustomDeleteDialogListener(){
+                        BookmarkDeleteDialog mCustomDeleteDialog = new BookmarkDeleteDialog(mActivity,pos);
+                        mCustomDeleteDialog.setDialogListener(new BookmarkDeleteDialog.BookmarkDeleteDialogListener(){
                             @Override
                             public void onPositiveClicked(int pos) {
                                     mBookmarkListItems.remove(pos);

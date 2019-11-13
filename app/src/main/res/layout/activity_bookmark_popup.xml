@@ -21,6 +21,7 @@
             android:textColor="@color/colorBlack"
             android:layout_centerHorizontal="true"
             android:text="북마크"
+            android:textStyle="bold"
 
             />
         <TextView
@@ -32,6 +33,7 @@
             android:layout_alignParentEnd="true"
             android:onClick="onClick"
             android:text="새 폴더"
+            android:textStyle="bold"
             />
     </RelativeLayout>
 
@@ -72,6 +74,7 @@
             android:textSize="16sp"
             android:textColor="@color/colorDamoyoungText"
             android:text="확인"
+            android:textStyle="bold"
             android:onClick="onClick"
             />
     </RelativeLayout>

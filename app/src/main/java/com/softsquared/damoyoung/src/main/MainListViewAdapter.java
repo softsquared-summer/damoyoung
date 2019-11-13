@@ -13,10 +13,10 @@ import java.util.ArrayList;
 
 public class MainListViewAdapter extends BaseAdapter {
 
-    private ArrayList<MainListViewItem> mRecentItemList;
+    private ArrayList<HistoryListViewItem> mRecentItemList;
     LayoutInflater mInflater;
     // ListViewAdapter의 생성자
-    public MainListViewAdapter(ArrayList<MainListViewItem> items, Context context) {
+    public MainListViewAdapter(ArrayList<HistoryListViewItem> items, Context context) {
         mRecentItemList =items;
         mInflater=LayoutInflater.from(context);
     }
@@ -38,7 +38,7 @@ public class MainListViewAdapter extends BaseAdapter {
         final ViewHolder holder;
 
         //역순으로 보여주는 리스트뷰 출력만 역순으로 해준다
-        MainListViewItem recentlistViewItem = mRecentItemList.get(position);
+        HistoryListViewItem recentlistViewItem = mRecentItemList.get(position);
         if (convertView == null) {
             holder = new ViewHolder();
             convertView = mInflater.inflate(R.layout.listview_main_recent_item, parent, false);
