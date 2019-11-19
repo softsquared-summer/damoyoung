@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.softsquared.damoyoung.R;
+import com.softsquared.damoyoung.src.bookmark.BookmarkService;
+import com.softsquared.damoyoung.src.bookmark.interfaces.BookmarkActivityView;
 
 public class BookmarkDeleteDialog extends Dialog {
 
@@ -51,7 +53,10 @@ public class BookmarkDeleteDialog extends Dialog {
             }
         });
     }
-
+//    public void deleteBookmark() {
+//        final BookmarkService bookmarkService = new BookmarkService((BookmarkActivityView) this);
+//        bookmarkService.deleteBookmark();
+//    }
     //생성자 생성
     public BookmarkDeleteDialog(@NonNull Context context, int pos){
     super(context);
@@ -67,6 +72,7 @@ public class BookmarkDeleteDialog extends Dialog {
 
     public interface BookmarkDeleteDialogListener {
         void onPositiveClicked(int pos);
+
     }
 
 

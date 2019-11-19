@@ -59,8 +59,6 @@ public class HistoryListViewAdapter extends BaseAdapter {
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
 
         // 아이템 내 각 위젯에 데이터 반영 데이터 파싱
-        System.out.println(historyItem.isSelected());
-        System.out.println(historyItem.getKeyword());
         holder.titleTextView.setText(historyItem.getKeyword());
 
         if (historyItem.getChkShow()){

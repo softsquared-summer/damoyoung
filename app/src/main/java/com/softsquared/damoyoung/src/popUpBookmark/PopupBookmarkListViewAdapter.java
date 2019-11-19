@@ -1,4 +1,4 @@
-package com.softsquared.damoyoung.src.quickBookmark;
+package com.softsquared.damoyoung.src.popUpBookmark;
 
 import android.content.Context;
 import android.os.Build;
@@ -6,7 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.TextView;
 
 import com.softsquared.damoyoung.R;
 
@@ -27,7 +29,8 @@ public class PopupBookmarkListViewAdapter extends BaseAdapter {
 
     //뷰홀더
     public class ViewHolder {
-        EditText titleTextView;
+        TextView titleTextView;
+        CheckBox chkBookmark;
     }
 
     // Adapter에 사용되는 데이터의 개수를 리턴. : 필수 구현
@@ -44,11 +47,12 @@ public class PopupBookmarkListViewAdapter extends BaseAdapter {
         final ViewHolder holder;
 
         //역순으로 보여주는 리스트뷰 출력만 역순으로 해준다
-        PopupBookmarkListViewItem popupBookmarkListViewItem = mLvBookmarkItems.get(position);
+        final PopupBookmarkListViewItem popupBookmarkListViewItem = mLvBookmarkItems.get(position);
         if (convertView == null) {
             holder = new ViewHolder();
             convertView = mInflater.inflate(R.layout.listview_popup_bookmark_item, parent, false);
-            holder.titleTextView = convertView.findViewById(R.id.et_popup_bookmark_folder_name);
+            holder.titleTextView = convertView.findViewById(R.id.tv_popup_bookmark_folder_name);
+            holder.chkBookmark = convertView.findViewById(R.id.chk_popup_bookmark_folder);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -60,37 +64,39 @@ public class PopupBookmarkListViewAdapter extends BaseAdapter {
 
         // 아이템 내 각 위젯에 데이터 반영 데이터 파싱
 
-        if (popupBookmarkListViewItem.isNew()) {
-            holder.titleTextView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            holder.titleTextView.setText(popupBookmarkListViewItem.getKeyword());
+            holder.titleTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    if(!hasFocus) {
-                        int pos = getCount()-1;
-                        final EditText wordEdit = (EditText) v;
-                        mLvBookmarkItems.get(pos).setKeyword(wordEdit.getText().toString());
-                        notifyDataSetChanged();
-                    }
+                public void onClick(View view) {
+                    holder.chkBookmark.setChecked(!popupBookmarkListViewItem.isSelected());
                 }
             });
+            holder.chkBookmark.setOnCheckedChangeListener(null);
+            holder.chkBookmark.setChecked(popupBookmarkListViewItem.isSelected());
+            holder.chkBookmark.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    //set your object's last status
+
+                            popupBookmarkListViewItem.setChecked(isChecked);
 
 
+                    }
 
-        } else {
-            holder.titleTextView.setText(popupBookmarkListViewItem.getKeyword());
-            holder.titleTextView.setEnabled(false);
-            holder.titleTextView.setBackground(null);
-        }
-        final int version = Build.VERSION.SDK_INT;
-        if (version >= 23) {
-            holder.titleTextView.setTextColor(mContext.getColor(R.color.colorBlack));
-        } else {
-            holder.titleTextView.setTextColor(mContext.getResources().getColor(R.color.colorBlack));
-        }
+//                    if(mCheckListener!=null){
+//                        mCheckListener.OnCheckClick();
+//                    }
+
+            });
+
 
 
         return convertView;
     }
 
+    public ArrayList<PopupBookmarkListViewItem> getMainItem(){
+        return mLvBookmarkItems;
+    }
     // 지정한 위치(position)에 있는 데이터와 관계된 아이템(row)의 ID를 리턴. : 필수 구현
     @Override
     public long getItemId(int position) {

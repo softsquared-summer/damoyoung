@@ -1,18 +1,21 @@
 package com.softsquared.damoyoung.src.wordbook;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.softsquared.damoyoung.R;
+import com.softsquared.damoyoung.src.wordbook.itemClass.Word;
+import com.softsquared.damoyoung.src.wordbook.wordbookDialog.SentenceDeleteDialog;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -20,22 +23,27 @@ import java.util.HashMap;
 public class WordbookExListViewAdapter extends BaseExpandableListAdapter {
 
     private Context mContext;
-    private ArrayList<String> mParentList; //제목이니까 String으로 받아도 된다.
-    private ArrayList<String> mChildList;
-    private MyPageChildListViewHolder mWordbookChildListViewHolder;
-    private HashMap<String, ArrayList<String>> mChildHashMap;
+    private ArrayList<Word> mParentList; //제목이니까 String으로 받아도 된다.
+    private ArrayList<WordbookExListItem> mChildList;
+    private WordbookChildListViewHolder mWordbookChildListViewHolder;
+    private HashMap<Word, ArrayList<WordbookExListItem>> mChildHashMap;
+    private Activity mActivity;
+
     // CustomExpandableListViewAdapter 생성자
-    public WordbookExListViewAdapter(Context context, ArrayList<String> parentList, HashMap<String, ArrayList<String>> childHashMap){
+    public WordbookExListViewAdapter(Activity activity, Context context, ArrayList<Word> parentList, HashMap<Word, ArrayList<WordbookExListItem>> childHashMap) {
         this.mContext = context;
         this.mParentList = parentList;
         this.mChildHashMap = childHashMap;
+        this.mActivity = activity;
     }
 
-
+    public ArrayList<Word> getParent(){
+        return mParentList;
+    }
 
     /* ParentListView에 대한 method */
     @Override
-    public String getGroup(int groupPosition) { // ParentList의 position을 받아 해당 TextView에 반영될 String을 반환
+    public Word getGroup(int groupPosition) { // ParentList의 position을 받아 해당 TextView에 반영될 String을 반환
         return mParentList.get(groupPosition);
     }
 
@@ -52,84 +60,168 @@ public class WordbookExListViewAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         // ParentList의 View
-        if(convertView == null){
+//        final WordbookParentListViewHolder mWordbookParentListViewHolder;
+        final Word parentData = getGroup(groupPosition);
+        if (convertView == null) {
             LayoutInflater groupInfla = (LayoutInflater) this.mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            // ParentList의 layout 연결. root로 argument 중 parent를 받으며 root로 고정하지는 않음
             convertView = groupInfla.inflate(R.layout.exlv_wordbook_parent, parent, false);
-        }
-
-        // ParentList의 Layout 연결 후, 해당 layout 내 TextView를 연결
-        TextView parentText = convertView.findViewById(R.id.tv_wordbook_parent_title);
-        ImageView ivIndicator = convertView.findViewById(R.id.iv_wordbook_parent_indicator);
-
-        parentText.setText(getGroup(groupPosition));
-        if(isExpanded){
-            ivIndicator.setImageResource(R.drawable.ic_arrow_down);
-        } else {
-            ivIndicator.setImageResource(R.drawable.ic_arrow_up);
-        }
-
-        return convertView;
-    }
-
-    /* 여기서부터 ChildListView에 대한 method */
-    @Override
-    public String getChild(int groupPosition, int childPosition) {
-        // groupPostion과 childPosition을 통해 childList의 원소를 얻어옴
-        return this.mChildHashMap.get(this.mParentList.get(groupPosition)).get(childPosition);
-
-    }
-
-    @Override
-    public int getChildrenCount(int groupPosition) { // ChildList의 크기를 int 형으로 반환
-        return this.mChildHashMap.get(this.mParentList.get(groupPosition)).size();
-
-    }
-
-    @Override
-    public long getChildId(int groupPosition, int childPosition) { // ChildList의 ID로 long 형 값을 반환
-        return childPosition;
-    }
-
-    @Override
-    public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        // ChildList의 View. 위 ParentList의 View를 얻을 때와 비슷하게 Layout 연결 후, layout 내 TextView, ImageView를 연결
-        final int gP=groupPosition;
-        final int cP=childPosition;
-        final String childData = getChild(gP, cP);
-        if(convertView == null){
-            LayoutInflater childInfla = (LayoutInflater) this.mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = childInfla.inflate(R.layout.exlv_wordbook_child, null);
-
-            mWordbookChildListViewHolder = new MyPageChildListViewHolder();
-            mWordbookChildListViewHolder.tvSentence = convertView.findViewById(R.id.tv_wordbook_child_sentence);
-            mWordbookChildListViewHolder.chkSentence = convertView.findViewById(R.id.cb_wordbook_child);
-
-
+//            mWordbookParentListViewHolder = new WordbookParentListViewHolder();
             convertView.setTag(mWordbookChildListViewHolder);
-        } else{
-            mWordbookChildListViewHolder = (MyPageChildListViewHolder)convertView.getTag();
+        }
+//        } else {
+////            mWordbookParentListViewHolder = (WordbookParentListViewHolder) convertView.getTag();
+//        }
+
+        TextView tvParent = convertView.findViewById(R.id.tv_wordbook_parent_title);
+        ImageView ivIndicator = convertView.findViewById(R.id.iv_wordbook_parent_indicator);
+        CheckBox cbWord = convertView.findViewById(R.id.cb_wordbook_parent);
+
+        //onBind
+
+        tvParent.setText(parentData.getWord());
+
+//        편집 모드일 경우
+        if (parentData.isEditMode()) {
+            ivIndicator.setVisibility(View.GONE);
+             cbWord.setVisibility(View.VISIBLE);
+
+             cbWord.setOnCheckedChangeListener(null);
+             cbWord.setChecked(parentData.isSelected());
+              cbWord.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    //set your object's last status
+                    parentData.setChecked(isChecked);
+                }
+
+
+            });
+
+        } else {
+            ivIndicator.setVisibility(View.VISIBLE);
+            cbWord.setVisibility(View.GONE);
+
+            if (isExpanded) {
+                ivIndicator.setImageResource(R.drawable.ic_arrow_down);
+            } else {
+                ivIndicator.setImageResource(R.drawable.ic_arrow_up);
+            }
         }
 
-        //on BInd 부분
-
-        if (childData!=null){
-            mWordbookChildListViewHolder.tvSentence.setText(childData);
+            return convertView;
         }
 
-        return convertView;
+        /* 여기서부터 ChildListView에 대한 method */
+        @Override
+        public WordbookExListItem getChild (int groupPosition, int childPosition){
+            // groupPostion과 childPosition을 통해 childList의 원소를 얻어옴
+            return this.mChildHashMap.get(this.mParentList.get(groupPosition)).get(childPosition);
+
+        }
+
+        @Override
+        public int getChildrenCount ( int groupPosition){ // ChildList의 크기를 int 형으로 반환
+            return this.mChildHashMap.get(this.mParentList.get(groupPosition)).size();
+
+        }
+
+        @Override
+        public long getChildId ( int groupPosition, int childPosition)
+        { // ChildList의 ID로 long 형 값을 반환
+            return childPosition;
+        }
+
+        @Override
+        public View getChildView ( final int groupPosition, final int childPosition,
+        boolean isLastChild, View convertView, ViewGroup parent){
+            // ChildList의 View. 위 ParentList의 View를 얻을 때와 비슷하게 Layout 연결 후, layout 내 TextView, ImageView를 연결
+            final int gP = groupPosition;
+            final int cP = childPosition;
+            final WordbookExListItem childData = getChild(gP, cP);
+
+            if (convertView == null) {
+                LayoutInflater childInfla = (LayoutInflater) this.mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = childInfla.inflate(R.layout.exlv_wordbook_child, null);
+
+                mWordbookChildListViewHolder = new WordbookChildListViewHolder();
+                mWordbookChildListViewHolder.tvSentence = convertView.findViewById(R.id.tv_wordbook_child_sentence);
+                mWordbookChildListViewHolder.ivDelete = convertView.findViewById(R.id.iv_wordbook_child_delete);
+
+
+                convertView.setTag(mWordbookChildListViewHolder);
+            } else {
+                mWordbookChildListViewHolder = (WordbookChildListViewHolder) convertView.getTag();
+            }
+
+            //on BInd 부분
+
+            if (childData != null) {
+
+                mWordbookChildListViewHolder.tvSentence.setText(childData.getSentenceList().get(childPosition).getSetense());
+
+                if (getGroup(gP).isEditMode()) {
+                    mWordbookChildListViewHolder.ivDelete.setVisibility(View.VISIBLE);
+                    mWordbookChildListViewHolder.ivDelete.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(final View view) {
+
+                            SentenceDeleteDialog mSentenceDeleteDialog = new SentenceDeleteDialog(mActivity);
+                            mSentenceDeleteDialog.setDialogListener(new SentenceDeleteDialog.SentenceDeleteDialogListener(){
+                                @Override
+                                public void onPositiveClicked() {
+
+                                    if (mClickListener!=null){
+                                        System.out.println(childData.getSentenceList().get(cP).getSentenceNo());
+
+                                        mClickListener.OnSentenceClickListener(view,gP,cP);
+                                    }
+                                    notifyDataSetChanged();
+                                }
+
+                            });
+
+                            mSentenceDeleteDialog.show();  //todo 딜리트 눌렀을때 차일드 삭제하기
+                        }
+                    });
+                } else {
+                    mWordbookChildListViewHolder.ivDelete.setVisibility(View.GONE);
+
+                }
+            }
+            return convertView;
+
+        }
+
+    public interface OnSentenceClickListener {
+        void OnSentenceClickListener(View v,int gp,int cp);
+    }
+    private OnSentenceClickListener mClickListener=null;
+
+    public void setOnSentenceClickListener(OnSentenceClickListener listener){
+        this.mClickListener =listener;
+    }
+
+        @Override
+        public boolean hasStableIds () {
+            return true;
+        } // stable ID인지 boolean 값으로 반환
+
+        @Override
+        public boolean isChildSelectable ( int groupPosition, int childPosition){
+            return true;
+        } // 선택여부를 boolean 값으로 반환
+
+
+        public class WordbookChildListViewHolder {
+            TextView tvSentence;
+            ImageView ivDelete;
+        }
+
+//        public class WordbookParentListViewHolder {
+//            TextView tvParent;
+//            ImageView ivIndicator;
+//            CheckBox cbWord;
+//        }
 
     }
 
-    @Override
-    public boolean hasStableIds() { return true; } // stable ID인지 boolean 값으로 반환
-
-    @Override
-    public boolean isChildSelectable(int groupPosition, int childPosition) { return true; } // 선택여부를 boolean 값으로 반환
-
-
-    public class MyPageChildListViewHolder {
-        TextView tvSentence;
-        CheckBox chkSentence;
-    }
-}

@@ -48,11 +48,11 @@
             android:id="@+id/btn_memorization"
             android:layout_width="60dp"
             android:layout_height="32dp"
-            android:background="@drawable/custom_button_on"
+            android:background="@drawable/custom_button_off"
             android:layout_toLeftOf="@+id/tv_wordbook_center_guideline"
             android:onClick="onClick"
             android:text="@string/memorized"
-            android:textColor="@color/colorDamoyoungWhite"
+            android:textColor="@color/colorBlack"
             android:textSize="14sp" />
 
         <TextView
@@ -65,10 +65,10 @@
             android:id="@+id/btn_unmemorization"
             android:layout_width="60dp"
             android:layout_height="32dp"
-            android:background="@drawable/custom_button_off"
+            android:background="@drawable/custom_button_on"
             android:onClick="onClick"
             android:text="@string/unmemorized"
-            android:textColor="@color/colorBlack"
+            android:textColor="@color/colorDamoyoungWhite"
             android:textSize="14sp" />
 
 
@@ -79,6 +79,7 @@
             android:layout_marginEnd="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="onClick"
             app:srcCompat="@drawable/ic_arrow_up"/>
 
     </RelativeLayout>
@@ -89,8 +90,137 @@
         android:layout_marginEnd="16dp"
         android:id="@+id/elv_wordbook"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:background="@color/colorDamoyoungWhite"
         android:groupIndicator="@null"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        android:background="@drawable/up_shadow" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_wordbook_delete"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:onClick="onClick"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="@string/delete"
+            android:textColor="@color/colorDamoyoungText"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_wordbook_move"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:onClick="onClick"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="@string/move"
+            android:textColor="@color/colorDamoyoungText"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_wordbook_copy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:onClick="onClick"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="@string/copy"
+            android:textColor="@color/colorDamoyoungText"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_wordbook_all_select"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:onClick="onClick"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="@string/allSelect"
+            android:textColor="@color/colorDamoyoungText"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_wordbook_confirm"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:onClick="onClick"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="@string/confirm"
+            android:textColor="@color/colorDamoyoungText"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+
+        <TextView
+            android:id="@+id/tv_wordbook_order"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:onClick="onClick"
+            android:padding="8dp"
+            android:text="@string/order"
+            android:textColor="@color/colorDamoyoungText"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:visibility="visible" />
+
+        <View
+            android:id="@+id/tv_wordbook_empty_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tv_wordbook_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="16dp"
+            android:onClick="onClick"
+            android:padding="8dp"
+            android:text="@string/edit"
+            android:textColor="@color/colorDamoyoungText"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:visibility="visible" />
+
+
+    </LinearLayout>
+
 
 </LinearLayout>

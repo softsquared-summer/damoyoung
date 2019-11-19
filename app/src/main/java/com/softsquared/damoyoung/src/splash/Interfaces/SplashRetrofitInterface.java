@@ -11,7 +11,7 @@ import retrofit2.http.POST;
 public interface SplashRetrofitInterface {
 
 
-    @POST("/productReview")
-    Call<SplashResponse> autoLoginAccess(@Body RequestBody params);
+    @POST("/user")
+    Call<SplashResponse> postUserCheck(@Body RequestBody params);
 
 }

@@ -23,19 +23,24 @@
         <activity
             android:name=".src.main.MainActivity"
             tools:ignore="ExtraText">
+
+        </activity>
+        <activity android:name=".src.setting.SettingActivity" />
+        <activity android:name=".src.popUpBookmark.PopupBookmarkActivity"
+            android:theme="@style/CustomDialogTheme"
+            />
+        <activity android:name=".src.popUpWordbookMove.PopupWordMoveActivity"
+            android:theme="@style/CustomDialogTheme"/>
+
+        <activity android:name=".src.bookmark.BookmarkActivity"/>
+        <activity android:name=".src.wordbook.WordbookActivity"/>
+        <activity android:name=".src.splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".src.setting.SettingActivity" />
-        <activity android:name=".src.quickBookmark.PopupBookmarkActivity"
-            android:theme="@style/CustomDialogTheme"
-            />
-        <activity android:name=".src.bookmark.BookmarkActivity"/>
-        <activity android:name=".src.wordbook.WordbookActivity"/>
-        <activity android:name=".src.splash.SplashActivity"/>
         <activity android:name=".src.history.HistoryActivity"/>
     </application>
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />

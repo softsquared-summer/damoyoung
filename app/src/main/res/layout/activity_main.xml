@@ -9,30 +9,30 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="48dp"
         android:background="@color/colorDamoyoungWhite"
         >
         <ImageView
             android:id="@+id/iv_main_setting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_gravity="center_vertical"
+            android:padding="8dp"
             android:onClick="onClick"
             app:srcCompat="@drawable/ic_main_menu" />
 
         <EditText
             android:id="@+id/et_main_search"
             android:layout_width="0dp"
-            android:layout_height="28dp"
+            android:layout_height="30dp"
             android:layout_marginStart="11dp"
-            android:layout_marginTop="6dp"
-            android:layout_marginBottom="6dp"
             android:layout_marginEnd="11dp"
             android:paddingStart="10dp"
             android:textSize="16sp"
+            android:layout_gravity="center_vertical"
             android:maxLines="1"
             android:textCursorDrawable="@drawable/custom_edittext_cursor_dark"
+            android:theme="@style/EditThemeBlue"
             android:layout_weight="1"
             android:inputType="text|textNoSuggestions"
             android:imeOptions="actionSearch"
@@ -43,8 +43,8 @@
             android:id="@+id/iv_main_favority"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_gravity="center_vertical"
+            android:padding="8dp"
             android:onClick="onClick"
             app:srcCompat="@drawable/ic_favorities" />
 
@@ -53,8 +53,8 @@
             android:id="@+id/iv_main_bookmark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
+            android:padding="8dp"
+            android:layout_gravity="center_vertical"
             android:onClick="onClick"
             app:srcCompat="@drawable/ic_main_bookmark" />
     </LinearLayout>

@@ -1,8 +1,15 @@
-package com.softsquared.damoyoung.src.main.models;
+package com.softsquared.damoyoung.src.wordbook.models;
 
 import com.google.gson.annotations.SerializedName;
+import com.softsquared.damoyoung.src.wordbook.WordbookExListItem;
 
-public class DefaultResponse {
+import java.util.ArrayList;
+
+public class WordbookResponse {
+
+    @SerializedName("result")
+    private ArrayList<WordbookExListItem> wordBookExListItems;
+
     @SerializedName("code")
     private int code;
 
@@ -11,6 +18,8 @@ public class DefaultResponse {
 
     @SerializedName("isSuccess")
     private boolean isSuccess;
+
+
 
     public int getCode() {
         return code;
@@ -22,5 +31,9 @@ public class DefaultResponse {
 
     public boolean getIsSuccess() {
         return isSuccess;
+    }
+
+    public ArrayList<WordbookExListItem> getWordBookExListItems() {
+        return wordBookExListItems;
     }
 }

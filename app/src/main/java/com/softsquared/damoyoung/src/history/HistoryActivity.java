@@ -24,11 +24,14 @@ public class HistoryActivity extends BaseActivity {
     private ListView mLvHistory;
     private TextView mTvEdit, mTvConfirm, mTvAllSelect, mTvDelete;
     private Gson gson;
+    private boolean isAllSelect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
+
+        isAllSelect=false;
 
         mTvEdit = findViewById(R.id.tv_bookmark_history_edit);
         mTvConfirm = findViewById(R.id.tv_bookmark_history_confirm);
@@ -44,7 +47,7 @@ public class HistoryActivity extends BaseActivity {
             mHistoryListItems = gson.fromJson(json, type);
         } else { }
 
-        mHistoryListViewAdapter = new HistoryListViewAdapter(mHistoryListItems, getApplicationContext());
+        mHistoryListViewAdapter = new HistoryListViewAdapter(mHistoryListItems, this);
         mLvHistory.setAdapter(mHistoryListViewAdapter);
 
     }
@@ -62,6 +65,14 @@ public class HistoryActivity extends BaseActivity {
     @Override
     public void onStop() {
         super.onStop();
+
+
+
+        for (int i = 0; i < mHistoryListItems.size(); i++) {
+            mHistoryListItems.get(i).setChkShow(false);
+            mHistoryListItems.get(i).setSelected(false);
+        }
+        mHistoryListViewAdapter.notifyDataSetChanged();
         SharedPreferences.Editor editor = sSharedPreferences.edit();
         String json = gson.toJson(mHistoryListItems);
         editor.putString("recentList", json);
@@ -84,9 +95,19 @@ public class HistoryActivity extends BaseActivity {
                 mHistoryListViewAdapter.notifyDataSetChanged();
                 break;
             case R.id.tv_bookmark_history_all_select:
-                for (int i = 0; i < mHistoryListItems.size(); i++) {
-                    mHistoryListItems.get(i).setSelected(true);
+                if (isAllSelect){
+                    for (int i = 0; i < mHistoryListItems.size(); i++) {
+                        mHistoryListItems.get(i).setSelected(false);
+                    }
+                    isAllSelect=false;
                 }
+                else{
+                    for (int i = 0; i < mHistoryListItems.size(); i++) {
+                        mHistoryListItems.get(i).setSelected(true);
+                    }
+                    isAllSelect=true;
+                }
+
                 mHistoryListViewAdapter.notifyDataSetChanged();
                 break;
             case R.id.tv_bookmark_history_confirm:
@@ -116,7 +137,8 @@ public class HistoryActivity extends BaseActivity {
                         public void onPositiveClicked() {
                             //다이얼로그에서 삭제를 눌렀을 경우 선택한 단어를 삭제한다
                             ArrayList<HistoryListViewItem> data = mHistoryListViewAdapter.getItemList();
-                            for (int i = 0; i < data.size(); i++) {
+                            int size=data.size()-1;
+                            for (int i=size; i >= 0; i--) {
                                 if (data.get(i).isSelected()) {
                                     mHistoryListItems.remove(i);
                                 }

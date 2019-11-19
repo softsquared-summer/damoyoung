@@ -19,6 +19,7 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:textColor="@color/colorBlack"
+            android:layout_centerInParent="true"
             android:layout_centerHorizontal="true"
             android:text="북마크"
             android:textStyle="bold"
@@ -28,6 +29,7 @@
             android:id="@+id/tv_popup_new_folder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="6dp"
             android:textSize="16sp"
             android:textColor="@color/colorDamoyoungText"
             android:layout_alignParentEnd="true"
@@ -44,15 +46,16 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="@color/colorLine"/>
-    
+
     <ListView
         android:id="@+id/lv_popup_bookmark"
         android:layout_width="match_parent"
-        android:layout_marginTop="8dp"
-        android:paddingLeft="16dp"
         android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_weight="1"
         android:divider="@null"
-        android:layout_weight="1"/>
+        android:paddingLeft="16dp" />
+
     <View
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
@@ -65,9 +68,10 @@
         android:layout_height="wrap_content">
         <TextView
             android:id="@+id/tv_popup_ok"
-            android:layout_marginEnd="20dp"
-            android:layout_marginTop="13dp"
-            android:layout_marginBottom="13dp"
+            android:layout_marginTop="5dp"
+            android:padding="6dp"
+            android:layout_marginEnd="14dp"
+            android:layout_marginBottom="7dp"
             android:layout_alignParentEnd="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

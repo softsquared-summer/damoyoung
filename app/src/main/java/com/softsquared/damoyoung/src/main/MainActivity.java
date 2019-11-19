@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -30,7 +31,7 @@ import com.softsquared.damoyoung.R;
 import com.softsquared.damoyoung.src.BaseActivity;
 import com.softsquared.damoyoung.src.bookmark.BookmarkActivity;
 import com.softsquared.damoyoung.src.main.webView.WebViewFragment;
-import com.softsquared.damoyoung.src.quickBookmark.PopupBookmarkActivity;
+import com.softsquared.damoyoung.src.popUpBookmark.PopupBookmarkActivity;
 import com.softsquared.damoyoung.src.setting.SettingActivity;
 import com.softsquared.damoyoung.src.sitePriority.SitePriority;
 
@@ -52,35 +53,23 @@ public class MainActivity extends BaseActivity {
     private TabLayout mMainTabLayout;
     private EditText mEtSearch;
     private String mKeyword = "";
-    private String mSentence ="";
+    private String mSentence = "";
     private ImageView mIvSetting, mIvFavority, mIvBookmark;
     private boolean mStringTypeIsKorean;
     ArrayList<SitePriority> mEngSitePriorityList = new ArrayList<>();
     ArrayList<SitePriority> mKorSitePriorityList = new ArrayList<>();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        gson = new Gson();
         mPrimaryClipFlag = true;
         isFirstSearch = true;
         mStringTypeIsKorean = false;
 
-//        final int version = Build.VERSION.SDK_INT;
-//        if (version >= 23) {
-//            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-//            // edited here
-//            getWindow().setStatusBarColor(getColor(R.color.colorStatusBar));
-//        } else {
-//            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-//            getWindow().setStatusBarColor(getResources().getColor(R.color.colorStatusBar));
-//        }
-
         //최근 목록 불러오기
-        gson = new Gson();
         String json = sSharedPreferences.getString("recentList", "");
         Type type = new TypeToken<ArrayList<HistoryListViewItem>>() {
         }.getType();
@@ -89,49 +78,32 @@ public class MainActivity extends BaseActivity {
         } else {
         }
 
-        //디바이스값 아이디
-//        String deviceId = Settings.Secure.getString(this.getContentResolver(),
-//                Settings.Secure.ANDROID_ID);
-//       System.out.println(deviceId);
-
         mMainTabLayout = findViewById(R.id.tl_main);
         mEtSearch = findViewById(R.id.et_main_search);
         mLvRecentHistory = findViewById(R.id.lv_recent_history);
-        mIvFavority =findViewById(R.id.iv_main_favority);
-
+        mIvFavority = findViewById(R.id.iv_main_favority);
         mRecentLvAdapter = new MainListViewAdapter(mRecentItemList, getApplicationContext());
         mLvRecentHistory.setAdapter(mRecentLvAdapter); //리스트뷰의 어댑터
-
-
-//        //더미데이터 생성
-//        for (int i = 0; i < mEngSitePriorityList.size(); i++) {
-//            mMainTabLayout.addTab(mMainTabLayout.newTab().setText(mEngSitePriorityList.get(i).getTitle()));
-//        }
-//        //default
-//        replaceFragment(new WebViewFragment(mEngSitePriorityList.get(0).getUrl(), "welcome"));
 
         mMainTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int pos = tab.getPosition();
-                if(!mStringTypeIsKorean){
+                if (!mStringTypeIsKorean) {
                     replaceFragment(new WebViewFragment(mEngSitePriorityList.get(pos).getUrl(), mKeyword));
-                }
-                else{
+                } else {
                     replaceFragment(new WebViewFragment(mKorSitePriorityList.get(pos).getUrl(), mKeyword));
                 }
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
             }
-
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
+
 
         clipBoard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
 
@@ -142,12 +114,11 @@ public class MainActivity extends BaseActivity {
                 mKeyword = keyword;
                 mEtSearch.setText(mKeyword);
                 addKeyword(mKeyword);// 최근 검색어 키워드 등록
-                if(stringType(mKeyword)){
+                if (stringType(mKeyword)) {
                     clearTab();
                     addTab(mKorSitePriorityList);
                     replaceFragment(new WebViewFragment(mKorSitePriorityList.get(0).getUrl(), mKeyword));
-                }
-                else{
+                } else {
                     clearTab();
                     addTab(mEngSitePriorityList);
                     replaceFragment(new WebViewFragment(mEngSitePriorityList.get(0).getUrl(), mKeyword));
@@ -171,7 +142,6 @@ public class MainActivity extends BaseActivity {
 
             }
         });
-
         //검색창 리스너설정
         //클릭하면 URL과 키워드를 넘겨준다
         mEtSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -183,16 +153,14 @@ public class MainActivity extends BaseActivity {
                     mKeyword = keyword;
                     if (isFirstSearch) {
                         hideHistory();
-
                     }
                     addKeyword(mKeyword);// 최근 검색어 키워드 등록
                     //검색어가 영어 일경우와 한국어일 경우 보여주는 사이트가 다름
                     //탭 레이아웃을 재 갱신해주는 부분
-                    if(stringType(mKeyword)){
+                    if (stringType(mKeyword)) {
                         clearTab();
                         addTab(mKorSitePriorityList);
-                    }
-                    else{
+                    } else {
                         clearTab();
                         addTab(mEngSitePriorityList);
                     }
@@ -210,8 +178,6 @@ public class MainActivity extends BaseActivity {
                 return false;
             }
         });
-
-
         showHistory();
         refresh();//어댑터 갱신
     }
@@ -219,7 +185,14 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
+        String json = sSharedPreferences.getString("recentList", "");
+        Type type = new TypeToken<ArrayList<HistoryListViewItem>>() {
+        }.getType();
+        if (gson.fromJson(json, type) != null) {
+            mRecentItemList = gson.fromJson(json, type);
+        } else {
+        }
+        mRecentLvAdapter.notifyDataSetChanged();
         String engJson = sSharedPreferences.getString("siteEngList", "");
         String korJson = sSharedPreferences.getString("siteKorList", "");
         Type siteType = new TypeToken<ArrayList<SitePriority>>() {
@@ -250,11 +223,10 @@ public class MainActivity extends BaseActivity {
             mKorSitePriorityList.add(new SitePriority("구글", "https://www.google.com/search?q="));
         }
 
-        if(mStringTypeIsKorean){
+        if (mStringTypeIsKorean) {
             clearTab();
             addTab(mKorSitePriorityList);
-        }
-        else{
+        } else {
             clearTab();
             addTab(mEngSitePriorityList);
         }
@@ -267,7 +239,6 @@ public class MainActivity extends BaseActivity {
                 }, 100);
 
     }
-
     private void replaceFragment(WebViewFragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -275,21 +246,23 @@ public class MainActivity extends BaseActivity {
 
         transaction.commit();
     }
-
     //onClick 메소드
     public void onClick(View v) {
         switch (v.getId()) {
-
             case R.id.iv_main_setting:
                 //설정으로 이동
                 startActivity(new Intent(this, SettingActivity.class));
                 break;
             case R.id.iv_main_favority:
                 //팝업 액티비티 실행
-                if (isFirstSearch){
+                if (isFirstSearch) {
 
-                }else{
-                    startActivity(new Intent(this, PopupBookmarkActivity.class));
+                } else {
+                    Intent intent = new Intent(this, PopupBookmarkActivity.class);
+                    intent.putExtra("word", mKeyword);
+                    intent.putExtra("sentence", mSentence);
+                    intent.putExtra("type", 0);
+                    startActivity(intent);
                 }
                 break;
             case R.id.iv_main_bookmark:
@@ -298,26 +271,6 @@ public class MainActivity extends BaseActivity {
                 break;
         }
     }
-
-
-
-    //이전에 검색한 적 있으면 지우고 최상단으로 올림
-    public void addKeyword(String keyword) {
-        removeKeyword(keyword);
-        mRecentItemList.add(0, new HistoryListViewItem(keyword));
-        mRecentLvAdapter.notifyDataSetChanged();
-    }
-
-    //같은 기록이 있으면 삭제
-    public void removeKeyword(String keyword) {
-        for (int i = 0; i < mRecentItemList.size(); i++) {
-            if (mRecentItemList.get(i).getKeyword().equals(keyword)) {
-                mRecentItemList.remove(i);
-                break;
-            }
-        }
-    }
-
     //onStop에서 저장
     @Override
     public void onStop() {
@@ -327,7 +280,6 @@ public class MainActivity extends BaseActivity {
         editor.putString("recentList", json);
         editor.commit();
     }
-
 
     @Override
     public void onActionModeStarted(final android.view.ActionMode mode) {
@@ -362,9 +314,7 @@ public class MainActivity extends BaseActivity {
         } else {
 
         }
-
         //웹뷰 내에 34276370 복사 안드로이드 자체 16908321 복사
-
         super.onActionModeStarted(mode);
     }
 
@@ -378,27 +328,35 @@ public class MainActivity extends BaseActivity {
 
         // 클립보드에 데이터가 없거나 텍스트 타입이 아닌 경우
         if (!(clipboard.hasPrimaryClip())) {
-            System.out.println(pasteData + "클립보드에 데이터 X");
-//
+            showCustomToast("예문을 저장할 수 없습니다.");
 //        } else if (!(clipboard.getPrimaryClipDescription().hasMimeType(MIMETYPE_TEXT_PLAIN))) {
 //            System.out.println(pasteData+"클립보드에 텍스트 타입X");
-////
+//            }
         } else {
             ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
             pasteData = item.getText().toString();
-
+            mSentence=pasteData;
         }
 
-        System.out.println(pasteData + "저장된 예문");
-//        Toast.makeText(this, pasteData+"예문이 저장되었습니다.", Toast.LENGTH_SHORT).show();
+
+        if (isFirstSearch) {
+                showCustomToast("먼저 단어를 검색해주세요");
+        } else {
+            Intent intent = new Intent(this, PopupBookmarkActivity.class);
+            intent.putExtra("word", mKeyword);
+            intent.putExtra("sentence", mSentence);
+            intent.putExtra("type", 1);
+            startActivity(intent);
+        }
+
         return false;
     }
 
-    public void clearTab(){
+
+    public void clearTab() {
         mMainTabLayout.removeAllTabs();
     }
-
-    public void addTab(ArrayList<SitePriority> data){
+    public void addTab(ArrayList<SitePriority> data) {
         for (int i = 0; i < data.size(); i++) {
             mMainTabLayout.addTab(mMainTabLayout.newTab().setText(data.get(i).getTitle()));
         }
@@ -415,25 +373,37 @@ public class MainActivity extends BaseActivity {
             isKoreaLanguage = true;
         }
 
-        mStringTypeIsKorean =isKoreaLanguage;
+        mStringTypeIsKorean = isKoreaLanguage;
         return mStringTypeIsKorean;
     }
-
     public void hideKeyboard() {
         mEtSearch.clearFocus();
         InputMethodManager immhide = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
         immhide.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
     }
-
     public void refresh() {
         mRecentLvAdapter.notifyDataSetChanged();
     }
 
+    //이전에 검색한 적 있으면 지우고 최상단으로 올림
+    public void addKeyword(String keyword) {
+        removeKeyword(keyword);
+        mRecentItemList.add(0, new HistoryListViewItem(keyword));
+        mRecentLvAdapter.notifyDataSetChanged();
+    }
+    //같은 기록이 있으면 삭제
+    public void removeKeyword(String keyword) {
+        for (int i = 0; i < mRecentItemList.size(); i++) {
+            if (mRecentItemList.get(i).getKeyword().equals(keyword)) {
+                mRecentItemList.remove(i);
+                break;
+            }
+        }
+    }
     public void hideHistory() {
         mLvRecentHistory.setVisibility(View.GONE);
         isFirstSearch = false;
     }
-
     public void showHistory() {
         mLvRecentHistory.setVisibility(View.VISIBLE);
     }

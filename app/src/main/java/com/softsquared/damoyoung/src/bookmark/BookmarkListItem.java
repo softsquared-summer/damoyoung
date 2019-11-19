@@ -2,13 +2,20 @@ package com.softsquared.damoyoung.src.bookmark;
 
 import android.widget.ImageView;
 
+import com.google.gson.annotations.SerializedName;
+
 public class BookmarkListItem {
 
+    @SerializedName("no")
+    private int bookmarkNo;
+    @SerializedName("title")
     private String title;
+
     private Boolean isFirst;
     private Boolean isEditMode;
 
-    public BookmarkListItem(String title) {
+    public BookmarkListItem(int bookmarkNo,String title) {
+        this.bookmarkNo = bookmarkNo;
         this.title = title;
         isFirst=false;
         isEditMode=false;
@@ -36,5 +43,9 @@ public class BookmarkListItem {
 
     public Boolean getEditMode() {
         return isEditMode;
+    }
+
+    public int getBookmarkNo() {
+        return bookmarkNo;
     }
 }

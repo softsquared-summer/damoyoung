@@ -74,7 +74,11 @@ public class BookmarkListViewAdapater extends BaseAdapter {
                         mCustomDeleteDialog.setDialogListener(new BookmarkDeleteDialog.BookmarkDeleteDialogListener(){
                             @Override
                             public void onPositiveClicked(int pos) {
-                                    mBookmarkListItems.remove(pos);
+
+//                                    mBookmarkListItems.remove(pos);
+                                if(mCheckListener!=null){
+                                    mCheckListener.OnCheckClick(pos);
+                                }
                                     notifyDataSetChanged();
                             }
 
@@ -93,6 +97,7 @@ public class BookmarkListViewAdapater extends BaseAdapter {
         return convertView;
     }
 
+
     // 지정한 위치(position)에 있는 데이터와 관계된 아이템(row)의 ID를 리턴. : 필수 구현
     @Override
     public long getItemId(int position) {
@@ -103,5 +108,14 @@ public class BookmarkListViewAdapater extends BaseAdapter {
     @Override
     public Object getItem(int position) {
         return mBookmarkListItems.get(position);
+    }
+
+    public interface OnCheckedChangeListener {
+        void OnCheckClick(int pos);
+    }
+    private OnCheckedChangeListener mCheckListener=null;
+
+    public void setOnCheckedChangeListener(OnCheckedChangeListener listener){
+        this.mCheckListener =listener;
     }
 }

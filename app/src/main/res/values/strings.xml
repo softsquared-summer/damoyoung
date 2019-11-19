@@ -13,7 +13,15 @@
     <string name="unmemorized">미암기</string>
     <string name="history">기록</string>
     <string name="delete">삭제</string>
+    <string name="order">최신 순</string>
     <string name="allSelect">전체선택</string>
     <string name="folderDelete">폴더 삭제</string>
     <string name="wordDelete">단어 삭제</string>
+    <string name="move">이동</string>
+    <string name="copy">복사</string>
+    <string name="word_move">단어 이동</string>
+    <string name="cancel">취소</string>
+    <string name="new_folder">새 폴더</string>
+    <string name="add">추가</string>
+    <string name="sentence_delete">예문 삭제</string>
 </resources>

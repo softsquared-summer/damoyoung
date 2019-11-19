@@ -4,6 +4,17 @@ import com.google.gson.annotations.SerializedName;
 
 public class SplashResponse {
 
+    @SerializedName("result")
+    Result result;
+
+    public class Result{
+
+        @SerializedName("jwt")
+        private String jwt;
+
+        public String getJwt() { return jwt; }
+    }
+
     @SerializedName("code")
     private int code;
 
@@ -13,6 +24,8 @@ public class SplashResponse {
     @SerializedName("isSuccess")
     private boolean isSuccess;
 
+
+    public Result getResult() { return result; }
 
     public int getCode() {
         return code;
