@@ -75,7 +75,6 @@ public class BookmarkListViewAdapater extends BaseAdapter {
                             @Override
                             public void onPositiveClicked(int pos) {
 
-//                                    mBookmarkListItems.remove(pos);
                                 if(mCheckListener!=null){
                                     mCheckListener.OnCheckClick(pos);
                                 }

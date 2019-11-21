@@ -1,8 +1,9 @@
 package com.softsquared.damoyoung.src.popUpWordbookCopy;
 
-import com.softsquared.damoyoung.src.popUpWordbookMove.interfaces.PopupWordCopyActivityView;
-import com.softsquared.damoyoung.src.popUpWordbookMove.interfaces.PopupWordMoveRetrofitInterface;
-import com.softsquared.damoyoung.src.popUpWordbookMove.models.PopUpWordMoveResponse;
+import com.softsquared.damoyoung.src.popUpWordbookCopy.interfaces.PopupWordCopyActivityView;
+import com.softsquared.damoyoung.src.popUpWordbookCopy.interfaces.PopupWordCopyRetrofitInterface;
+import com.softsquared.damoyoung.src.popUpWordbookCopy.models.PopupWordCopyResponse;
+import com.softsquared.damoyoung.src.popUpWordbookMove.interfaces.PopupWordMoveActivityView;
 
 import org.json.JSONObject;
 
@@ -16,72 +17,76 @@ import static com.softsquared.damoyoung.src.ApplicationClass.getRetrofit;
 
 public class PopupWordCopyService {
 
-    private final PopupWordCopyActivityView mPopupWordMoveActivityView;
+    private final PopupWordCopyActivityView mPopupWordCopyActivityView;
 
-    public PopupWordCopyService(final PopupWordCopyActivityView popupWordMoveActivityView) {
-        this.mPopupWordMoveActivityView = popupWordMoveActivityView;
+    public PopupWordCopyService(final PopupWordCopyActivityView popupWordCopyActivityView) {
+        this.mPopupWordCopyActivityView = popupWordCopyActivityView;
     }
+
 
     void getPopUpBookmark() {
 
-        final PopupWordMoveRetrofitInterface popupWordMoveRetrofitInterface = getRetrofit().create(PopupWordMoveRetrofitInterface.class);
-        popupWordMoveRetrofitInterface.getPopUpBookmark().enqueue(new Callback<PopUpWordMoveResponse>() {
+        final PopupWordCopyRetrofitInterface popupWordCopyRetrofitInterface = getRetrofit().create(PopupWordCopyRetrofitInterface.class);
+        popupWordCopyRetrofitInterface.getPopupBookmark().enqueue(new Callback<PopupWordCopyResponse>() {
             @Override
-            public void onResponse(Call<PopUpWordMoveResponse> call, Response<PopUpWordMoveResponse> response) {
+            public void onResponse(Call<PopupWordCopyResponse> call, Response<PopupWordCopyResponse> response) {
                 if (response == null) {
-                    mPopupWordMoveActivityView.validateGetFailure("북마크 조회에 실패하였습니다.");
+                    mPopupWordCopyActivityView.validateGetFailure("북마크 조회에 실패하였습니다.");
                     return;
                 }
-                final PopUpWordMoveResponse popUpWordMoveResponse = response.body();
+                final PopupWordCopyResponse popUpWordCopyResponse = response.body();
 
-                if (popUpWordMoveResponse == null) {
-                    mPopupWordMoveActivityView.validateGetFailure(null);
+                if (popUpWordCopyResponse == null) {
+                    mPopupWordCopyActivityView.validateGetFailure(null);
                     return;
-                } else if (popUpWordMoveResponse.getCode() == 201) {
-                    //유효하지 않는 토큰
-                    mPopupWordMoveActivityView.validateGetFailure(popUpWordMoveResponse.getMessage());
-                }  else {
+                } else if (popUpWordCopyResponse.getCode() == 100) {
                     //북마크 조회 성공//code 100
-                    mPopupWordMoveActivityView.validateGetSuccess(popUpWordMoveResponse.getMessage(), popUpWordMoveResponse.getBookmarkListItems());
+                    mPopupWordCopyActivityView.validateGetSuccess(popUpWordCopyResponse.getMessage(), popUpWordCopyResponse.getBookmarkListItems());
+
+                } else {
+                    //유효하지 않는 토큰         a
+                    mPopupWordCopyActivityView.validateGetFailure(popUpWordCopyResponse.getMessage());
                 }
 
             }
+
             @Override
-            public void onFailure(Call<PopUpWordMoveResponse> call, Throwable t) {
-                mPopupWordMoveActivityView.validateGetFailure(null);
+            public void onFailure(Call<PopupWordCopyResponse> call, Throwable t) {
+                mPopupWordCopyActivityView.validateGetFailure(null);
             }
         });
     }
 
-    void patchWordMove(JSONObject params) {
+    void patchWordCopy(JSONObject params) {
 
-        final PopupWordMoveRetrofitInterface popUpbookmarkRetrofitInterface = getRetrofit().create(PopupWordMoveRetrofitInterface.class);
-        popUpbookmarkRetrofitInterface.patchMovedWord(RequestBody.create(params.toString(), MEDIA_TYPE_JSON)).enqueue(new Callback<PopUpWordMoveResponse>() {
+        final PopupWordCopyRetrofitInterface popUpWordCopyRetrofitInterface = getRetrofit().create(PopupWordCopyRetrofitInterface.class);
+        popUpWordCopyRetrofitInterface.patchCopyWord(RequestBody.create(params.toString(), MEDIA_TYPE_JSON)).enqueue(new Callback<PopupWordCopyResponse>() {
             @Override
-            public void onResponse(Call<PopUpWordMoveResponse> call, Response<PopUpWordMoveResponse> response) {
+            public void onResponse(Call<PopupWordCopyResponse> call, Response<PopupWordCopyResponse> response) {
                 if (response == null) {
-                    mPopupWordMoveActivityView.validateMoveFailure("단어 저장 실패하였습니다.");
+                    mPopupWordCopyActivityView.validateCopyFailure("단어 복사에 실패하였습니다.");
                     return;
                 }
-                final PopUpWordMoveResponse popUpWordMoveResponse = response.body();
+                final PopupWordCopyResponse popUpWordCopyResponse = response.body();
 
-                if (popUpWordMoveResponse == null) {
-                    mPopupWordMoveActivityView.validateMoveFailure(null);
+                if (popUpWordCopyResponse == null) {
+                    mPopupWordCopyActivityView.validateCopyFailure(null);
                     return;
-                } else if (popUpWordMoveResponse.getCode() == 100) {
-                    //단어 이동 성공
-                    mPopupWordMoveActivityView.validateMoveSuccess(popUpWordMoveResponse.getMessage());
-                } else if (popUpWordMoveResponse.getCode() == 201) {
+                } else if (popUpWordCopyResponse.getCode() == 100) {
+                    //단어 복사 성공
+                    mPopupWordCopyActivityView.validateCopySuccess(popUpWordCopyResponse.getMessage());
+                } else if (popUpWordCopyResponse.getCode() == 201) {
                     //유효하지 않는 토큰
-                    mPopupWordMoveActivityView.validateMoveFailure(popUpWordMoveResponse.getMessage());
+                    mPopupWordCopyActivityView.validateCopyFailure(popUpWordCopyResponse.getMessage());
                 } else {
-                    mPopupWordMoveActivityView.validateMoveFailure(popUpWordMoveResponse.getMessage());
+                    mPopupWordCopyActivityView.validateCopyFailure(popUpWordCopyResponse.getMessage());
                 }
 
             }
+
             @Override
-            public void onFailure(Call<PopUpWordMoveResponse> call, Throwable t) {
-                mPopupWordMoveActivityView.validateMoveFailure(null);
+            public void onFailure(Call<PopupWordCopyResponse> call, Throwable t) {
+                mPopupWordCopyActivityView.validateCopyFailure("네트워크 연결 실패");
             }
         });
     }

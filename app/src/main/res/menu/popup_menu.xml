@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/popup_new"
+        android:title="최신 순" />
+    <item android:id="@+id/popup_order"
+        android:title="오래된 순" />
+</menu>

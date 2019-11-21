@@ -24,7 +24,6 @@ public class WebViewFragment extends Fragment {
     private WebSettings mWebSettings;
     private String mKeyword="";
     private String mUrl="";
-
     public WebViewFragment(String url,String keyword){
         this.mUrl = url;
         this.mKeyword = keyword;
@@ -36,7 +35,6 @@ public class WebViewFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_webview, container, false);
         mWebView = view.findViewById(R.id.webview);
-
         mWebView.setWebViewClient(new WebViewClient()); // 클릭시 새창 안뜨게
         mWebView.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
         mWebSettings = mWebView.getSettings(); //세부 세팅 등록

@@ -2,6 +2,7 @@ package com.softsquared.damoyoung.src.bookmark;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -9,6 +10,13 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.softsquared.damoyoung.R;
 import com.softsquared.damoyoung.src.BaseActivity;
 import com.softsquared.damoyoung.src.bookmark.bookmarkDialog.BookmarkNewfolderDialog;
@@ -29,21 +37,54 @@ public class BookmarkActivity extends BaseActivity implements BookmarkActivityVi
     private String mName;
     private int mBookmarkNo;
     private int mDeletePosition;
+    private AdView mAdView;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bookmark);
 
+        mAdView =findViewById(R.id.adView_bookmark);
         mLvBookmark = findViewById(R.id.lv_bookmark);
         mTvEdit = findViewById(R.id.tv_bookmark_edit);
         mTvConfirm = findViewById(R.id.tv_bookmark_confirm);
         mTvNewFolder = findViewById(R.id.tv_bookmark_add_folder);
 
-        //dummy
+        mAdView = findViewById(R.id.adView_bookmark);
+        MobileAds.initialize(this, getString(R.string.admob_app_id_for_test));
 
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+        mAdView.setAdListener(new AdListener() {
+
+            @Override
+
+            public void onAdLoaded() {
+
+                // Code to be executed when an ad finishes loading.
+
+                // 광고가 문제 없이 로드시 출력됩니다.
+
+                Log.d("@@@", "onAdLoaded");
+
+            }
+
+
+
+            @Override
+
+                public void onAdFailedToLoad(int errorCode) {
+
+                // Code to be executed when an ad request fails.
+
+                // 광고 로드에 문제가 있을시 출력됩니다.
+
+                Log.d("@@@", "onAdFailedToLoad " + errorCode);
+
+            }
+
+        });
         mBookmarkListViewAdapater = new BookmarkListViewAdapater(mBookmarkListItems, getApplicationContext(), this);
         mLvBookmark.setAdapter(mBookmarkListViewAdapater);
-
         mLvBookmark.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {

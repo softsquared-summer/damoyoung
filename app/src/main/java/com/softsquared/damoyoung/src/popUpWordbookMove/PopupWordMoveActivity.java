@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 
 import com.softsquared.damoyoung.R;
 import com.softsquared.damoyoung.src.BaseActivity;
-import com.softsquared.damoyoung.src.popUpWordbookMove.interfaces.PopupWordCopyActivityView;
+import com.softsquared.damoyoung.src.popUpWordbookMove.interfaces.PopupWordMoveActivityView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,7 +17,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class PopupWordMoveActivity extends BaseActivity implements View.OnClickListener, PopupWordCopyActivityView {
+public class PopupWordMoveActivity extends BaseActivity implements View.OnClickListener, PopupWordMoveActivityView {
 
     //popup 액티비티 다이얼로그
 
@@ -41,6 +41,20 @@ public class PopupWordMoveActivity extends BaseActivity implements View.OnClickL
         mLvBookmarkList = findViewById(R.id.lv_wordbook_dialog_move);
         mLvBookmarkAdapter = new PopupWordMoveListViewAdapter(mLvBookmarkItems, getApplicationContext());
         mLvBookmarkList.setAdapter(mLvBookmarkAdapter);
+
+        mLvBookmarkAdapter.setOnCheckedChangeListener(new PopupWordMoveListViewAdapter.OnCheckedChangeListener() {
+            @Override
+            public void OnCheckClick(int pos) {
+                for (int i=0;i<mLvBookmarkAdapter.getCount();i++){
+                    if (i==pos){
+                        mLvBookmarkItems.get(i).setChecked(true);
+                    }else{
+                        mLvBookmarkItems.get(i).setChecked(false);
+                    }
+                }
+                mLvBookmarkAdapter.notifyDataSetChanged();
+            }
+        });
 
 
     }
@@ -74,6 +88,10 @@ public class PopupWordMoveActivity extends BaseActivity implements View.OnClickL
                     return;
                 }
 
+                if (bookmarkList.get(0)==mBookmarkNo){
+                    showCustomToast("같은 단어장으론 이동할 수 없습니다.");
+                    return;
+                }
                 try {
                     JSONArray wordArray = new JSONArray();//배열이 필요할때
                     for (int i = 0; i < mWordList.size(); i++)//배열

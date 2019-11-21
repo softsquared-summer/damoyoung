@@ -24,6 +24,7 @@ import android.widget.Toast;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -63,7 +64,6 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         gson = new Gson();
         mPrimaryClipFlag = true;
         isFirstSearch = true;
@@ -183,8 +183,8 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onRestart() {
+        super.onRestart();
         String json = sSharedPreferences.getString("recentList", "");
         Type type = new TypeToken<ArrayList<HistoryListViewItem>>() {
         }.getType();
@@ -193,6 +193,11 @@ public class MainActivity extends BaseActivity {
         } else {
         }
         mRecentLvAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         String engJson = sSharedPreferences.getString("siteEngList", "");
         String korJson = sSharedPreferences.getString("siteKorList", "");
         Type siteType = new TypeToken<ArrayList<SitePriority>>() {

@@ -58,7 +58,7 @@ public class WordbookExListViewAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+    public View getGroupView(final int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         // ParentList의 View
 //        final WordbookParentListViewHolder mWordbookParentListViewHolder;
         final Word parentData = getGroup(groupPosition);
@@ -75,7 +75,7 @@ public class WordbookExListViewAdapter extends BaseExpandableListAdapter {
         TextView tvParent = convertView.findViewById(R.id.tv_wordbook_parent_title);
         ImageView ivIndicator = convertView.findViewById(R.id.iv_wordbook_parent_indicator);
         CheckBox cbWord = convertView.findViewById(R.id.cb_wordbook_parent);
-
+        ImageView ivMemorizedArrow = convertView.findViewById(R.id.iv_wordbook_parent_arrow_memorized);
         //onBind
 
         tvParent.setText(parentData.getWord());
@@ -83,7 +83,8 @@ public class WordbookExListViewAdapter extends BaseExpandableListAdapter {
 //        편집 모드일 경우
         if (parentData.isEditMode()) {
             ivIndicator.setVisibility(View.GONE);
-             cbWord.setVisibility(View.VISIBLE);
+            ivMemorizedArrow.setVisibility(View.GONE);
+            cbWord.setVisibility(View.VISIBLE);
 
              cbWord.setOnCheckedChangeListener(null);
              cbWord.setChecked(parentData.isSelected());
@@ -99,6 +100,7 @@ public class WordbookExListViewAdapter extends BaseExpandableListAdapter {
 
         } else {
             ivIndicator.setVisibility(View.VISIBLE);
+            ivMemorizedArrow.setVisibility(View.VISIBLE);
             cbWord.setVisibility(View.GONE);
 
             if (isExpanded) {
@@ -106,6 +108,32 @@ public class WordbookExListViewAdapter extends BaseExpandableListAdapter {
             } else {
                 ivIndicator.setImageResource(R.drawable.ic_arrow_up);
             }
+
+            if (parentData.isMemorized()){
+                ivMemorizedArrow.setImageResource(R.drawable.ic_arrow_right);
+                ivMemorizedArrow.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        if (memorizedImageClickListener!=null){
+                            memorizedImageClickListener.OnMemorizedClickListener(view,groupPosition);
+                        }
+                    }
+                });
+            }else{
+                ivMemorizedArrow.setImageResource(R.drawable.ic_arrow_left);
+                ivMemorizedArrow.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (memorizedImageClickListener!=null){
+                            memorizedImageClickListener.OnMemorizedClickListener(view,groupPosition);
+                        }
+                    }
+                });
+
+            }
+
+
         }
 
             return convertView;
@@ -199,6 +227,15 @@ public class WordbookExListViewAdapter extends BaseExpandableListAdapter {
 
     public void setOnSentenceClickListener(OnSentenceClickListener listener){
         this.mClickListener =listener;
+    }
+
+    public interface OnMemorizedImageClickListener {
+        void OnMemorizedClickListener(View v,int gp);
+    }
+    private OnMemorizedImageClickListener memorizedImageClickListener=null;
+
+    public void setOnMemorizedImageClickListener(OnMemorizedImageClickListener listener){
+        this.memorizedImageClickListener =listener;
     }
 
         @Override

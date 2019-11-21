@@ -4,7 +4,7 @@ import com.softsquared.damoyoung.src.popUpWordbookMove.PopupWordMoveListViewItem
 
 import java.util.ArrayList;
 
-public interface PopupWordCopyActivityView {
+public interface PopupWordMoveActivityView {
 
     void validateGetSuccess(String text, ArrayList<PopupWordMoveListViewItem> bookmarkListItems);
     void validateGetFailure(String message);

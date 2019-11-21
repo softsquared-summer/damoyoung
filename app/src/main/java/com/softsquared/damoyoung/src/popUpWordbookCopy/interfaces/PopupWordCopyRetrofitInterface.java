@@ -1,6 +1,6 @@
 package com.softsquared.damoyoung.src.popUpWordbookCopy.interfaces;
 
-import com.softsquared.damoyoung.src.popUpWordbookCopy.models.PopUpWordMoveResponse;
+import com.softsquared.damoyoung.src.popUpWordbookCopy.models.PopupWordCopyResponse;
 
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -12,9 +12,9 @@ public interface PopupWordCopyRetrofitInterface {
 
 
     @GET("/bookmark")
-    Call<PopUpWordMoveResponse> getPopUpBookmark();
+    Call<PopupWordCopyResponse> getPopupBookmark();
 
-    @PATCH("/copyWord ")
-    Call<PopUpWordMoveResponse> patchCopyWord(@Body RequestBody params);
+    @PATCH("/copiedWord")
+    Call<PopupWordCopyResponse> patchCopyWord(@Body RequestBody params);
 
 }

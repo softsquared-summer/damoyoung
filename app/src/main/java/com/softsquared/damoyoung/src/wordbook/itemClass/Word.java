@@ -7,6 +7,7 @@ public class Word {
         this.word = word;
         this.isEditMode =edit;
         this.isChecked = false;
+        this.isMemorized=false;
     }
 
     public String getWord() {
@@ -29,6 +30,7 @@ public class Word {
     private String word;
     private boolean isEditMode;
     private boolean isChecked;
+    private boolean isMemorized;
 
     public boolean isSelected() {
         return isChecked;
@@ -44,5 +46,13 @@ public class Word {
 
     public void setWordNo(int wordNo) {
         this.wordNo = wordNo;
+    }
+
+    public boolean isMemorized() {
+        return isMemorized;
+    }
+
+    public void setMemorized(boolean memorized) {
+        isMemorized = memorized;
     }
 }

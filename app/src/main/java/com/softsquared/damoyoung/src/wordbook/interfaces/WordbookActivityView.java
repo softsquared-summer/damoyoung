@@ -11,6 +11,8 @@ public interface WordbookActivityView {
     void validateMoveFailure(String message);
     void validateCopySuccess(String text);
     void validateCopyFailure(String message);
+    void vaildateMemorizedSuccess(String text);
+    void vaildateMemorizedFailure(String text);
     void vaildateSentenceDeleteSuccess(String text);
     void vaildateSentenceDeleteFailure(String text);
     void validateDeleteSuccess(String text);

@@ -9,7 +9,8 @@ import androidx.annotation.Nullable;
 
 import com.softsquared.damoyoung.R;
 import com.softsquared.damoyoung.src.BaseActivity;
-import com.softsquared.damoyoung.src.popUpWordbookMove.interfaces.PopupWordCopyActivityView;
+import com.softsquared.damoyoung.src.popUpWordbookCopy.interfaces.PopupWordCopyActivityView;
+import com.softsquared.damoyoung.src.popUpWordbookMove.interfaces.PopupWordMoveActivityView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,14 +34,28 @@ public class PopupWordCopyActivity extends BaseActivity implements View.OnClickL
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_wordbook_move);
+        setContentView(R.layout.activity_wordbook_copy);
 
         mWordList = (ArrayList<Integer>)getIntent().getSerializableExtra("wordNo");
         mBookmarkNo = getIntent().getIntExtra("bookmarkNo",0);
         //findViewById
-        mLvBookmarkList = findViewById(R.id.lv_wordbook_dialog_move);
+        mLvBookmarkList = findViewById(R.id.lv_wordbook_dialog_copy);
         mLvBookmarkAdapter = new PopupWordCopyListViewAdapter(mLvBookmarkItems, getApplicationContext());
         mLvBookmarkList.setAdapter(mLvBookmarkAdapter);
+        mLvBookmarkAdapter.setOnCheckedChangeListener(new PopupWordCopyListViewAdapter.OnCheckedChangeListener() {
+            @Override
+            public void OnCheckClick(int pos) {
+                for (int i=0;i<mLvBookmarkAdapter.getCount();i++){
+                    if (i==pos){
+                        mLvBookmarkItems.get(i).setChecked(true);
+                    }else{
+                        mLvBookmarkItems.get(i).setChecked(false);
+                    }
+                }
+                mLvBookmarkAdapter.notifyDataSetChanged();
+
+            }
+        });
 
 
     }
@@ -53,12 +68,12 @@ public class PopupWordCopyActivity extends BaseActivity implements View.OnClickL
     }
 
     private void getPopUpBookmark() {
-        final PopupWordCopyService popupWordMoveService = new PopupWordCopyService(this);
-        popupWordMoveService.getPopUpBookmark();
+        final PopupWordCopyService popupWordCopyService = new PopupWordCopyService(this);
+        popupWordCopyService.getPopUpBookmark();
     }
 
 
-    public void moveWord() {
+    public void copyWord() {
         mLvBookmarkAdapter.notifyDataSetChanged();
         ArrayList<PopupWordCopyListViewItem> data = mLvBookmarkAdapter.getMainItem();
         ArrayList<Integer> bookmarkList = new ArrayList<>();
@@ -89,7 +104,7 @@ public class PopupWordCopyActivity extends BaseActivity implements View.OnClickL
                     params.put("newbookmarkNo", bookmarkList.get(0));
 //                    params.put("bookmark", jArray);//배열을 넣음
 
-                    patchWordMove(params);
+                    patchWordCopy(params);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -98,16 +113,16 @@ public class PopupWordCopyActivity extends BaseActivity implements View.OnClickL
 
     }
 
-    public void patchWordMove(JSONObject param){
-        final PopupWordCopyService popupWordMoveService = new PopupWordCopyService(this);
-        popupWordMoveService.patchWordMove(param);
+    public void patchWordCopy(JSONObject param){
+        final PopupWordCopyService popupWordCopyService = new PopupWordCopyService(this);
+        popupWordCopyService.patchWordCopy(param);
     }
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_wordbook_move_dialog_confirm:
+            case R.id.tv_wordbook_copy_dialog_confirm:
                 mLvBookmarkAdapter.notifyDataSetChanged();
-                moveWord();
+                copyWord();
                 break;
 
         }
@@ -129,15 +144,15 @@ public class PopupWordCopyActivity extends BaseActivity implements View.OnClickL
     }
 
     @Override
-    public void validateMoveSuccess(String text) {
+    public void validateCopySuccess(String text) {
         showCustomToast(text);
         finish();
     }
 
     @Override
-    public void validateMoveFailure(String message) {
-    showCustomToast(message);
+    public void validateCopyFailure(String message) {
+        showCustomToast(message);
+        finish();
     }
-
 
 }

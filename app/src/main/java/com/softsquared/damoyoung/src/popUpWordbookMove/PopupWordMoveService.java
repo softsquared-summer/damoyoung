@@ -1,6 +1,6 @@
 package com.softsquared.damoyoung.src.popUpWordbookMove;
 
-import com.softsquared.damoyoung.src.popUpWordbookMove.interfaces.PopupWordCopyActivityView;
+import com.softsquared.damoyoung.src.popUpWordbookMove.interfaces.PopupWordMoveActivityView;
 import com.softsquared.damoyoung.src.popUpWordbookMove.interfaces.PopupWordMoveRetrofitInterface;
 import com.softsquared.damoyoung.src.popUpWordbookMove.models.PopUpWordMoveResponse;
 
@@ -16,9 +16,9 @@ import static com.softsquared.damoyoung.src.ApplicationClass.getRetrofit;
 
 public class PopupWordMoveService {
 
-    private final PopupWordCopyActivityView mPopupWordMoveActivityView;
+    private final PopupWordMoveActivityView mPopupWordMoveActivityView;
 
-    public PopupWordMoveService(final PopupWordCopyActivityView popupWordMoveActivityView) {
+    public PopupWordMoveService(final PopupWordMoveActivityView popupWordMoveActivityView) {
         this.mPopupWordMoveActivityView = popupWordMoveActivityView;
     }
 

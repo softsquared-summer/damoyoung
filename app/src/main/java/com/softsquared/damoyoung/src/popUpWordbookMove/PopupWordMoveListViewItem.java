@@ -40,4 +40,6 @@ public class PopupWordMoveListViewItem {
     public int getBookmarkNo() {
         return bookmarkNo;
     }
+
+
 }

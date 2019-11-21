@@ -1,11 +1,12 @@
 package com.softsquared.damoyoung.src.popUpWordbookCopy.models;
 
 import com.google.gson.annotations.SerializedName;
+import com.softsquared.damoyoung.src.popUpWordbookCopy.PopupWordCopyListViewItem;
 import com.softsquared.damoyoung.src.popUpWordbookMove.PopupWordMoveListViewItem;
 
 import java.util.ArrayList;
 
-public class PopUpWordMoveResponse {
+public class PopupWordCopyResponse {
     @SerializedName("code")
     private int code;
 
@@ -16,9 +17,9 @@ public class PopUpWordMoveResponse {
     private boolean isSuccess;
 
     @SerializedName("result")
-    private ArrayList<PopupWordMoveListViewItem> bookmarkListItems;
+    private ArrayList<PopupWordCopyListViewItem> bookmarkListItems;
 
-    public ArrayList<PopupWordMoveListViewItem> getBookmarkListItems() {
+    public ArrayList<PopupWordCopyListViewItem> getBookmarkListItems() {
         return bookmarkListItems;
     }
 

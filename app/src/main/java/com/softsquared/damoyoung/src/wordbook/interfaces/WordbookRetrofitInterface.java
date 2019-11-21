@@ -24,6 +24,9 @@ public interface WordbookRetrofitInterface {
     @DELETE("/bookmark/{bookmarkNo}/sentence/{sentenceNo}")
     Call<WordbookResponse> deleteSentence(@Path("bookmarkNo") int bookmarkNo, @Path("sentenceNo") int sentenceNo);
 
+    @PATCH("/bookmark/{bookmarkNo}/word/{wordNo}")
+    Call<WordbookResponse> patchWordMemorized(@Path("bookmarkNo") int bookmarkNo, @Path("wordNo") int wordNo,@Body RequestBody params);
+
 
 
 
