@@ -79,9 +79,9 @@ public class BookmarkService {
                 } else if (bookmarkGetResponse.getCode() == 201) {
                     //유효하지 않는 토큰
                     mBookmarkActivityView.validateGetFailure(bookmarkGetResponse.getMessage());
-                }else {
+                } else {
                     //북마크 조회 성공
-                    mBookmarkActivityView.validateGetSuccess(bookmarkGetResponse.getMessage(),bookmarkGetResponse.getBookmarkListItems());
+                    mBookmarkActivityView.validateGetSuccess(bookmarkGetResponse.getMessage(), bookmarkGetResponse.getBookmarkListItems());
                 }
 
             }
@@ -114,10 +114,10 @@ public class BookmarkService {
                 } else if (bookmarkResponse.getCode() == 100) {
                     //북마크 삭제 성공
                     mBookmarkActivityView.validateDeleteSuccess(bookmarkResponse.getMessage());
-                }else if(bookmarkResponse.getCode() == 201){
+                } else if (bookmarkResponse.getCode() == 201) {
                     //북마크 조회 성공
                     mBookmarkActivityView.validateDeleteFailure(bookmarkResponse.getMessage());
-                }else{
+                } else {
                     mBookmarkActivityView.validateDeleteFailure(bookmarkResponse.getMessage());
                 }
 
@@ -127,6 +127,44 @@ public class BookmarkService {
             @Override
             public void onFailure(Call<BookmarkResponse> call, Throwable t) {
                 mBookmarkActivityView.validateDeleteFailure(null);
+            }
+        });
+    }
+
+    void patchBookmark(int bookmarkNo, JSONObject params) {
+
+        final BookmarkRetrofitInterface bookmarkRetrofitInterface = getRetrofit().create(BookmarkRetrofitInterface.class);
+        bookmarkRetrofitInterface.modifyBookmark(bookmarkNo, RequestBody.create(params.toString(), MEDIA_TYPE_JSON)).enqueue(new Callback<BookmarkResponse>() {
+            @Override
+            public void onResponse(Call<BookmarkResponse> call, Response<BookmarkResponse> response) {
+                if (response == null) {
+                    mBookmarkActivityView.vaildateModifyFailure("북마크 생성에 실패하였습니다.");
+                    return;
+                }
+                final BookmarkResponse bookmarkResponse = response.body();
+
+                if (bookmarkResponse == null) {
+                    mBookmarkActivityView.vaildateModifyFailure(null);
+                    return;
+                } else if (bookmarkResponse.getCode() == 100) {
+                    //북마크 이름 수정 성공
+                    mBookmarkActivityView.vaildateModifySuccess(bookmarkResponse.getMessage());
+                } else if (bookmarkResponse.getCode() == 107) {
+                    //북마크 번호 미입력시
+                    mBookmarkActivityView.vaildateModifyFailure(bookmarkResponse.getMessage());
+                } else if (bookmarkResponse.getCode() == 400) {
+                    //유효한 북마크 번호 아닐시
+                    mBookmarkActivityView.vaildateModifyFailure(bookmarkResponse.getMessage());
+                } else {
+                    mBookmarkActivityView.vaildateModifyFailure(bookmarkResponse.getMessage());
+                }
+
+            }
+
+
+            @Override
+            public void onFailure(Call<BookmarkResponse> call, Throwable t) {
+                mBookmarkActivityView.vaildateModifyFailure(null);
             }
         });
 

@@ -12,4 +12,6 @@ public interface BookmarkActivityView {
     void validateDeleteFailure(String message);
     void validateGetSuccess(String text, ArrayList<BookmarkListItem> bookmarkListItems);
     void validateGetFailure(String message);
+    void vaildateModifySuccess(String text);
+    void vaildateModifyFailure(String text);
 }

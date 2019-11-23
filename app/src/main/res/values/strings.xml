@@ -44,4 +44,6 @@
     <string name="setting">설정</string>
     <string name="no_history">최근 검색어가 없습니다.</string>
     <string name="search_result">검색 결과</string>
+    <string name="modify">수정</string>
+    <string name="folder_modify">폴더명 수정</string>
 </resources>

@@ -103,6 +103,8 @@ public class WordbookExListViewAdapter extends BaseExpandableListAdapter {
             tvParent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    //adapter에서 intent를 넘기는법
                     Intent intent = new Intent(v.getContext(), SearchResultActivity.class);
                     intent.putExtra("keyword",parentData.getWord());
                     mContext.startActivity(intent);

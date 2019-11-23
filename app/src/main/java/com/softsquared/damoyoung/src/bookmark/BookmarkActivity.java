@@ -30,12 +30,15 @@ public class BookmarkActivity extends BaseActivity implements BookmarkActivityVi
     private String mName;
     private int mBookmarkNo;
     private int mDeletePosition;
+    private int mEditPostion;
+    private boolean mEditMode;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bookmark);
 
+        mEditMode=false;
         mLvBookmark = findViewById(R.id.lv_bookmark);
         mTvEdit = findViewById(R.id.tv_bookmark_edit);
         mTvConfirm = findViewById(R.id.tv_bookmark_confirm);
@@ -44,35 +47,23 @@ public class BookmarkActivity extends BaseActivity implements BookmarkActivityVi
 
         mBookmarkListViewAdapater = new BookmarkListViewAdapater(mBookmarkListItems, getApplicationContext(), this);
         mLvBookmark.setAdapter(mBookmarkListViewAdapater);
-        mLvBookmark.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                //기록 i==0
-                if (i == 0) {
-                    startActivity(new Intent(BookmarkActivity.this, HistoryActivity.class));
-                } else {
-                    mBookmarkNo = mBookmarkListItems.get(i).getBookmarkNo();
-                    if (mBookmarkNo == 0) {
-                        showCustomToast("북마크에 접근할 수 없습니다.");
-                        return;
-                    }
-                    String bookmarkTitle = mBookmarkListItems.get(i).getTitle();
-                    Intent intent = new Intent(BookmarkActivity.this, WordbookActivity.class);
-                    intent.putExtra("bookmarkNo", mBookmarkNo);
-                    intent.putExtra("bookmarkTitle", bookmarkTitle);
-                    startActivity(intent);
-                }
+
+        mBookmarkListViewAdapater.setOnFolderNameModifyListener(new BookmarkListViewAdapater.OnFolderNameModifyListener() {
+            @Override
+            public void OnFolderModify(String name, int pos) {
+                mEditPostion = pos;
+                mName = name;
+                int bookmarkNo = mBookmarkListItems.get(mEditPostion).getBookmarkNo();
+                modifyBookmark(bookmarkNo, mName);
             }
         });
-
         mBookmarkListViewAdapater.setOnCheckedChangeListener(new BookmarkListViewAdapater.OnCheckedChangeListener() {
             @Override
             public void OnCheckClick(int pos) {
                 mDeletePosition = pos;
                 int bookmarkNo = mBookmarkListItems.get(mDeletePosition).getBookmarkNo();
                 deleteBookmark(bookmarkNo);
-
             }
         });
     }
@@ -110,6 +101,24 @@ public class BookmarkActivity extends BaseActivity implements BookmarkActivityVi
         bookmarkService.deleteBookmark(bookmarkNo);
     }
 
+    public void modifyBookmark(int bookmarkNo, String name) {
+        final BookmarkService bookmarkService = new BookmarkService(this);
+        try {
+            if (bookmarkNo == 0) {
+                showCustomToast("유효하지 않은 북마크 번호입니다");
+                return;
+            }
+            if (name.length() == 0) {
+                showCustomToast("폴더명을 입력하세요");
+                return;
+            }
+            JSONObject params = new JSONObject();
+            params.put("name", name);
+            bookmarkService.patchBookmark(bookmarkNo, params);
+        } catch (JSONException e) {
+            showCustomToast("");
+        }
+    }
 
     //onClick
     public void onClick(View v) {
@@ -133,21 +142,13 @@ public class BookmarkActivity extends BaseActivity implements BookmarkActivityVi
                 mBookmarkNewFolderDialog.show();
                 break;
             case R.id.tv_bookmark_edit:
-                for (int i = 0; i < mBookmarkListItems.size(); i++) {
-                    mBookmarkListItems.get(i).setEditMode(true);
-                }
-                mTvEdit.setVisibility(View.GONE);
-                mTvConfirm.setVisibility(View.VISIBLE);
-                mTvNewFolder.setVisibility(View.GONE);
+                mEditMode=true;
+              editMode();
                 refresh();
                 break;
             case R.id.tv_bookmark_confirm:
-                for (int i = 0; i < mBookmarkListItems.size(); i++) {
-                    mBookmarkListItems.get(i).setEditMode(false);
-                }
-                mTvEdit.setVisibility(View.VISIBLE);
-                mTvConfirm.setVisibility(View.GONE);
-                mTvNewFolder.setVisibility(View.VISIBLE);
+                mEditMode=false;
+                normalMode();
                 refresh();
                 break;
         }
@@ -188,6 +189,12 @@ public class BookmarkActivity extends BaseActivity implements BookmarkActivityVi
         for (int i = 0; i < data.size(); i++) {
             mBookmarkListItems.add(new BookmarkListItem(data.get(i).getBookmarkNo(), data.get(i).getTitle()));
         }
+
+        if(mEditMode){
+            editMode();
+        }else{
+            normalMode();
+        }
         mBookmarkListViewAdapater.notifyDataSetChanged();
     }
 
@@ -197,5 +204,35 @@ public class BookmarkActivity extends BaseActivity implements BookmarkActivityVi
         mBookmarkListItems.add(new BookmarkListItem(0, "기록"));
         mBookmarkListItems.get(0).setFirst(true);
         mBookmarkListViewAdapater.notifyDataSetChanged();
+    }
+
+    public void editMode(){
+        for (int i = 0; i < mBookmarkListItems.size(); i++) {
+            mBookmarkListItems.get(i).setEditMode(true);
+        }
+        mTvEdit.setVisibility(View.GONE);
+        mTvConfirm.setVisibility(View.VISIBLE);
+        mTvNewFolder.setVisibility(View.GONE);
+    }
+    public void normalMode(){
+        for (int i = 0; i < mBookmarkListItems.size(); i++) {
+            mBookmarkListItems.get(i).setEditMode(false);
+        }
+        mTvEdit.setVisibility(View.VISIBLE);
+        mTvConfirm.setVisibility(View.GONE);
+        mTvNewFolder.setVisibility(View.VISIBLE);
+    }
+    @Override
+    public void vaildateModifySuccess(String text) {
+        getBookmark();
+    }
+
+    @Override
+    public void vaildateModifyFailure(String text) {
+        if (text!=null){
+            showCustomToast(text);
+        }else{
+            showCustomToast("네트워크 연결 실패");
+        }
     }
 }

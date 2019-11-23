@@ -72,7 +72,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="16dp"
             android:onClick="onClick"
-        android:padding="8dp"
+            android:padding="8dp"
             android:text="@string/new_folder"
             android:textColor="@color/colorDamoyoungText"
             android:textSize="16sp"
@@ -96,6 +96,8 @@
             android:textSize="16sp"
             android:textStyle="bold" />
 
+
+
         <TextView
             android:id="@+id/tv_bookmark_confirm"
             android:layout_width="wrap_content"
@@ -104,7 +106,7 @@
             android:layout_marginEnd="16dp"
             android:onClick="onClick"
             android:paddingStart="6dp"
-            android:paddingEnd="6dp"
+            android:paddingEnd="8dp"
             android:text="@string/confirm"
             android:textColor="@color/colorDamoyoungText"
             android:textSize="16sp"
