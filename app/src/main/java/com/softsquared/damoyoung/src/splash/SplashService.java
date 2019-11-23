@@ -37,13 +37,11 @@ public class SplashService {
                 if (splashResponse == null) {
                     mSplashActivityView.validateFailure(null);
                     return;
-                } else if (splashResponse.getCode() == 101) {
-                    mSplashActivityView.validateDubSuccess(splashResponse.getMessage());
                 } else if (splashResponse.getCode() == 102) {
                     //유효하지 않는 토큰
                     mSplashActivityView.validateFailure(splashResponse.getMessage());
                 } else {
-                    mSplashActivityView.validateSuccess(splashResponse.getMessage(),splashResponse.getResult().getJwt());
+                    mSplashActivityView.validateSuccess(splashResponse.getMessage(), splashResponse.getResult().getJwt());
                 }
 
             }

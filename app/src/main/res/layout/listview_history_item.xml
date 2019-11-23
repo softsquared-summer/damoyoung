@@ -16,7 +16,9 @@
         android:textStyle="bold"
         android:textColor="@color/colorBlack"
         android:text="hi"
-        android:paddingStart="24dp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:layout_marginStart="8dp"
         />
     <CheckBox
         android:id="@+id/cb_history"

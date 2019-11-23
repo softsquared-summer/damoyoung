@@ -61,7 +61,7 @@ public class BookmarkListViewAdapater extends BaseAdapter {
 
         // 아이템 내 각 위젯에 데이터 반영 데이터 파싱
         holder.tvFolderName.setText(bookmarkListitem.getTitle());
-        if (bookmarkListitem.getFirst()){
+        if (bookmarkListitem.getFirst()){//첫번째==기록, 폴더아이콘을 검은색으로 그 외는 흰색
             holder.ivFolderIcon.setImageResource(R.drawable.ic_folder_black);
         }else{
             holder.ivFolderIcon.setImageResource(R.drawable.ic_folder_white);
@@ -109,6 +109,7 @@ public class BookmarkListViewAdapater extends BaseAdapter {
         return mBookmarkListItems.get(position);
     }
 
+    //interface
     public interface OnCheckedChangeListener {
         void OnCheckClick(int pos);
     }

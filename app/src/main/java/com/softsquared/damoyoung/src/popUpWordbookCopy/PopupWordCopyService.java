@@ -1,5 +1,7 @@
 package com.softsquared.damoyoung.src.popUpWordbookCopy;
 
+import android.util.Log;
+
 import com.softsquared.damoyoung.src.popUpWordbookCopy.interfaces.PopupWordCopyActivityView;
 import com.softsquared.damoyoung.src.popUpWordbookCopy.interfaces.PopupWordCopyRetrofitInterface;
 import com.softsquared.damoyoung.src.popUpWordbookCopy.models.PopupWordCopyResponse;
@@ -74,11 +76,49 @@ public class PopupWordCopyService {
                     return;
                 } else if (popUpWordCopyResponse.getCode() == 100) {
                     //단어 복사 성공
+                    Log.d("TAG", popUpWordCopyResponse.getMessage());
                     mPopupWordCopyActivityView.validateCopySuccess(popUpWordCopyResponse.getMessage());
                 } else if (popUpWordCopyResponse.getCode() == 201) {
                     //유효하지 않는 토큰
+                    Log.d("TAG", popUpWordCopyResponse.getMessage());
+
+                    mPopupWordCopyActivityView.validateCopyFailure(popUpWordCopyResponse.getMessage());
+                } else if (popUpWordCopyResponse.getCode() == 120) {
+                    //유효하지 않는 토큰
+                    Log.d("TAG", popUpWordCopyResponse.getMessage());
+
+                    mPopupWordCopyActivityView.validateCopyFailure(popUpWordCopyResponse.getMessage());
+                } else if (popUpWordCopyResponse.getCode() == 121) {
+                    //유효하지 않는 토큰
+                    Log.d("TAG", popUpWordCopyResponse.getMessage());
+                    //유효하지 않는 토큰
+                    mPopupWordCopyActivityView.validateCopyFailure(popUpWordCopyResponse.getMessage());
+                } else if (popUpWordCopyResponse.getCode() == 122) {
+                    //유효하지 않는 토큰
+                    Log.d("TAG", popUpWordCopyResponse.getMessage());
+                    mPopupWordCopyActivityView.validateCopyFailure(popUpWordCopyResponse.getMessage());
+                } else if (popUpWordCopyResponse.getCode() == 300) {
+                    //유효하지 않는 토큰
+                    Log.d("TAG", popUpWordCopyResponse.getMessage());
+                    mPopupWordCopyActivityView.validateCopyFailure(popUpWordCopyResponse.getMessage());
+                } else if (popUpWordCopyResponse.getCode() == 301) {
+                    //유효하지 않는 토큰
+                    Log.d("TAG", popUpWordCopyResponse.getMessage());
+                    mPopupWordCopyActivityView.validateCopyFailure(popUpWordCopyResponse.getMessage());
+                } else if (popUpWordCopyResponse.getCode() == 400) {
+                    //유효하지 않는 토큰
+                    Log.d("TAG", popUpWordCopyResponse.getMessage());
+                    mPopupWordCopyActivityView.validateCopyFailure(popUpWordCopyResponse.getMessage());
+                } else if (popUpWordCopyResponse.getCode() == 500) {
+                    //유효하지 않는 토큰
+                    Log.d("TAG", popUpWordCopyResponse.getMessage());
+                    mPopupWordCopyActivityView.validateCopyFailure(popUpWordCopyResponse.getMessage());
+                } else if (popUpWordCopyResponse.getCode() == 800) {
+                    //유효하지 않는 토큰
+                    Log.d("TAG", popUpWordCopyResponse.getMessage());
                     mPopupWordCopyActivityView.validateCopyFailure(popUpWordCopyResponse.getMessage());
                 } else {
+                    Log.d("TAG", popUpWordCopyResponse.getMessage());
                     mPopupWordCopyActivityView.validateCopyFailure(popUpWordCopyResponse.getMessage());
                 }
 
@@ -86,6 +126,7 @@ public class PopupWordCopyService {
 
             @Override
             public void onFailure(Call<PopupWordCopyResponse> call, Throwable t) {
+                Log.d("TAG", t.getMessage());
                 mPopupWordCopyActivityView.validateCopyFailure("네트워크 연결 실패");
             }
         });

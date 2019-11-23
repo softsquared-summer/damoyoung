@@ -7,12 +7,14 @@ public class SplashResponse {
     @SerializedName("result")
     Result result;
 
-    public class Result{
+    public class Result {
 
         @SerializedName("jwt")
         private String jwt;
 
-        public String getJwt() { return jwt; }
+        public String getJwt() {
+            return jwt;
+        }
     }
 
     @SerializedName("code")
@@ -25,7 +27,9 @@ public class SplashResponse {
     private boolean isSuccess;
 
 
-    public Result getResult() { return result; }
+    public Result getResult() {
+        return result;
+    }
 
     public int getCode() {
         return code;

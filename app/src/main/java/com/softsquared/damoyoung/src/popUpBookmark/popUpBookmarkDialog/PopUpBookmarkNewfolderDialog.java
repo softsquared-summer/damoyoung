@@ -42,11 +42,10 @@ public class PopUpBookmarkNewfolderDialog extends Dialog {
             @Override
             public void onClick(View view) {
                 String name = mEtNewFolderName.getText().toString();
-                if(name.length()!=0){
+                if (name.length() != 0) {
                     mQuickBookmarkNewFolderDialogListener.onPositiveClicked(name);
                     dismiss();
-                }
-                else{
+                } else {
                     Toast.makeText(mContext, "폴더명을 입력하세요", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -54,9 +53,9 @@ public class PopUpBookmarkNewfolderDialog extends Dialog {
     }
 
     //생성자 생성
-    public PopUpBookmarkNewfolderDialog(@NonNull Context context){
-    super(context);
-        mContext=context;
+    public PopUpBookmarkNewfolderDialog(@NonNull Context context) {
+        super(context);
+        mContext = context;
     }
 
 

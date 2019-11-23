@@ -13,7 +13,7 @@ public class HistoryListViewItem {
     }
 
     public void setKeyword(String keyword) {
-        this.keyword = keyword ;
+        this.keyword = keyword;
     }
 
     public String getKeyword() {

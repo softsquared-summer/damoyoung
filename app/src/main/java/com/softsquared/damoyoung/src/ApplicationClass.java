@@ -3,6 +3,8 @@ package com.softsquared.damoyoung.src;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.content.res.Resources;
 
 import com.softsquared.damoyoung.config.XAccessTokenInterceptor;
 

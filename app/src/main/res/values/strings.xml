@@ -6,7 +6,6 @@
     <string name="kor_eng">한:영/한</string>
     <string name="site_priority">사이트 우선순위</string>
     <string name="title_activity_priority">PriorityActivity</string>
-    <string name="newFolder">새 폴더</string>
     <string name="edit">편집</string>
     <string name="confirm">완료</string>
     <string name="memorized">암기</string>
@@ -31,4 +30,18 @@
     <string name="admob_app_id_for_test">ca-app-pub-3940256099942544~3347511713</string>
     <string name="banner_ad_unit_id">ca-app-pub-4075482689900677/4420746499</string>
     <string name="banner_ad_unit_id_for_test">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="app_version">다모영 1.0.0</string>
+    <string name="app_info">다 모인 영어, 다모영은 영어 공부를 하는 사람들을 위한 사전 사이트 비교 어플리케이션입니다.
+        개인의 선호도에 따라 사전 사이트 비교 순서를 정할 수 있습니다.
+검색한 단어 뿐만 아니라 원하는 예문을 드래그 후 저장하여 영어 공부에 활용해보세요.
+        저장한 단어와 예문은 암기/미암기 여부에 따라 자유롭게 관리할 수 있습니다.
+        단어장에서 단어를 클릭하면 다시 검색결과를 확인할 수 있는 직관적인 기능도 제공합니다.
+사용자들이 다모영을 알차게 활용하여 영어의 고수가 되기를 바랍니다.</string>
+    <string name="developer_info">Summer (Developer) | whgusdn528@gmail.com\nSoyo (Developer) | p_0_start@naver.com\nSuzie (Designer) | sujisuzieshin@gmail.com
+
+        </string>
+    <string name="ok">확인</string>
+    <string name="setting">설정</string>
+    <string name="no_history">최근 검색어가 없습니다.</string>
+    <string name="search_result">검색 결과</string>
 </resources>

@@ -23,15 +23,12 @@ public class PopupBookmarkActivity extends BaseActivity implements View.OnClickL
 
     //popup 액티비티 다이얼로그
 
-
-    private TextView tvNewFolder, tvConfirm;
     private ArrayList<PopupBookmarkListViewItem> mLvBookmarkItems = new ArrayList<>();
     private PopupBookmarkListViewAdapter mLvBookmarkAdapter;
     private ListView mLvBookmarkList;
     private String mWord, example;
     private int type;
     private String mName;
-    private int mBookmarkNo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,17 +38,15 @@ public class PopupBookmarkActivity extends BaseActivity implements View.OnClickL
 
         mWord = getIntent().getStringExtra("word");
         example = getIntent().getStringExtra("sentence");
-        type = getIntent().getIntExtra("type",0);
-        if (mWord ==null){
-            mWord ="";
+        type = getIntent().getIntExtra("type", 0);
+        if (mWord == null) {
+            mWord = "";
         }
-        if (example==null){
-            example="";
+        if (example == null) {
+            example = "";
         }
 
         //findViewById
-        tvNewFolder = findViewById(R.id.tv_popup_new_folder);
-        tvConfirm = findViewById(R.id.tv_popup_ok);
         mLvBookmarkList = findViewById(R.id.lv_popup_bookmark);
         mLvBookmarkAdapter = new PopupBookmarkListViewAdapter(mLvBookmarkItems, getApplicationContext());
         mLvBookmarkList.setAdapter(mLvBookmarkAdapter);
@@ -100,36 +95,36 @@ public class PopupBookmarkActivity extends BaseActivity implements View.OnClickL
             }
         }
 
-                if (bookmarkList.size()==0){
-                    showCustomToast("북마크를 선택해주세요");
-                    return;
-                }
-                JSONObject params = new JSONObject();
+        if (bookmarkList.size() == 0) {
+            showCustomToast("북마크를 선택해주세요");
+            return;
+        }
+        JSONObject params = new JSONObject();
 
-                try {
-                    JSONArray jArray = new JSONArray();//배열이 필요할때
-                    for (int i = 0; i < bookmarkList.size(); i++)//배열
-                    {
-                        JSONObject sObject = new JSONObject();//배열 내에 들어갈 json
-                        sObject.put("markNum", bookmarkList.get(i));
-                        jArray.put(sObject);
-                    }
-                    params.put("word", mWord);
-                    params.put("example",example);
-                    params.put("type", type);
-                    params.put("bookmark", jArray);//배열을 넣음
+        try {
+            JSONArray jArray = new JSONArray();//배열이 필요할때
+            for (int i = 0; i < bookmarkList.size(); i++)//배열
+            {
+                JSONObject sObject = new JSONObject();//배열 내에 들어갈 json
+                sObject.put("markNum", bookmarkList.get(i));
+                jArray.put(sObject);
+            }
+            params.put("word", mWord);
+            params.put("example", example);
+            params.put("type", type);
+            params.put("bookmark", jArray);//배열을 넣음
 
-                    System.out.println(example);
-                    postWord(params);
+            System.out.println(example);
+            postWord(params);
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
 
     }
 
-    public void postWord(JSONObject param){
+    public void postWord(JSONObject param) {
         final PopUpBookmarkService popUpBookmarkService = new PopUpBookmarkService(this);
         popUpBookmarkService.postSaveWord(param);
     }
@@ -178,7 +173,7 @@ public class PopupBookmarkActivity extends BaseActivity implements View.OnClickL
     public void validateGetSuccess(String text, ArrayList<PopupBookmarkListViewItem> data) {
         mLvBookmarkItems.clear();
         for (int i = 0; i < data.size(); i++) {
-            mLvBookmarkItems.add(new PopupBookmarkListViewItem(data.get(i).getBookmarkNo(),data.get(i).getKeyword()));
+            mLvBookmarkItems.add(new PopupBookmarkListViewItem(data.get(i).getBookmarkNo(), data.get(i).getKeyword()));
         }
         mLvBookmarkAdapter.notifyDataSetChanged();
     }

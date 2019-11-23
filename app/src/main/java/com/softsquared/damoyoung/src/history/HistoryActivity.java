@@ -59,15 +59,12 @@ public class HistoryActivity extends BaseActivity {
             mHistoryListItems.get(i).setSelected(false);
         }
         mHistoryListViewAdapter.notifyDataSetChanged();
-
     }
 
     @Override
     public void onStop() {
         super.onStop();
-
-
-
+        //종료 전 편집과 체크박스를 풀어주고 저장소에 값을 저장한다.
         for (int i = 0; i < mHistoryListItems.size(); i++) {
             mHistoryListItems.get(i).setChkShow(false);
             mHistoryListItems.get(i).setSelected(false);
@@ -76,15 +73,15 @@ public class HistoryActivity extends BaseActivity {
         SharedPreferences.Editor editor = sSharedPreferences.edit();
         String json = gson.toJson(mHistoryListItems);
         editor.putString("recentList", json);
-        editor.commit();
+        editor.apply();
     }
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_history_arrow_back:
+            case R.id.iv_history_arrow_back: //뒤로가기
                 finish();
                 break;
-            case R.id.tv_bookmark_history_edit:
+            case R.id.tv_bookmark_history_edit: //편집
                 for (int i = 0; i < mHistoryListItems.size(); i++) {
                     mHistoryListItems.get(i).setChkShow(true);
                 }
@@ -94,7 +91,7 @@ public class HistoryActivity extends BaseActivity {
                 mTvConfirm.setVisibility(View.VISIBLE);
                 mHistoryListViewAdapter.notifyDataSetChanged();
                 break;
-            case R.id.tv_bookmark_history_all_select:
+            case R.id.tv_bookmark_history_all_select: //전체 선택
                 if (isAllSelect){
                     for (int i = 0; i < mHistoryListItems.size(); i++) {
                         mHistoryListItems.get(i).setSelected(false);

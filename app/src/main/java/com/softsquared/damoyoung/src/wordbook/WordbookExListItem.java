@@ -7,7 +7,6 @@ import java.util.ArrayList;
 public class WordbookExListItem {
 
 
-
     @SerializedName("word_no")
     private int wordNo;
     @SerializedName("word")
@@ -20,7 +19,7 @@ public class WordbookExListItem {
         return sentenceList;
     }
 
-    public WordbookExListItem(ArrayList<Sentence> sentenceList){
+    public WordbookExListItem(ArrayList<Sentence> sentenceList) {
         this.sentenceList = sentenceList;
     }
 
@@ -34,7 +33,7 @@ public class WordbookExListItem {
     }
 
 
-    public class Sentence{
+    public class Sentence {
 
         private boolean isSelected;
 

@@ -1,4 +1,4 @@
-package com.softsquared.damoyoung.src.main.webView;
+package com.softsquared.damoyoung.src.webView;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -15,16 +15,15 @@ import androidx.fragment.app.Fragment;
 import com.softsquared.damoyoung.R;
 import com.softsquared.damoyoung.src.main.MainActivity;
 
-import retrofit2.http.POST;
-
 
 public class WebViewFragment extends Fragment {
-//    private Activity activity;
+    //    private Activity activity;
     private WebView mWebView;
     private WebSettings mWebSettings;
-    private String mKeyword="";
-    private String mUrl="";
-    public WebViewFragment(String url,String keyword){
+    private String mKeyword = "";
+    private String mUrl = "";
+
+    public WebViewFragment(String url, String keyword) {
         this.mUrl = url;
         this.mKeyword = keyword;
     }
@@ -54,7 +53,7 @@ public class WebViewFragment extends Fragment {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
 
                 //This is the filter
-                if (event.getAction()!=KeyEvent.ACTION_DOWN)
+                if (event.getAction() != KeyEvent.ACTION_DOWN)
                     return true;
 
 
@@ -62,7 +61,7 @@ public class WebViewFragment extends Fragment {
                     if (mWebView.canGoBack()) {
                         mWebView.goBack();
                     } else {
-                        ((MainActivity)getActivity()).onBackPressed();
+                        ((MainActivity) getActivity()).onBackPressed();
                     }
 
                     return true;
@@ -78,7 +77,7 @@ public class WebViewFragment extends Fragment {
     }
 
 
-    public String getUrl(){
+    public String getUrl() {
         return mUrl;
     }
 
@@ -94,21 +93,23 @@ public class WebViewFragment extends Fragment {
         mWebView.resumeTimers();
     }
 
-    public void loadUrl(String keyword){
+    public void loadUrl(String keyword) {
 
         mWebView.clearCache(true);
         mWebView.reload();
         mWebView.loadUrl("about:blank");
-            if (keyword.length()!=0){
-                mWebView.loadUrl(getUrl()+ keyword); // 웹뷰에 표시할 웹사이트 주소, 웹뷰 시작
-            }
-            else {
-                keyword="";
-                mWebView.loadUrl(getUrl()+ keyword); // 웹뷰에 표시할 웹사이트 주소, 웹뷰 시작
-            }
+        if (keyword.length() != 0) {
+            mWebView.loadUrl(getUrl() + keyword); // 웹뷰에 표시할 웹사이트 주소, 웹뷰 시작
+        } else {
+            keyword = "";
+            mWebView.loadUrl(getUrl() + keyword); // 웹뷰에 표시할 웹사이트 주소, 웹뷰 시작
+        }
 
     }
-
-
-
+    @Override
+    public void onDestroy() {
+        if (mWebView != null)
+            mWebView.destroy();
+        super.onDestroy();
+    }
 }

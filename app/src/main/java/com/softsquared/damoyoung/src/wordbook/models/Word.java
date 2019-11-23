@@ -1,13 +1,13 @@
-package com.softsquared.damoyoung.src.wordbook.itemClass;
+package com.softsquared.damoyoung.src.wordbook.models;
 
 public class Word {
 
-    public Word(int wordNo, String word,boolean edit) {
+    public Word(int wordNo, String word, boolean edit) {
         this.wordNo = wordNo;
         this.word = word;
-        this.isEditMode =edit;
+        this.isEditMode = edit;
         this.isChecked = false;
-        this.isMemorized=false;
+        this.isMemorized = false;
     }
 
     public String getWord() {

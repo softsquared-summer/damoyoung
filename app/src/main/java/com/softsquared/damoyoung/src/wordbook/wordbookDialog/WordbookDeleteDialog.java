@@ -13,7 +13,7 @@ import com.softsquared.damoyoung.R;
 
 public class WordbookDeleteDialog extends Dialog {
 
-    private TextView mTvDelete,mTvCancel;
+    private TextView mTvDelete, mTvCancel;
     private Context mContext;
     private WordbookDeleteDialogListener mWordbookDeleteDialogListener;
 
@@ -39,7 +39,7 @@ public class WordbookDeleteDialog extends Dialog {
             @Override
             public void onClick(View view) {
                 mWordbookDeleteDialogListener.onPositiveClicked();
-                    dismiss();
+                dismiss();
 
             }
         });
@@ -50,10 +50,11 @@ public class WordbookDeleteDialog extends Dialog {
             }
         });
     }
+
     //생성자 생성
-    public WordbookDeleteDialog(@NonNull Context context){
-    super(context);
-        mContext=context;
+    public WordbookDeleteDialog(@NonNull Context context) {
+        super(context);
+        mContext = context;
     }
 
 

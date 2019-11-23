@@ -20,46 +20,50 @@
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="n">
 
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="@string/admob_app_id_for_test"/>
-
-        <receiver android:name="com.softsquared.template.NewAppWidget">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/new_app_widget_info" />
-        </receiver>
-
         <activity
+            android:screenOrientation="portrait"
             android:name=".src.priority.PriorityActivity"
             android:label="@string/title_activity_priority"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".src.main.MainActivity"
-            tools:ignore="ExtraText"></activity>
-        <activity android:name=".src.setting.SettingActivity" />
+            tools:ignore="ExtraText" />
         <activity
+            android:screenOrientation="portrait"
+            android:name=".src.setting.SettingActivity" />
+        <activity
+            android:screenOrientation="portrait"
             android:name=".src.popUpBookmark.PopupBookmarkActivity"
             android:theme="@style/CustomDialogTheme" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".src.popUpWordbookMove.PopupWordMoveActivity"
             android:theme="@style/CustomDialogTheme" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".src.popUpWordbookCopy.PopupWordCopyActivity"
             android:theme="@style/CustomDialogTheme" />
-        <activity android:name=".src.bookmark.BookmarkActivity" />
-        <activity android:name=".src.wordbook.WordbookActivity" />
-        <activity android:name=".src.splash.SplashActivity">
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".src.bookmark.BookmarkActivity" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".src.wordbook.WordbookActivity" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".src.splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".src.history.HistoryActivity" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".src.history.HistoryActivity" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".src.searchResult.SearchResultActivity"/>
     </application>
 
 </manifest>

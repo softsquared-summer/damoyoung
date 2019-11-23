@@ -13,7 +13,7 @@ import com.softsquared.damoyoung.R;
 
 public class SentenceDeleteDialog extends Dialog {
 
-    private TextView mTvDelete,mTvCancel;
+    private TextView mTvDelete, mTvCancel;
     private Context mContext;
     private SentenceDeleteDialogListener mSentenceDeleteDialogListener;
 
@@ -39,7 +39,7 @@ public class SentenceDeleteDialog extends Dialog {
             @Override
             public void onClick(View view) {
                 mSentenceDeleteDialogListener.onPositiveClicked();
-                    dismiss();
+                dismiss();
 
             }
         });
@@ -50,10 +50,11 @@ public class SentenceDeleteDialog extends Dialog {
             }
         });
     }
+
     //생성자 생성
-    public SentenceDeleteDialog(@NonNull Context context){
-    super(context);
-        mContext=context;
+    public SentenceDeleteDialog(@NonNull Context context) {
+        super(context);
+        mContext = context;
     }
 
 

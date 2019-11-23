@@ -2,22 +2,18 @@ package com.softsquared.damoyoung.src.wordbook;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.softsquared.damoyoung.R;
 import com.softsquared.damoyoung.src.BaseActivity;
-import com.softsquared.damoyoung.src.main.MainActivity;
 import com.softsquared.damoyoung.src.popUpWordbookCopy.PopupWordCopyActivity;
 import com.softsquared.damoyoung.src.popUpWordbookMove.PopupWordMoveActivity;
 import com.softsquared.damoyoung.src.wordbook.interfaces.WordbookActivityView;
-import com.softsquared.damoyoung.src.wordbook.itemClass.Word;
+import com.softsquared.damoyoung.src.wordbook.models.Word;
 import com.softsquared.damoyoung.src.wordbook.wordbookDialog.WordbookDeleteDialog;
 
 import org.json.JSONArray;
@@ -31,21 +27,17 @@ public class WordbookActivity extends BaseActivity implements View.OnClickListen
 
     private ExpandableListView mExLvWordbook; // ExpandableListView 변수 선언
     private WordbookExListViewAdapter mWordbookExListViewAdapter; // 위 ExpandableListView를 받을 CustomAdapter(2번 class에 해당)를 선언
-
     private ArrayList<Word> mWordList = new ArrayList<>(); // ExpandableListView의 Parent 항목이 될 List 변수 선언
     private ArrayList<WordbookExListItem> mSentenceList = new ArrayList<>(); // ExpandableListView의 Parent 항목이 될 List 변수 선언
     private HashMap<Word, ArrayList<WordbookExListItem>> mChildList = new HashMap<>(); // 위 ParentList와 ChildList를 연결할 HashMap 변수 선언
-
-    private TextView mTvWordbookTitle; // todo intent로 제목 받아오기
-    private TextView mTvWordbookConfirm, mTvWordBookDelete, mTvWordBookOrder, mTvWordBookAllSelect, mTvWordBookMove, mTvWordBookCopy, mTvWordBookEdit;
-    private View mVempty;
+    private TextView mTvWordbookConfirm, mTvWordBookDelete, mTvWordBookAllSelect, mTvWordBookMove, mTvWordBookCopy, mTvWordBookEdit;
+    private View mEmptyView;
     private ImageView mIvAllArrowDown;
     private Button btnMemorized, btnUnMemorized;
-    private Boolean mAllExpand;
+    private boolean mAllExpand;// 전체 indicator
     private int mBookmarkNo;
     private String mMemorized;
-    private String mBookmarkTitle;
-    private boolean mAllSelect = false;
+    private boolean mAllSelect = false; //전체선택 변수
     private boolean mEditMode;
 
 
@@ -56,14 +48,15 @@ public class WordbookActivity extends BaseActivity implements View.OnClickListen
         //initialized
         Intent intent = getIntent();
         int bookmarkNo = intent.getIntExtra("bookmarkNo", 0);
-        mBookmarkTitle = intent.getStringExtra("bookmarkTitle");
+        String bookmarkTitle = intent.getStringExtra("bookmarkTitle");
         mBookmarkNo = bookmarkNo;
         mMemorized = "N";
         mEditMode = false;
-        mAllExpand = true;
+        mAllExpand = false;
 
         //findViewById
-        mTvWordbookTitle = findViewById(R.id.tv_wordbook_title);
+        TextView tvWordbookTitle = findViewById(R.id.tv_wordbook_title);
+
         btnMemorized = findViewById(R.id.btn_memorization);
         btnUnMemorized = findViewById(R.id.btn_unmemorization);
         mIvAllArrowDown = findViewById(R.id.iv_wordbook_all_arrow_down);
@@ -73,9 +66,8 @@ public class WordbookActivity extends BaseActivity implements View.OnClickListen
         mTvWordBookDelete = findViewById(R.id.tv_wordbook_delete);
         mTvWordBookAllSelect = findViewById(R.id.tv_wordbook_all_select);
         mTvWordBookMove = findViewById(R.id.tv_wordbook_move);
-        mTvWordBookOrder = findViewById(R.id.tv_wordbook_order);
         mTvWordBookCopy = findViewById(R.id.tv_wordbook_copy);
-        mVempty = findViewById(R.id.tv_wordbook_empty_view);
+        mEmptyView = findViewById(R.id.tv_wordbook_empty_view);
 
         //set listener
         mExLvWordbook.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
@@ -96,17 +88,15 @@ public class WordbookActivity extends BaseActivity implements View.OnClickListen
         });
 
         //onBind
-        mTvWordbookTitle.setText(mBookmarkTitle);
-
-
+        tvWordbookTitle.setText(bookmarkTitle);
     }
+
 
     @Override
     protected void onResume() {
         super.onResume();
         //activity dialog에서 pause되기때문
         getWordbook(mBookmarkNo, mMemorized);
-
     }
 
     public void getWordbook(int bookmarkNo, String memorized) {
@@ -121,6 +111,7 @@ public class WordbookActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
+    //갱신 메소드
     @Override
     public void validateGetSuccess(String text, ArrayList<WordbookExListItem> items) {
         mWordList.clear();
@@ -134,9 +125,9 @@ public class WordbookActivity extends BaseActivity implements View.OnClickListen
             } else {
                 mWordList.add(new Word(temp.getWordNo(), temp.getWord(), false));//parent 단어
             }
-            if (mMemorized=="Y"){
+            if (mMemorized.equals("Y")) {
                 mWordList.get(i).setMemorized(true);
-            }else{
+            } else if (mMemorized.equals("N")) {
                 mWordList.get(i).setMemorized(false);
             }
             mSentenceList = new ArrayList<>();
@@ -162,27 +153,26 @@ public class WordbookActivity extends BaseActivity implements View.OnClickListen
 
                 int bookmarkNo;
                 int wordNo;
-                bookmarkNo=mBookmarkNo;
+                bookmarkNo = mBookmarkNo;
                 wordNo = mWordbookExListViewAdapter.getGroup(gp).getWordNo();
                 //암기 미암기 API 실행
-                patchWordMemorized(bookmarkNo,wordNo);
+                patchWordMemorized(bookmarkNo, wordNo);
             }
         });
 
 
-
         if (mWordList.size() != 0) {
             if (mAllExpand) {
-                for (int i = 0; i < mWordbookExListViewAdapter.getGroupCount(); i++) {
-                    mExLvWordbook.collapseGroup(i);
-                }
-
-                mIvAllArrowDown.setImageResource(R.drawable.ic_arrow_up);
-            } else {
+                //mAllExpand 가 true 이면 펼치고
                 for (int i = 0; i < mWordbookExListViewAdapter.getGroupCount(); i++) {
                     mExLvWordbook.expandGroup(i);
                 }
-
+                mIvAllArrowDown.setImageResource(R.drawable.ic_arrow_up);
+            } else {
+                //mAllExpand 가 false 면 닫아라
+                for (int i = 0; i < mWordbookExListViewAdapter.getGroupCount(); i++) {
+                    mExLvWordbook.collapseGroup(i);
+                }
                 mIvAllArrowDown.setImageResource(R.drawable.ic_arrow_down);
             }
 
@@ -229,13 +219,10 @@ public class WordbookActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void validateDeleteSuccess(String text) {
         showCustomToast("단어가 삭제되었습니다.");
-        mEditMode = true;
-        mAllExpand = false;
+        //삭제하기 귀찮아서 그냥 새롭게 갱신해줬다
         getWordbook(mBookmarkNo, mMemorized);
-
     }
 
-    //todo
     public void deleteSentence(int bookmarkNo, int sentenceNo) {
         final WordbookService wordbookService = new WordbookService(this);
         wordbookService.deleteSentence(bookmarkNo, sentenceNo);
@@ -245,19 +232,18 @@ public class WordbookActivity extends BaseActivity implements View.OnClickListen
     public void vaildateSentenceDeleteSuccess(String text) {
 
         showCustomToast("예문이 삭제되었습니다.");
-        mEditMode = true;
-        mAllExpand = false;
+        //삭제하기 귀찮아서 그냥 새롭게 갱신해줬다
         getWordbook(mBookmarkNo, mMemorized);
     }
 
 
-    public void patchWordMemorized(int bookmarkNo, int wordNo){
+    public void patchWordMemorized(int bookmarkNo, int wordNo) {
         final WordbookService wordbookService = new WordbookService(this);
 
         try {
             JSONObject params = new JSONObject();
             params.put("is_memorized", mMemorized);
-            wordbookService.patchWordMemorized(bookmarkNo,wordNo,params);
+            wordbookService.patchWordMemorized(bookmarkNo, wordNo, params);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -267,13 +253,12 @@ public class WordbookActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void vaildateMemorizedSuccess(String text) {
         showCustomToast(text);
-        getWordbook(mBookmarkNo,mMemorized);
+        getWordbook(mBookmarkNo, mMemorized);
     }
 
 
     public void onClick(View v) {
         switch (v.getId()) {
-
             case R.id.btn_memorization:
                 btnMemorized.setBackground(getDrawable(R.drawable.custom_button_on));
                 btnUnMemorized.setBackground(getDrawable(R.drawable.custom_button_off));
@@ -296,47 +281,48 @@ public class WordbookActivity extends BaseActivity implements View.OnClickListen
             case R.id.iv_wordbook_all_arrow_down:
                 if (mWordList.size() != 0) {
                     if (mAllExpand) {
+                        //mAllexpand가 true면 즉 열려있으면 다시 닫아주고
                         for (int i = 0; i < mWordbookExListViewAdapter.getGroupCount(); i++) {
                             mExLvWordbook.collapseGroup(i);
                         }
                         mAllExpand = false;
-                        mIvAllArrowDown.setImageResource(R.drawable.ic_arrow_up);
+                        mIvAllArrowDown.setImageResource(R.drawable.ic_arrow_down);
                     } else {
+                        //mAllexpand가 false면 즉 닫혀있으면 다시 열어준다.
                         for (int i = 0; i < mWordbookExListViewAdapter.getGroupCount(); i++) {
                             mExLvWordbook.expandGroup(i);
                         }
                         mAllExpand = true;
-                        mIvAllArrowDown.setImageResource(R.drawable.ic_arrow_down);
+                        mIvAllArrowDown.setImageResource(R.drawable.ic_arrow_up);
                     }
 
-                } else {
                 }
                 mWordbookExListViewAdapter.notifyDataSetChanged();
                 break;
-            case R.id.tv_wordbook_order:
-                PopupMenu p = new PopupMenu(
-                        getApplicationContext(), // 현재 화면의 제어권자
-                        v); // anchor : 팝업을 띄울 기준될 위젯
-
-                getMenuInflater().inflate(R.menu.popup_menu, p.getMenu());
-                // 이벤트 처리
-                p.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        if(item.getItemId()==R.id.popup_new){
-                            Toast.makeText(WordbookActivity.this, item.getTitle().toString(), Toast.LENGTH_SHORT).show();
-                        }else if(item.getItemId()==R.id.popup_order){
-                            Toast.makeText(WordbookActivity.this, item.getTitle().toString(), Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-
-                        }
-                        return false;
-                    }
-                });
-                p.show(); // 메뉴를 띄우기
-
-                break;
+//                다모영 1.0.0 최신순 미반영 다음 패치때 할 예정
+//            case R.id.tv_wordbook_order:
+//                PopupMenu p = new PopupMenu(
+//                        getApplicationContext(), // 현재 화면의 제어권자
+//                        v); // anchor : 팝업을 띄울 기준될 위젯
+//
+//                getMenuInflater().inflate(R.menu.popup_menu, p.getMenu());
+//                // 이벤트 처리
+//                p.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//                    @Override
+//                    public boolean onMenuItemClick(MenuItem item) {
+//                        if(item.getItemId()==R.id.popup_new){
+//                            Toast.makeText(WordbookActivity.this, item.getTitle().toString(), Toast.LENGTH_SHORT).show();
+//                        }else if(item.getItemId()==R.id.popup_order){
+//                            Toast.makeText(WordbookActivity.this, item.getTitle().toString(), Toast.LENGTH_SHORT).show();
+//                        }
+//                        else{
+//
+//                        }
+//                        return false;
+//                    }
+//                });
+//                p.show(); // 메뉴를 띄우기
+//                break;
             case R.id.tv_wordbook_edit:
                 editMode();
                 break;
@@ -358,8 +344,6 @@ public class WordbookActivity extends BaseActivity implements View.OnClickListen
                 mWordbookExListViewAdapter.notifyDataSetChanged();
                 break;
             case R.id.tv_wordbook_copy:
-                mEditMode = true;
-                mAllExpand = false;
                 ArrayList<Word> copyWords = mWordbookExListViewAdapter.getParent();
                 ArrayList<Integer> copyWordList = new ArrayList<>();
                 for (int i = 0; i < copyWords.size(); i++) {
@@ -381,13 +365,12 @@ public class WordbookActivity extends BaseActivity implements View.OnClickListen
 
                 break;
             case R.id.tv_wordbook_move:
-                mEditMode = true;
-                mAllExpand = false;
+                //편집모드 유지
+                //단어 이동 후 api에 보내기
                 ArrayList<Word> words = mWordbookExListViewAdapter.getParent();
                 ArrayList<Integer> moveWordList = new ArrayList<>();
                 for (int i = 0; i < words.size(); i++) {
                     if (words.get(i).isSelected()) {
-                        //북마크 번호 json 으로 담기
                         moveWordList.add(mWordList.get(i).getWordNo());
                     }
                 }
@@ -437,9 +420,9 @@ public class WordbookActivity extends BaseActivity implements View.OnClickListen
         mTvWordBookAllSelect.setVisibility(View.VISIBLE);
         mTvWordbookConfirm.setVisibility(View.VISIBLE);
         mTvWordBookEdit.setVisibility(View.GONE);
-        mVempty.setVisibility(View.GONE);
-        mTvWordBookOrder.setVisibility(View.GONE);
+        mEmptyView.setVisibility(View.GONE);
 
+        mEditMode = true;
 
         for (int i = 0; i < mWordList.size(); i++) {
             mWordList.get(i).setEditMode(true);
@@ -447,11 +430,14 @@ public class WordbookActivity extends BaseActivity implements View.OnClickListen
         if (mWordList.size() != 0) {
             for (int i = 0; i < mWordbookExListViewAdapter.getGroupCount(); i++) {
                 mExLvWordbook.expandGroup(i);
-                mAllExpand = true;
             }
-            mIvAllArrowDown.setImageResource(R.drawable.ic_arrow_down);
-        }
+            mIvAllArrowDown.setImageResource(R.drawable.ic_arrow_up);
+            mAllExpand = true;
 
+        } else {
+            mIvAllArrowDown.setImageResource(R.drawable.ic_arrow_down);
+            mAllExpand = false;
+        }
         mWordbookExListViewAdapter.notifyDataSetChanged();
 
     }
@@ -463,9 +449,9 @@ public class WordbookActivity extends BaseActivity implements View.OnClickListen
         mTvWordBookAllSelect.setVisibility(View.GONE);
         mTvWordbookConfirm.setVisibility(View.GONE);
         mTvWordBookEdit.setVisibility(View.VISIBLE);
-        mVempty.setVisibility(View.VISIBLE);
-        mTvWordBookOrder.setVisibility(View.VISIBLE);
+        mEmptyView.setVisibility(View.VISIBLE);
 
+        mEditMode = false;
         for (int i = 0; i < mWordList.size(); i++) {
             mWordList.get(i).setEditMode(false);
         }
@@ -473,31 +459,19 @@ public class WordbookActivity extends BaseActivity implements View.OnClickListen
             if (mAllExpand) {
                 for (int i = 0; i < mWordbookExListViewAdapter.getGroupCount(); i++) {
                     mExLvWordbook.collapseGroup(i);
-
                 }
                 mAllExpand = false;
-                mIvAllArrowDown.setImageResource(R.drawable.ic_arrow_up);
-            }{
-                if (mAllExpand) {
-                    for (int i = 0; i < mWordbookExListViewAdapter.getGroupCount(); i++) {
-                        mExLvWordbook.expandGroup(i,true);
-
-                    }
-                    mAllExpand = true;
-                    mIvAllArrowDown.setImageResource(R.drawable.ic_arrow_down);
-                }
+                mIvAllArrowDown.setImageResource(R.drawable.ic_arrow_down);
             }
         } else {
-            mAllExpand = true;
-            mIvAllArrowDown.setImageResource(R.drawable.ic_arrow_up);
+            mIvAllArrowDown.setImageResource(R.drawable.ic_arrow_down);
+            mAllExpand = false;
         }
         mWordbookExListViewAdapter.notifyDataSetChanged();
-
     }
 
     @Override
     public void validateGetFailure(String message) {
-
         showCustomToast(message);
     }
 
@@ -514,7 +488,6 @@ public class WordbookActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void validateCopySuccess(String text) {
         showCustomToast(text);
-
     }
 
     @Override
@@ -522,18 +495,15 @@ public class WordbookActivity extends BaseActivity implements View.OnClickListen
         showCustomToast(message);
     }
 
-
     @Override
     public void vaildateMemorizedFailure(String text) {
         showCustomToast(text);
     }
 
-
     @Override
     public void vaildateSentenceDeleteFailure(String text) {
         showCustomToast(text);
     }
-
 
     @Override
     public void validateDeleteFailure(String message) {

@@ -10,13 +10,6 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.softsquared.damoyoung.R;
 import com.softsquared.damoyoung.src.BaseActivity;
 import com.softsquared.damoyoung.src.bookmark.bookmarkDialog.BookmarkNewfolderDialog;
@@ -37,70 +30,37 @@ public class BookmarkActivity extends BaseActivity implements BookmarkActivityVi
     private String mName;
     private int mBookmarkNo;
     private int mDeletePosition;
-    private AdView mAdView;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bookmark);
 
-        mAdView =findViewById(R.id.adView_bookmark);
         mLvBookmark = findViewById(R.id.lv_bookmark);
         mTvEdit = findViewById(R.id.tv_bookmark_edit);
         mTvConfirm = findViewById(R.id.tv_bookmark_confirm);
         mTvNewFolder = findViewById(R.id.tv_bookmark_add_folder);
 
-        mAdView = findViewById(R.id.adView_bookmark);
-        MobileAds.initialize(this, getString(R.string.admob_app_id_for_test));
 
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
-        mAdView.setAdListener(new AdListener() {
-
-            @Override
-
-            public void onAdLoaded() {
-
-                // Code to be executed when an ad finishes loading.
-
-                // 광고가 문제 없이 로드시 출력됩니다.
-
-                Log.d("@@@", "onAdLoaded");
-
-            }
-
-
-
-            @Override
-
-                public void onAdFailedToLoad(int errorCode) {
-
-                // Code to be executed when an ad request fails.
-
-                // 광고 로드에 문제가 있을시 출력됩니다.
-
-                Log.d("@@@", "onAdFailedToLoad " + errorCode);
-
-            }
-
-        });
         mBookmarkListViewAdapater = new BookmarkListViewAdapater(mBookmarkListItems, getApplicationContext(), this);
         mLvBookmark.setAdapter(mBookmarkListViewAdapater);
         mLvBookmark.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
+                //기록 i==0
                 if (i == 0) {
                     startActivity(new Intent(BookmarkActivity.this, HistoryActivity.class));
                 } else {
                     mBookmarkNo = mBookmarkListItems.get(i).getBookmarkNo();
-                    if (mBookmarkNo==0){
+                    if (mBookmarkNo == 0) {
                         showCustomToast("북마크에 접근할 수 없습니다.");
                         return;
                     }
                     String bookmarkTitle = mBookmarkListItems.get(i).getTitle();
                     Intent intent = new Intent(BookmarkActivity.this, WordbookActivity.class);
-                    intent.putExtra("bookmarkNo",mBookmarkNo);
-                    intent.putExtra("bookmarkTitle",bookmarkTitle);
+                    intent.putExtra("bookmarkNo", mBookmarkNo);
+                    intent.putExtra("bookmarkTitle", bookmarkTitle);
                     startActivity(intent);
                 }
             }
@@ -109,7 +69,7 @@ public class BookmarkActivity extends BaseActivity implements BookmarkActivityVi
         mBookmarkListViewAdapater.setOnCheckedChangeListener(new BookmarkListViewAdapater.OnCheckedChangeListener() {
             @Override
             public void OnCheckClick(int pos) {
-                mDeletePosition=pos;
+                mDeletePosition = pos;
                 int bookmarkNo = mBookmarkListItems.get(mDeletePosition).getBookmarkNo();
                 deleteBookmark(bookmarkNo);
 
@@ -145,12 +105,10 @@ public class BookmarkActivity extends BaseActivity implements BookmarkActivityVi
         bookmarkService.getBookmark();
     }
 
-    public void deleteBookmark(int bookmarkNo){
+    public void deleteBookmark(int bookmarkNo) {
         final BookmarkService bookmarkService = new BookmarkService(this);
-
         bookmarkService.deleteBookmark(bookmarkNo);
     }
-
 
 
     //onClick
@@ -172,7 +130,6 @@ public class BookmarkActivity extends BaseActivity implements BookmarkActivityVi
                         }
                     }
                 });
-
                 mBookmarkNewFolderDialog.show();
                 break;
             case R.id.tv_bookmark_edit:
@@ -209,7 +166,7 @@ public class BookmarkActivity extends BaseActivity implements BookmarkActivityVi
 
     @Override
     public void validateMakeFailure(String message) {
-    showCustomToast(message);
+        showCustomToast(message);
     }
 
     @Override
@@ -225,24 +182,20 @@ public class BookmarkActivity extends BaseActivity implements BookmarkActivityVi
 
     @Override
     public void validateGetSuccess(String text, ArrayList<BookmarkListItem> data) {
-
         mBookmarkListItems.clear();
-        mBookmarkListItems.add(new BookmarkListItem(0,"기록"));
+        mBookmarkListItems.add(new BookmarkListItem(0, "기록"));
         mBookmarkListItems.get(0).setFirst(true);
-
-        for (int i=0;i<data.size();i++){
-            mBookmarkListItems.add(new BookmarkListItem(data.get(i).getBookmarkNo(),data.get(i).getTitle()));
+        for (int i = 0; i < data.size(); i++) {
+            mBookmarkListItems.add(new BookmarkListItem(data.get(i).getBookmarkNo(), data.get(i).getTitle()));
         }
-
         mBookmarkListViewAdapater.notifyDataSetChanged();
     }
 
     @Override
     public void validateGetFailure(String message) {
         mBookmarkListItems.clear();
-        mBookmarkListItems.add(new BookmarkListItem(0,"기록"));
+        mBookmarkListItems.add(new BookmarkListItem(0, "기록"));
         mBookmarkListItems.get(0).setFirst(true);
-
         mBookmarkListViewAdapater.notifyDataSetChanged();
     }
 }

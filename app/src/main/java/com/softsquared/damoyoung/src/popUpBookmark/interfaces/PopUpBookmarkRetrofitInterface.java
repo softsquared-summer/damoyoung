@@ -10,11 +10,6 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface PopUpBookmarkRetrofitInterface {
-//    @GET("/test")
-
-//
-//    @DELETE("/bookmark/{bookmarkNo}")
-//    Call<Pop>
 
     @POST("/bookmark")
     Call<PopUpBookmarkResponse> postPopUpBookmark(@Body RequestBody params);

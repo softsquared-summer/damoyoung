@@ -36,11 +36,12 @@ public class BookmarkDeleteDialog extends Dialog {
         //셋팅
         mTvDelete = findViewById(R.id.tv_bookmark_dialog_delete);
         mTvCancel = findViewById(R.id.tv_bookmark_dialog_delete_cancel);
-        //클릭 리스너 셋팅 (클릭버튼이 동작하도록 만들어줌.)
 
+        //클릭 리스너 셋팅
         mTvDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                    //액티비티와의 인터페이스
                     mBookmarkDeleteDialogListener.onPositiveClicked(position);
                     dismiss();
 
@@ -53,10 +54,6 @@ public class BookmarkDeleteDialog extends Dialog {
             }
         });
     }
-//    public void deleteBookmark() {
-//        final BookmarkService bookmarkService = new BookmarkService((BookmarkActivityView) this);
-//        bookmarkService.deleteBookmark();
-//    }
     //생성자 생성
     public BookmarkDeleteDialog(@NonNull Context context, int pos){
     super(context);
@@ -69,10 +66,9 @@ public class BookmarkDeleteDialog extends Dialog {
     public void setDialogListener(BookmarkDeleteDialogListener bookmarkDeleteDialogListener) {
         this.mBookmarkDeleteDialogListener = bookmarkDeleteDialogListener;
     }
-
+    //dialog interface
     public interface BookmarkDeleteDialogListener {
         void onPositiveClicked(int pos);
-
     }
 
 

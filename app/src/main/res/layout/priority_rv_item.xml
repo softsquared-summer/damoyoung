@@ -2,16 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
-    android:layout_marginStart="16dp"
-    android:layout_marginEnd="16dp"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp"
     android:background="@color/colorDamoyoungWhite"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="40dp">
 
     <TextView
-        android:paddingStart="8dp"
+        android:layout_marginStart="8dp"
         android:gravity="center_vertical"
         android:id="@+id/tv_priority_title"
         android:layout_width="0dp"
@@ -22,6 +18,8 @@
         android:layout_height="match_parent"/>
     <ImageView
         android:gravity="center_horizontal"
+        android:padding="8dp"
+        android:layout_marginEnd="8dp"
         android:id="@+id/iv_priority_drawer_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

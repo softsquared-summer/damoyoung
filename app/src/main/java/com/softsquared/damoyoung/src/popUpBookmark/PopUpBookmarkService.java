@@ -41,12 +41,13 @@ public class PopUpBookmarkService {
                 } else if (popUpBookmarkGetResponse.getCode() == 201) {
                     //유효하지 않는 토큰
                     mPopUpBookmarkActivityView.validateGetFailure(popUpBookmarkGetResponse.getMessage());
-                }  else {
+                } else {
                     //북마크 조회 성공//code 100
-                    mPopUpBookmarkActivityView.validateGetSuccess(popUpBookmarkGetResponse.getMessage(),popUpBookmarkGetResponse.getBookmarkListItems());
+                    mPopUpBookmarkActivityView.validateGetSuccess(popUpBookmarkGetResponse.getMessage(), popUpBookmarkGetResponse.getBookmarkListItems());
                 }
 
             }
+
             @Override
             public void onFailure(Call<PopUpBookmarkGetResponse> call, Throwable t) {
                 mPopUpBookmarkActivityView.validateGetFailure(null);
@@ -81,6 +82,7 @@ public class PopUpBookmarkService {
                 }
 
             }
+
             @Override
             public void onFailure(Call<PopUpBookmarkResponse> call, Throwable t) {
                 mPopUpBookmarkActivityView.validateMakeFailure(null);
@@ -114,6 +116,7 @@ public class PopUpBookmarkService {
                 }
 
             }
+
             @Override
             public void onFailure(Call<PopUpBookmarkResponse> call, Throwable t) {
                 mPopUpBookmarkActivityView.validateSaveFailure(null);

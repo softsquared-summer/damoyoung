@@ -12,11 +12,10 @@ public class PopupBookmarkListViewItem {
     private Boolean isSelected;
 
 
-
     public PopupBookmarkListViewItem(int bookmarkNo, String keyword) {
         this.bookmarkNo = bookmarkNo;
         this.keyword = keyword;
-        isSelected=false;
+        isSelected = false;
     }
 
     public void setKeyword(String keyword) {
@@ -26,7 +25,6 @@ public class PopupBookmarkListViewItem {
     public String getKeyword() {
         return this.keyword;
     }
-
 
 
     public Boolean isSelected() {

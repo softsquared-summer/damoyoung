@@ -20,7 +20,6 @@ public class WordbookResponse {
     private boolean isSuccess;
 
 
-
     public int getCode() {
         return code;
     }

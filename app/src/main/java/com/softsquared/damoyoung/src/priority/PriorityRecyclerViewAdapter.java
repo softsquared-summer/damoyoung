@@ -24,6 +24,7 @@ public class PriorityRecyclerViewAdapter extends RecyclerView.Adapter<PriorityRe
     private ArrayList<SitePriority> mData;
     private StartDragListener mStartDragListener;
     private Context mContext;
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView mTvTitle;
@@ -39,12 +40,13 @@ public class PriorityRecyclerViewAdapter extends RecyclerView.Adapter<PriorityRe
         }
     }
 
-    public PriorityRecyclerViewAdapter(ArrayList<SitePriority> data,StartDragListener startDragListener,Context context) {
+    public PriorityRecyclerViewAdapter(ArrayList<SitePriority> data, StartDragListener startDragListener, Context context) {
         mStartDragListener = startDragListener;
         this.mData = data;
         this.mContext = context;
     }
-    public void changeData(ArrayList<SitePriority> data){
+
+    public void changeData(ArrayList<SitePriority> data) {
         this.mData = data;
     }
 

@@ -8,15 +8,13 @@ public class PopupWordCopyListViewItem {
     private int bookmarkNo;
     @SerializedName("title")
     private String keyword;
-
     private Boolean isSelected;
-
 
 
     public PopupWordCopyListViewItem(int bookmarkNo, String keyword) {
         this.bookmarkNo = bookmarkNo;
         this.keyword = keyword;
-        isSelected=false;
+        isSelected = false;
     }
 
     public void setKeyword(String keyword) {
@@ -26,7 +24,6 @@ public class PopupWordCopyListViewItem {
     public String getKeyword() {
         return this.keyword;
     }
-
 
 
     public Boolean isSelected() {

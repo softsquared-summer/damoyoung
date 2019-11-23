@@ -10,7 +10,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginStart="16dp"
         android:src="@drawable/ic_folder_black" />
 
     <TextView
@@ -20,13 +19,13 @@
         android:layout_gravity="center_vertical"
         android:layout_marginStart="12dp"
         android:layout_weight="1"
-        android:layout_marginTop="0.5dp"
         android:text="기록"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:textColor="@color/colorBlack"
         android:textSize="16sp" />
 
     <TextView
-        android:layout_marginTop="0.5dp"
         android:id="@+id/tv_bookmark_folder_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

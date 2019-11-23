@@ -36,13 +36,13 @@ public class BookmarkNewfolderDialog extends Dialog {
         //셋팅
         mTvNewFolderAdd = findViewById(R.id.tv_bookmark_dialog_new_folder_add);
         mEtNewFolderName = findViewById(R.id.et_bookmark_dialog_new_folder_name);
-        //클릭 리스너 셋팅 (클릭버튼이 동작하도록 만들어줌.)
-
+        //클릭 리스너 셋팅
         mTvNewFolderAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String name = mEtNewFolderName.getText().toString();
                 if(name.length()!=0){
+                    //interface
                     mBookmarkNewFolderDialogListener.onPositiveClicked(name);
                     dismiss();
                 }
@@ -64,7 +64,7 @@ public class BookmarkNewfolderDialog extends Dialog {
     public void setDialogListener(BookmarkNewFolderDialogListener bookmarkNewFolderDialogListener) {
         this.mBookmarkNewFolderDialogListener = bookmarkNewFolderDialogListener;
     }
-
+    //dialog interface
     public interface BookmarkNewFolderDialogListener {
         void onPositiveClicked(String name);
     }

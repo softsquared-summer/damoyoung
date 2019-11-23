@@ -64,39 +64,39 @@ public class PopupBookmarkListViewAdapter extends BaseAdapter {
 
         // 아이템 내 각 위젯에 데이터 반영 데이터 파싱
 
-            holder.titleTextView.setText(popupBookmarkListViewItem.getKeyword());
-            holder.titleTextView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    holder.chkBookmark.setChecked(!popupBookmarkListViewItem.isSelected());
-                }
-            });
-            holder.chkBookmark.setOnCheckedChangeListener(null);
-            holder.chkBookmark.setChecked(popupBookmarkListViewItem.isSelected());
-            holder.chkBookmark.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    //set your object's last status
+        holder.titleTextView.setText(popupBookmarkListViewItem.getKeyword());
+        holder.titleTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                holder.chkBookmark.setChecked(!popupBookmarkListViewItem.isSelected());
+            }
+        });
+        holder.chkBookmark.setOnCheckedChangeListener(null);
+        holder.chkBookmark.setChecked(popupBookmarkListViewItem.isSelected());
+        holder.chkBookmark.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                //set your object's last status
 
-                            popupBookmarkListViewItem.setChecked(isChecked);
+                popupBookmarkListViewItem.setChecked(isChecked);
 
 
-                    }
+            }
 
 //                    if(mCheckListener!=null){
 //                        mCheckListener.OnCheckClick();
 //                    }
 
-            });
-
+        });
 
 
         return convertView;
     }
 
-    public ArrayList<PopupBookmarkListViewItem> getMainItem(){
+    public ArrayList<PopupBookmarkListViewItem> getMainItem() {
         return mLvBookmarkItems;
     }
+
     // 지정한 위치(position)에 있는 데이터와 관계된 아이템(row)의 ID를 리턴. : 필수 구현
     @Override
     public long getItemId(int position) {

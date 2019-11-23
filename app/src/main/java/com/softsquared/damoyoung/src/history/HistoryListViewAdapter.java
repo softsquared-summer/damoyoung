@@ -1,6 +1,7 @@
 package com.softsquared.damoyoung.src.history;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.softsquared.damoyoung.R;
 import com.softsquared.damoyoung.src.main.HistoryListViewItem;
+import com.softsquared.damoyoung.src.searchResult.SearchResultActivity;
 
 import java.util.ArrayList;
 
@@ -18,17 +20,21 @@ public class HistoryListViewAdapter extends BaseAdapter {
 
     ArrayList<HistoryListViewItem> mHistoryItemList;
     LayoutInflater mInflater;
+    Context mContext;
 
     // ListViewAdapter의 생성자
     public HistoryListViewAdapter(ArrayList<HistoryListViewItem> items, Context context) {
-        mHistoryItemList =items;
-        mInflater=LayoutInflater.from(context);
+        mHistoryItemList = items;
+        mInflater = LayoutInflater.from(context);
+        mContext =context;
     }
+
     //뷰홀더
     public class ViewHolder {
         TextView titleTextView;
         CheckBox chkWord;
     }
+
     // Adapter에 사용되는 데이터의 개수를 리턴. : 필수 구현
     @Override
     public int getCount() {
@@ -50,8 +56,7 @@ public class HistoryListViewAdapter extends BaseAdapter {
             holder.titleTextView = convertView.findViewById(R.id.tv_history_word);
             holder.chkWord = convertView.findViewById(R.id.cb_history);
             convertView.setTag(holder);
-        }
-        else {
+        } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
@@ -61,24 +66,30 @@ public class HistoryListViewAdapter extends BaseAdapter {
         // 아이템 내 각 위젯에 데이터 반영 데이터 파싱
         holder.titleTextView.setText(historyItem.getKeyword());
 
-        if (historyItem.getChkShow()){
+        if (historyItem.getChkShow()) {
             holder.chkWord.setVisibility(View.VISIBLE);
+            //check box logic
+            //체크박스상태가 풀리지않는다.
             holder.chkWord.setOnCheckedChangeListener(null);
             holder.chkWord.setChecked(historyItem.isSelected());
             holder.chkWord.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    //set your object's last status
                     historyItem.setSelected(isChecked);
-
-//                    if(mCheckListener!=null){
-//                        mCheckListener.OnCheckClick();
-//                    }
                 }
             });
+            holder.titleTextView.setOnClickListener(null);
 
-        }else{
+        } else {
             holder.chkWord.setVisibility(View.GONE);
+            holder.titleTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), SearchResultActivity.class);
+                    intent.putExtra("keyword",historyItem.getKeyword());
+                    mContext.startActivity(intent);
+                }
+            });
         }
 
         return convertView;
@@ -96,7 +107,7 @@ public class HistoryListViewAdapter extends BaseAdapter {
         return mHistoryItemList.get(position);
     }
 
-    public ArrayList<HistoryListViewItem> getItemList(){
+    public ArrayList<HistoryListViewItem> getItemList() {
         return mHistoryItemList;
     }
 

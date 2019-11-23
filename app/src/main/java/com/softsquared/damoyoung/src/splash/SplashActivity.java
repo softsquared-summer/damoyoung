@@ -21,6 +21,7 @@ import static com.softsquared.damoyoung.src.ApplicationClass.sSharedPreferences;
 public class SplashActivity extends BaseActivity implements SplashActivityView {
 
     private String androidNum;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,12 +30,10 @@ public class SplashActivity extends BaseActivity implements SplashActivityView {
         //자동 로그인 기능 활성화
 
 
-
         androidNum = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
         System.out.println(androidNum);
         Handler hd = new Handler();
         hd.postDelayed(new splashhandler(), 500); // 1초 후에 hd handler 실행
-
 
 
     }
@@ -46,7 +45,7 @@ public class SplashActivity extends BaseActivity implements SplashActivityView {
         try {
             //로그인 서비스 API
             JSONObject params = new JSONObject();
-            params.put("androidNum",androidNum);
+            params.put("androidNum", androidNum);
             splashService.postUserCheck(params);
         } catch (JSONException e) {
             showCustomToast("");
@@ -54,19 +53,13 @@ public class SplashActivity extends BaseActivity implements SplashActivityView {
     }
 
     @Override
-    public void validateDubSuccess(String text){
-        startActivity(new Intent(getApplication(), MainActivity.class)); //로딩이 끝난 후, MainActivity로 이동
-        SplashActivity.this.finish(); // 로딩페이지 Activity 제거
-    }
-    @Override
-    public void validateSuccess(String text,String jwt) {
+    public void validateSuccess(String text, String jwt) {
 
         SharedPreferences.Editor editor = sSharedPreferences.edit();
 
         //androidId를 넘기면
         //jwt 저장
-        System.out.println(jwt);
-        editor.putString(X_ACCESS_TOKEN,jwt);
+        editor.putString(X_ACCESS_TOKEN, jwt);
         editor.apply(); // ediot.commit() -> editor.apply(); 변경
 
         startActivity(new Intent(getApplication(), MainActivity.class)); //로딩이 끝난 후, MainActivity로 이동
@@ -81,8 +74,9 @@ public class SplashActivity extends BaseActivity implements SplashActivityView {
 
     private class splashhandler implements Runnable {
         public void run() {
-                postUserCheck();
+            postUserCheck();
         }
+
     }
 
     @Override

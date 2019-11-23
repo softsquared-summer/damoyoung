@@ -15,6 +15,7 @@
         android:layout_gravity="center_vertical"
         android:textSize="16sp"
         android:textColor="@color/colorBlack"
+        android:autoSizePresetSizes="@array/auto_size_text_sizes"
         android:text="testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest"
         android:maxLines="2"
         android:textStyle="bold"

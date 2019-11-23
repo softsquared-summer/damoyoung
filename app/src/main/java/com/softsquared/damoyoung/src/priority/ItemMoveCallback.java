@@ -23,7 +23,6 @@ class ItemMoveCallback extends ItemTouchHelper.Callback {
     }
 
 
-
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
 
@@ -49,7 +48,7 @@ class ItemMoveCallback extends ItemTouchHelper.Callback {
 
         if (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
             if (viewHolder instanceof PriorityRecyclerViewAdapter.MyViewHolder) {
-                PriorityRecyclerViewAdapter.MyViewHolder myViewHolder=
+                PriorityRecyclerViewAdapter.MyViewHolder myViewHolder =
                         (PriorityRecyclerViewAdapter.MyViewHolder) viewHolder;
                 mAdapter.onRowSelected(myViewHolder);
             }
@@ -58,13 +57,14 @@ class ItemMoveCallback extends ItemTouchHelper.Callback {
 
         super.onSelectedChanged(viewHolder, actionState);
     }
+
     @Override
     public void clearView(RecyclerView recyclerView,
                           RecyclerView.ViewHolder viewHolder) {
         super.clearView(recyclerView, viewHolder);
 
         if (viewHolder instanceof PriorityRecyclerViewAdapter.MyViewHolder) {
-            PriorityRecyclerViewAdapter.MyViewHolder myViewHolder=
+            PriorityRecyclerViewAdapter.MyViewHolder myViewHolder =
                     (PriorityRecyclerViewAdapter.MyViewHolder) viewHolder;
             mAdapter.onRowClear(myViewHolder);
         }
@@ -73,7 +73,9 @@ class ItemMoveCallback extends ItemTouchHelper.Callback {
     public interface ItemTouchHelperContract {
 
         void onRowMoved(int fromPosition, int toPosition);
+
         void onRowSelected(PriorityRecyclerViewAdapter.MyViewHolder myViewHolder);
+
         void onRowClear(PriorityRecyclerViewAdapter.MyViewHolder myViewHolder);
 
     }

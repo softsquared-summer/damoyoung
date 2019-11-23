@@ -12,12 +12,9 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface BookmarkRetrofitInterface {
-//    @GET("/test")
-
 
     @POST("/bookmark")
     Call<BookmarkResponse> postBookmark(@Body RequestBody params);
-
 
     @GET("/bookmark")
     Call<BookmarkGetResponse> getBookmark();

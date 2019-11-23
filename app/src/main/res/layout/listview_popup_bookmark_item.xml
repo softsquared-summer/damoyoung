@@ -16,6 +16,8 @@
         android:paddingTop="7dp"
         android:paddingBottom="7dp"
         android:text="안녕하세요"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:textSize="16sp"
         android:textColor="@color/colorBlack"
         />

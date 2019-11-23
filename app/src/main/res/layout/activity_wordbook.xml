@@ -10,15 +10,18 @@
     <RelativeLayout
         android:background="@color/colorDamoyoungWhite"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         >
+
         <ImageView
             android:id="@+id/iv_wordbook_arrow_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_centerVertical="true"
             android:onClick="onClick"
-            app:srcCompat="@drawable/ic_arrow_back"/>
+            android:padding="8dp"
+            app:srcCompat="@drawable/ic_arrow_back" />
 
         <TextView
             android:id="@+id/tv_wordbook_title"
@@ -26,7 +29,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="8dp"
+            android:layout_centerVertical="true"
+            android:ems="13"
+            android:maxLines="1"
+            android:gravity="center"
+            android:ellipsize="end"
             android:text="나의 리스트"
             android:textStyle="bold"
             android:textColor="@color/colorBlack"
@@ -85,6 +92,7 @@
 
 
     <ExpandableListView
+        android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:id="@+id/elv_wordbook"
@@ -185,19 +193,19 @@
             android:visibility="gone" />
 
 
-        <TextView
-            android:id="@+id/tv_wordbook_order"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="16dp"
-            android:onClick="onClick"
-            android:padding="8dp"
-            android:text="@string/order"
-            android:textColor="@color/colorDamoyoungText"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:visibility="visible" />
+<!--        <TextView-->
+<!--            android:id="@+id/tv_wordbook_order"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center_vertical"-->
+<!--            android:layout_marginStart="16dp"-->
+<!--            android:onClick="onClick"-->
+<!--            android:padding="8dp"-->
+<!--            android:text="@string/order"-->
+<!--            android:textColor="@color/colorDamoyoungText"-->
+<!--            android:textSize="16sp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:visibility="visible" />-->
 
         <View
             android:id="@+id/tv_wordbook_empty_view"

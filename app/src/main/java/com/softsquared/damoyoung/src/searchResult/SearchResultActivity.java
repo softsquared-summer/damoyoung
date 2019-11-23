@@ -1,24 +1,14 @@
-package com.softsquared.damoyoung.src.main;
+package com.softsquared.damoyoung.src.searchResult;
 
-import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -28,10 +18,8 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.softsquared.damoyoung.R;
 import com.softsquared.damoyoung.src.BaseActivity;
-import com.softsquared.damoyoung.src.bookmark.BookmarkActivity;
 import com.softsquared.damoyoung.src.webView.WebViewFragment;
 import com.softsquared.damoyoung.src.popUpBookmark.PopupBookmarkActivity;
-import com.softsquared.damoyoung.src.setting.SettingActivity;
 import com.softsquared.damoyoung.src.sitePriority.SitePriority;
 
 import java.lang.reflect.Type;
@@ -39,39 +27,36 @@ import java.util.ArrayList;
 
 import static com.softsquared.damoyoung.src.ApplicationClass.sSharedPreferences;
 
-public class MainActivity extends BaseActivity {
+public class SearchResultActivity extends BaseActivity {
 
 
     private ClipboardManager clipBoard;
-    private boolean mPrimaryClipFlag, isFirstSearch;
-    private ArrayList<HistoryListViewItem> mRecentItemList = new ArrayList<>();
-    private MainListViewAdapter mRecentLvAdapter;
-    private ListView mLvRecentHistory;
-    private Gson gson;
+    private boolean mPrimaryClipFlag;
     private TabLayout mMainTabLayout;
-    private EditText mEtSearch;
-    private long time = 0;
     private String mKeyword = "";
     private String mSentence = "";
     private boolean mStringTypeIsKorean;
-    private TextView mTvHistoryText;//최근 검색어 보여주는 텍스트뷰
+    private Gson gson;
     ArrayList<SitePriority> mEngSitePriorityList = new ArrayList<>();
     ArrayList<SitePriority> mKorSitePriorityList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        gson = new Gson();
-        mPrimaryClipFlag = true;
-        isFirstSearch = true;
-        mStringTypeIsKorean = false;
-        //FindViewById
-        mTvHistoryText = findViewById(R.id.tv_main_no_recent_history);
-        mMainTabLayout = findViewById(R.id.tl_main);
-        mEtSearch = findViewById(R.id.et_main_search);
-        mLvRecentHistory = findViewById(R.id.lv_recent_history);
+        setContentView(R.layout.activity_search_result);
 
+        //intent
+        Intent intent = getIntent();
+        mKeyword = intent.getStringExtra("keyword");
+        stringType(mKeyword);//mStringTypeIsKorean 변수를 선언
+
+        //initialize
+        gson = new Gson();
+        mPrimaryClipFlag = true; // Clipboard 이중 실행 방지 제어시 필요
+        mStringTypeIsKorean = false;//초기값은 영어
+
+        //FindViewById
+        mMainTabLayout = findViewById(R.id.tl_search_result);
         mMainTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -95,28 +80,6 @@ public class MainActivity extends BaseActivity {
 
         clipBoard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
 
-        mLvRecentHistory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String keyword = mRecentItemList.get(i).getKeyword();
-                mKeyword = keyword;
-                mEtSearch.setText(mKeyword);
-                addKeyword(mKeyword);// 최근 검색어 키워드 등록
-                if (stringType(mKeyword)) {
-                    clearTab();
-                    addTab(mKorSitePriorityList);
-                    replaceFragment(new WebViewFragment(mKorSitePriorityList.get(0).getUrl(), mKeyword));
-                } else {
-                    clearTab();
-                    addTab(mEngSitePriorityList);
-                    replaceFragment(new WebViewFragment(mEngSitePriorityList.get(0).getUrl(), mKeyword));
-
-                }
-                hideHistory();
-                refresh();
-
-            }
-        });
         //콜백메소드를 통해 클립보드가 변경되었을때 클립보드를 가져올 수 있게 하였다.
         clipBoard.addPrimaryClipChangedListener(new ClipboardManager.OnPrimaryClipChangedListener() {
             @Override
@@ -130,44 +93,6 @@ public class MainActivity extends BaseActivity {
 
             }
         });
-        //검색창 리스너설정
-        //클릭하면 URL과 키워드를 넘겨준다
-        mEtSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
-
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    String keyword = mEtSearch.getText().toString();
-                    mKeyword = keyword;
-                    if (isFirstSearch) {
-                        hideHistory();
-                    }
-                    mTvHistoryText.setVisibility(View.GONE);
-                    addKeyword(mKeyword);// 최근 검색어 키워드 등록
-                    //검색어가 영어 일경우와 한국어일 경우 보여주는 사이트가 다름
-                    //탭 레이아웃을 재 갱신해주는 부분
-                    if (stringType(mKeyword)) {
-                        clearTab();
-                        addTab(mKorSitePriorityList);
-                    } else {
-                        clearTab();
-                        addTab(mEngSitePriorityList);
-                    }
-                    new Handler().postDelayed(
-                            new Runnable() {
-                                @Override
-                                public void run() {
-                                    mMainTabLayout.getTabAt(0).select();
-                                }
-                            }, 100);
-                    refresh();
-                    hideKeyboard();
-                    return true;
-                }
-                return false;
-            }
-        });
-        showHistory();
 
     }
 
@@ -177,26 +102,6 @@ public class MainActivity extends BaseActivity {
         super.onStart();
         //저장소에 있는 값 저장
 
-        mRecentItemList.clear();
-        String json = sSharedPreferences.getString("recentList", "");
-        Type type = new TypeToken<ArrayList<HistoryListViewItem>>() {
-        }.getType();
-        if (gson.fromJson(json, type) != null) {
-            mRecentItemList = gson.fromJson(json, type);
-        } else {
-        }
-
-        //아직 검색창이 뜨지 않았을 경우
-        if (isFirstSearch) {
-            if (mRecentItemList.size() == 0) {
-                mTvHistoryText.setVisibility(View.VISIBLE);
-            } else {
-                mTvHistoryText.setVisibility(View.GONE);
-            }
-        }
-
-        mRecentLvAdapter = new MainListViewAdapter(mRecentItemList, getApplicationContext());
-        mLvRecentHistory.setAdapter(mRecentLvAdapter); //리스트뷰의 어댑터
         String engJson = sSharedPreferences.getString("siteEngList", "");
         String korJson = sSharedPreferences.getString("siteKorList", "");
         Type siteType = new TypeToken<ArrayList<SitePriority>>() {
@@ -244,9 +149,6 @@ public class MainActivity extends BaseActivity {
                     }
                 }, 100);
 
-        mRecentLvAdapter.notifyDataSetChanged();
-
-
     }
 
 
@@ -254,45 +156,20 @@ public class MainActivity extends BaseActivity {
     private void replaceFragment(WebViewFragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.fragment_container, fragment);
+        transaction.replace(R.id.fragment_container_search_result, fragment);
         transaction.commit();
     }
 
     //onClick 메소드
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_main_setting:
+            case R.id.iv_search_result_close:
                 //설정으로 이동
-                startActivity(new Intent(this, SettingActivity.class));
-                break;
-            case R.id.iv_main_favority:
-                //팝업 액티비티 실행
-                if (isFirstSearch) {
-
-                } else {
-                    Intent intent = new Intent(this, PopupBookmarkActivity.class);
-                    intent.putExtra("word", mKeyword);
-                    intent.putExtra("sentence", mSentence);
-                    intent.putExtra("type", 0);
-                    startActivity(intent);
-                }
-                break;
-            case R.id.iv_main_bookmark:
-                //팝업 액티비티 실행
-                startActivity(new Intent(this, BookmarkActivity.class));
+                 finish();
                 break;
         }
     }
 
-    //onStop에서 저장
-    @Override
-    public void onStop() {
-        super.onStop();
-        SharedPreferences.Editor editor = sSharedPreferences.edit();
-        String json = gson.toJson(mRecentItemList);
-        editor.putString("recentList", json);
-        editor.apply();
-    }
 
     @Override
     public void onActionModeStarted(final android.view.ActionMode mode) {
@@ -351,16 +228,11 @@ public class MainActivity extends BaseActivity {
             mSentence = pasteData;
         }
 
-
-        if (isFirstSearch) {
-            showCustomToast("먼저 단어를 검색해주세요");
-        } else {
             Intent intent = new Intent(this, PopupBookmarkActivity.class);
             intent.putExtra("word", mKeyword);
             intent.putExtra("sentence", mSentence);
             intent.putExtra("type", 1);
             startActivity(intent);
-        }
 
         return false;
     }
@@ -390,60 +262,6 @@ public class MainActivity extends BaseActivity {
 
         mStringTypeIsKorean = isKoreaLanguage;
         return mStringTypeIsKorean;
-    }
-
-    public void hideKeyboard() {
-        mEtSearch.clearFocus();
-        InputMethodManager immhide = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-        immhide.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
-    }
-
-    public void refresh() {
-        mRecentLvAdapter.notifyDataSetChanged();
-    }
-
-    //이전에 검색한 적 있으면 지우고 최상단으로 올림
-    public void addKeyword(String keyword) {
-        removeKeyword(keyword);
-        mRecentItemList.add(0, new HistoryListViewItem(keyword));
-        mRecentLvAdapter.notifyDataSetChanged();
-    }
-
-    //같은 기록이 있으면 삭제
-    public void removeKeyword(String keyword) {
-        for (int i = 0; i < mRecentItemList.size(); i++) {
-            if (mRecentItemList.get(i).getKeyword().equals(keyword)) {
-                mRecentItemList.remove(i);
-                break;
-            }
-        }
-    }
-
-    public void hideHistory() {
-        mLvRecentHistory.setVisibility(View.GONE);
-        mTvHistoryText.setVisibility(View.GONE);
-        isFirstSearch = false;
-    }
-
-    public void showHistory() {
-        mLvRecentHistory.setVisibility(View.VISIBLE);
-        if (mRecentItemList.size() == 0) {
-            mTvHistoryText.setVisibility(View.VISIBLE);
-        } else {
-            mTvHistoryText.setVisibility(View.GONE);
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        //super.onBackPressed();
-        if (System.currentTimeMillis() - time >= 2000) {
-            time = System.currentTimeMillis();
-            Toast.makeText(getApplicationContext(), "뒤로 버튼을 한번 더 누르면 종료합니다.", Toast.LENGTH_SHORT).show();
-        } else if (System.currentTimeMillis() - time < 2000) {
-            finish();
-            return;
-        }
     }
 
 
