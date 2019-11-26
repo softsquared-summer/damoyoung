@@ -29,9 +29,20 @@ public class SplashActivity extends BaseActivity implements SplashActivityView {
         setContentView(R.layout.activity_splash);
         //자동 로그인 기능 활성화
 
+        try {
+            androidNum = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
 
-        androidNum = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+            if (androidNum==null){
+                throw new Exception();
+            }
+        }catch (Exception e ) {
+            e.printStackTrace();
+        }
+
         System.out.println(androidNum);
+
+
+
         Handler hd = new Handler();
         hd.postDelayed(new splashhandler(), 500); // 1초 후에 hd handler 실행
 
