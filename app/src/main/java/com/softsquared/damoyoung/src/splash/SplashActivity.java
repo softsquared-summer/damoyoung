@@ -28,7 +28,6 @@ public class SplashActivity extends BaseActivity implements SplashActivityView {
 
         setContentView(R.layout.activity_splash);
         //자동 로그인 기능 활성화
-
         try {
             androidNum = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
 

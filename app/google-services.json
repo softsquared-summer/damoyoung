@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "236637163651",
+    "firebase_url": "https://damoyoung-dca97.firebaseio.com",
+    "project_id": "damoyoung-dca97",
+    "storage_bucket": "damoyoung-dca97.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:236637163651:android:7d29f7b3dbbb73f3b00bb6",
+        "android_client_info": {
+          "package_name": "com.softsquared.damoyoung"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "236637163651-p8dj1hnk87ll2f99m54o1pl0gj7fqnl2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.softsquared.damoyoung",
+            "certificate_hash": "3e6c337fc473cab6a26c6cf7b55314267be6fd4a"
+          }
+        },
+        {
+          "client_id": "236637163651-sf25hjslrg2r9mqfjo9gfk5jei7h5sgp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIo8zIbl2TGIiH99BTU7k0Ym_O9NeKTRI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "236637163651-sf25hjslrg2r9mqfjo9gfk5jei7h5sgp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
