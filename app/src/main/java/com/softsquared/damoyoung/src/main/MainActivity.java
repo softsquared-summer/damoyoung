@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -57,6 +58,7 @@ public class MainActivity extends BaseActivity {
     private TextView mTvHistoryText;//최근 검색어 보여주는 텍스트뷰
     ArrayList<SitePriority> mEngSitePriorityList = new ArrayList<>();
     ArrayList<SitePriority> mKorSitePriorityList = new ArrayList<>();
+    private long mLastClickTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -263,9 +265,21 @@ public class MainActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.iv_main_setting:
                 //설정으로 이동
+
+                // mis-clicking prevention, using threshold of 1000 ms
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+                // do your magic here
                 startActivity(new Intent(this, SettingActivity.class));
                 break;
             case R.id.iv_main_favority:
+                // mis-clicking prevention, using threshold of 1000 ms
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 //팝업 액티비티 실행
                 if (isFirstSearch) {
 
@@ -279,6 +293,11 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.iv_main_bookmark:
                 //팝업 액티비티 실행
+                // mis-clicking prevention, using threshold of 1000 ms
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
                 startActivity(new Intent(this, BookmarkActivity.class));
                 break;
         }
