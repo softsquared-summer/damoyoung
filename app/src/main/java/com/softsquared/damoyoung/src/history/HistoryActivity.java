@@ -3,6 +3,7 @@ package com.softsquared.damoyoung.src.history;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -153,6 +154,7 @@ public class HistoryActivity extends BaseActivity {
                             mHistoryListViewAdapter.notifyDataSetChanged();
                         }
                     });
+                    mDeleteDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     mDeleteDialog.show();
                 } else showCustomToast("단어를 하나 이상 선택해주세요");
 

@@ -61,7 +61,7 @@ public class WebViewFragment extends Fragment {
                     if (mWebView.canGoBack()) {
                         mWebView.goBack();
                     } else {
-                        ((MainActivity) getActivity()).onBackPressed();
+                        (getActivity()).onBackPressed();
                     }
 
                     return true;

@@ -37,12 +37,13 @@ public class PopupWordMoveService {
                 if (popUpWordMoveResponse == null) {
                     mPopupWordMoveActivityView.validateGetFailure(null);
                     return;
-                } else if (popUpWordMoveResponse.getCode() == 201) {
-                    //유효하지 않는 토큰
-                    mPopupWordMoveActivityView.validateGetFailure(popUpWordMoveResponse.getMessage());
-                }  else {
-                    //북마크 조회 성공//code 100
+                } else if (popUpWordMoveResponse.getCode() == 100) {
+                    //북마크 조회 성공 code 100
                     mPopupWordMoveActivityView.validateGetSuccess(popUpWordMoveResponse.getMessage(), popUpWordMoveResponse.getBookmarkListItems());
+
+                }  else {
+                    mPopupWordMoveActivityView.validateGetFailure(popUpWordMoveResponse.getMessage());
+
                 }
 
             }

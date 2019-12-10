@@ -28,4 +28,5 @@
     <color name="colorButtonOff">#e9ecef</color>
     <color name="colorButtonOn">#339df7</color>
     <color name="colorChildDivider">#D0D0D0</color>
+    <color name="transparent">#00000000</color>
 </resources>

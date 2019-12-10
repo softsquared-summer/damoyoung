@@ -3,6 +3,7 @@ package com.softsquared.damoyoung.src.wordbook;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
@@ -405,7 +406,7 @@ public class WordbookActivity extends BaseActivity implements View.OnClickListen
                             deleteWord(mBookmarkNo);
                         }
                     });
-
+                    mWordbookDeleteDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     mWordbookDeleteDialog.show();
                 }
                 break;

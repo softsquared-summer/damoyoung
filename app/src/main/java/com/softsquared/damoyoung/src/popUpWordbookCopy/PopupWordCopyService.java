@@ -76,49 +76,11 @@ public class PopupWordCopyService {
                     return;
                 } else if (popUpWordCopyResponse.getCode() == 100) {
                     //단어 복사 성공
-                    Log.d("TAG", popUpWordCopyResponse.getMessage());
                     mPopupWordCopyActivityView.validateCopySuccess(popUpWordCopyResponse.getMessage());
                 } else if (popUpWordCopyResponse.getCode() == 201) {
-                    //유효하지 않는 토큰
-                    Log.d("TAG", popUpWordCopyResponse.getMessage());
-
+                        //유효하지 않은 토큰 값
                     mPopupWordCopyActivityView.validateCopyFailure(popUpWordCopyResponse.getMessage());
-                } else if (popUpWordCopyResponse.getCode() == 120) {
-                    //유효하지 않는 토큰
-                    Log.d("TAG", popUpWordCopyResponse.getMessage());
-
-                    mPopupWordCopyActivityView.validateCopyFailure(popUpWordCopyResponse.getMessage());
-                } else if (popUpWordCopyResponse.getCode() == 121) {
-                    //유효하지 않는 토큰
-                    Log.d("TAG", popUpWordCopyResponse.getMessage());
-                    //유효하지 않는 토큰
-                    mPopupWordCopyActivityView.validateCopyFailure(popUpWordCopyResponse.getMessage());
-                } else if (popUpWordCopyResponse.getCode() == 122) {
-                    //유효하지 않는 토큰
-                    Log.d("TAG", popUpWordCopyResponse.getMessage());
-                    mPopupWordCopyActivityView.validateCopyFailure(popUpWordCopyResponse.getMessage());
-                } else if (popUpWordCopyResponse.getCode() == 300) {
-                    //유효하지 않는 토큰
-                    Log.d("TAG", popUpWordCopyResponse.getMessage());
-                    mPopupWordCopyActivityView.validateCopyFailure(popUpWordCopyResponse.getMessage());
-                } else if (popUpWordCopyResponse.getCode() == 301) {
-                    //유효하지 않는 토큰
-                    Log.d("TAG", popUpWordCopyResponse.getMessage());
-                    mPopupWordCopyActivityView.validateCopyFailure(popUpWordCopyResponse.getMessage());
-                } else if (popUpWordCopyResponse.getCode() == 400) {
-                    //유효하지 않는 토큰
-                    Log.d("TAG", popUpWordCopyResponse.getMessage());
-                    mPopupWordCopyActivityView.validateCopyFailure(popUpWordCopyResponse.getMessage());
-                } else if (popUpWordCopyResponse.getCode() == 500) {
-                    //유효하지 않는 토큰
-                    Log.d("TAG", popUpWordCopyResponse.getMessage());
-                    mPopupWordCopyActivityView.validateCopyFailure(popUpWordCopyResponse.getMessage());
-                } else if (popUpWordCopyResponse.getCode() == 800) {
-                    //유효하지 않는 토큰
-                    Log.d("TAG", popUpWordCopyResponse.getMessage());
-                    mPopupWordCopyActivityView.validateCopyFailure(popUpWordCopyResponse.getMessage());
-                } else {
-                    Log.d("TAG", popUpWordCopyResponse.getMessage());
+                }else {
                     mPopupWordCopyActivityView.validateCopyFailure(popUpWordCopyResponse.getMessage());
                 }
 

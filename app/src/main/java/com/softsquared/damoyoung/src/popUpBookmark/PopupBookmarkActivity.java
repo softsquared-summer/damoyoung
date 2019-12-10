@@ -2,6 +2,7 @@ package com.softsquared.damoyoung.src.popUpBookmark;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -147,6 +148,8 @@ public class PopupBookmarkActivity extends BaseActivity implements View.OnClickL
                     }
                 });
 
+                //API 낮은 버전에서 dialog 배경이 투명하지 않은 문제 해결
+                mBookmarkNewfolderDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 mBookmarkNewfolderDialog.show();
                 break;
 

@@ -2,8 +2,10 @@ package com.softsquared.damoyoung.src.popUpBookmark.popUpBookmarkDialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -30,7 +32,6 @@ public class PopUpBookmarkNewfolderDialog extends Dialog {
         layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
         layoutParams.dimAmount = 0.8f;
         getWindow().setAttributes(layoutParams);
-
         setContentView(R.layout.custom_dialog_bookmark_newfolder);
 
         //셋팅
