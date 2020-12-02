@@ -2,6 +2,7 @@ package com.softsquared.damoyoung.src.popUpWordbookMove;
 
 import com.softsquared.damoyoung.src.popUpWordbookMove.interfaces.PopupWordMoveActivityView;
 import com.softsquared.damoyoung.src.popUpWordbookMove.interfaces.PopupWordMoveRetrofitInterface;
+import com.softsquared.damoyoung.src.popUpWordbookMove.models.PopUpWordMoveData;
 import com.softsquared.damoyoung.src.popUpWordbookMove.models.PopUpWordMoveResponse;
 
 import org.json.JSONObject;
@@ -54,10 +55,10 @@ public class PopupWordMoveService {
         });
     }
 
-    void patchWordMove(JSONObject params) {
+    void patchWordMove(PopUpWordMoveData data) {
 
         final PopupWordMoveRetrofitInterface popUpbookmarkRetrofitInterface = getRetrofit().create(PopupWordMoveRetrofitInterface.class);
-        popUpbookmarkRetrofitInterface.patchMovedWord(RequestBody.create(params.toString(), MEDIA_TYPE_JSON)).enqueue(new Callback<PopUpWordMoveResponse>() {
+        popUpbookmarkRetrofitInterface.patchMovedWord(data).enqueue(new Callback<PopUpWordMoveResponse>() {
             @Override
             public void onResponse(Call<PopUpWordMoveResponse> call, Response<PopUpWordMoveResponse> response) {
                 if (response == null) {

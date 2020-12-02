@@ -316,8 +316,11 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onActionModeStarted(final android.view.ActionMode mode) {
         final Menu menu = mode.getMenu();
-        final int copy1 = 34276370;
-        final int copy2 = 16908321;
+        //안드로이드 자체 editText에 menu 인경우 Copy의 id는 16908321
+
+//        final int copy1 = 34276370;
+        final int copy1 = 34210660;//webview 내의 글씨의 copy
+        final int copy2 = 16908321;//menu.getItem(1).getItemId()
 
         if (menu.getItem(0).getItemId() == copy1) {
             menu.add("예문저장")
@@ -346,7 +349,6 @@ public class MainActivity extends BaseActivity {
         } else {
 
         }
-        //웹뷰 내에 34276370 복사 안드로이드 자체 16908321 복사
         super.onActionModeStarted(mode);
     }
 

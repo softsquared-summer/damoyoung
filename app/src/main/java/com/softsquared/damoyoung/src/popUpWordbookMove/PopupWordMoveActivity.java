@@ -10,6 +10,8 @@ import androidx.annotation.Nullable;
 import com.softsquared.damoyoung.R;
 import com.softsquared.damoyoung.src.BaseActivity;
 import com.softsquared.damoyoung.src.popUpWordbookMove.interfaces.PopupWordMoveActivityView;
+import com.softsquared.damoyoung.src.popUpWordbookMove.models.PopUpWordMoveData;
+import com.softsquared.damoyoung.src.popUpWordbookMove.models.WordItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,7 +27,11 @@ public class PopupWordMoveActivity extends BaseActivity implements View.OnClickL
     private ArrayList<PopupWordMoveListViewItem> mLvBookmarkItems = new ArrayList<>();
     private PopupWordMoveListViewAdapter mLvBookmarkAdapter;
     private ListView mLvBookmarkList;
+
     private ArrayList<Integer> mWordList = new ArrayList<>();
+
+    private ArrayList<WordItem> mWordItems = new ArrayList<>();
+    private PopUpWordMoveData mPopUpWordMoveData;
     private int mBookmarkNo = 0;
     private int mNewBookmarkNo = 0;
 
@@ -35,6 +41,10 @@ public class PopupWordMoveActivity extends BaseActivity implements View.OnClickL
         setContentView(R.layout.activity_wordbook_move);
 
         mWordList = (ArrayList<Integer>) getIntent().getSerializableExtra("wordNo");
+
+        for (int i = 0; i < mWordList.size(); i++) {
+            mWordItems.add(new WordItem(mWordList.get(i)));
+        }
         mBookmarkNo = getIntent().getIntExtra("bookmarkNo", 0);
 
         //findViewById
@@ -92,32 +102,13 @@ public class PopupWordMoveActivity extends BaseActivity implements View.OnClickL
             showCustomToast("같은 단어장으론 이동할 수 없습니다.");
             return;
         }
-        try {
-            JSONArray wordArray = new JSONArray();//배열이 필요할때
-            for (int i = 0; i < mWordList.size(); i++)//배열
-            {
-                JSONObject sObject = new JSONObject();//배열 내에 들어갈 json
-                sObject.put("wordNo", mWordList.get(i));
-                wordArray.put(sObject);
-            }
-
-            JSONObject params = new JSONObject();
-            params.put("wordList", wordArray);//배열을 넣음
-            params.put("bookmarkNo", mBookmarkNo);
-            params.put("newbookmarkNo", mNewBookmarkNo);
-
-            patchWordMove(params);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
+        mPopUpWordMoveData = new PopUpWordMoveData(mNewBookmarkNo, mBookmarkNo, mWordItems);//todo
+        patchWordMove(mPopUpWordMoveData);
     }
 
-    public void patchWordMove(JSONObject param) {
+    public void patchWordMove(PopUpWordMoveData data) {
         final PopupWordMoveService popupWordMoveService = new PopupWordMoveService(this);
-        popupWordMoveService.patchWordMove(param);
+        popupWordMoveService.patchWordMove(data);
     }
 
     public void onClick(View v) {

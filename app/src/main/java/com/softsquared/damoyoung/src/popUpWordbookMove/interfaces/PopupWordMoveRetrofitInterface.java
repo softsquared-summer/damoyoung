@@ -1,5 +1,6 @@
 package com.softsquared.damoyoung.src.popUpWordbookMove.interfaces;
 
+import com.softsquared.damoyoung.src.popUpWordbookMove.models.PopUpWordMoveData;
 import com.softsquared.damoyoung.src.popUpWordbookMove.models.PopUpWordMoveResponse;
 
 import okhttp3.RequestBody;
@@ -15,6 +16,6 @@ public interface PopupWordMoveRetrofitInterface {
     Call<PopUpWordMoveResponse> getPopUpBookmark();
 
     @PATCH("/movedWord ")
-    Call<PopUpWordMoveResponse> patchMovedWord(@Body RequestBody params);
+    Call<PopUpWordMoveResponse> patchMovedWord(@Body PopUpWordMoveData data);
 
 }
